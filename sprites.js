@@ -42,6 +42,10 @@ function removeSprite(sprite) {
 }
 
 function playAnim(sprite, name, reset) {
+    if(!sprite.info) {
+        return;
+    }
+
     let anim = sprite.info.anims[name];
 
     if(anim == sprite.curAnim && reset) {
