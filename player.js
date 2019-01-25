@@ -73,6 +73,14 @@ function updatePlayer() {
         playAnim(player.sprite, "idle");
     }
 
+    if(input.up) {
+        player.dy = -PLAYER_MOVE_SPEED;
+    } else if(input.down) {
+        player.dy = PLAYER_MOVE_SPEED;
+    } else {
+        player.dy = 0;
+    }
+
     if(player.cooldownTimer > 0) {
         player.cooldownTimer -= SEC_PER_FRAME;
     }
@@ -97,22 +105,13 @@ function updatePlayer() {
     }
 
     let playerRect = player.rect;
-    player.grounded = collideTileMap(player.x + player.rect.x, player.y + player.rect.y + 1, player.rect.w, player.rect.h);
-
-    if(!player.grounded) {
-        player.dy += 0.2;
-        playAnim(player.sprite, "air");
-    } else {
-        if(input.jump) {
-            player.grounded = false;
-            player.dy -= 8;
-        }
-    }
 
     moveCollideTileMap(player, true);
 
-    player.sprite.x = player.x;
-    player.sprite.y = player.y;
+    if(player.sprite) {
+        player.sprite.x = player.x;
+        player.sprite.y = player.y;
+    }
 
     let cx = player.x - canvas.width / 2 + playerRect.x + playerRect.w / 2
     let cy = player.y - canvas.height / 2 + playerRect.y + playerRect.h / 2;

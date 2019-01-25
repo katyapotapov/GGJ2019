@@ -1,17 +1,13 @@
 const LEFT_KEY = "a";
 const RIGHT_KEY = "d";
-const JUMP_KEY = "w";
-const SHOOT_RED_KEY = "j";
-const SHOOT_BLUE_KEY = "k";
-const SHOOT_YELLOW_KEY = "l";
+const UP_KEY = "w";
+const DOWN_KEY = "s";
 
 let input = {
     left: false,
     right: false,
-    jump: false,
-    shootRed: false,
-    shootBlue: false,
-    shootYellow: false,
+    up: false,
+    down: false,
 };
 
 function setKeyState(key, down) {
@@ -19,16 +15,11 @@ function setKeyState(key, down) {
         input.left = down;
     } else if(key == RIGHT_KEY) {
         input.right = down;
-    } else if(key == JUMP_KEY) {
-        input.jump = down;
-    } else if(key == SHOOT_RED_KEY) {
-        input.shootRed = down;
-    } else if(key == SHOOT_BLUE_KEY) {
-        input.shootBlue = down;
-    } else if(key == SHOOT_YELLOW_KEY) {
-        input.shootYellow = down;
+    } else if(key == UP_KEY) {
+        input.up = down;
+    } else if(key == DOWN_KEY) {
+        input.down = down;
     }
-
 }
 
 window.addEventListener("keydown", function(e) {
