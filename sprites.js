@@ -42,6 +42,10 @@ function removeSprite(sprite) {
 }
 
 function playAnim(sprite, name, reset) {
+    if(!sprite) {
+        return;
+    }
+
     if(!sprite.info) {
         return;
     }
