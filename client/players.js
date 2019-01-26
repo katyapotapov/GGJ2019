@@ -181,8 +181,8 @@ function useSelectedItem(player) {
         if(player.cooldown <= 0) {
             createBomb(player.x, player.y);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
+            setItemQuantity(player.id, item.type, item.quantity - 1);
         }
-        setItemQuantity(player.id, item.type, item.quantity - 1);
     }
 }
 
