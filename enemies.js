@@ -29,19 +29,6 @@ function initEnemies() {
     });
 }
 
-function getFirstCollidingEnemy(x, y, w, h) {
-    for(let i = 0; i < enemies.length; ++i) {
-        let enemy = enemies[i];
-
-        if(collideRects(x, y, w, h,
-                        enemy.x + enemy.rect.x, enemy.y + enemy.rect.y, enemy.rect.w, enemy.rect.h)) {
-            return enemy;
-        }
-    }
-
-    return null;
-}
-
 function createEnemy(x, y, color) {
     let enemy = {
         x: x,
