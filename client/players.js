@@ -95,7 +95,10 @@ function handlePlayerState(id, state) {
         if(player.clientID == id) {
             player.x = state.x;
             player.y = state.y;
-            playAnim(player.sprite, state.anim);
+
+            if(state.anim) {
+                playAnim(player.sprite, state.anim);
+            }
         }
     }
 }
@@ -117,14 +120,20 @@ function updatePlayers() {
 
 function sendPlayers() {
     for (let i = 0; i < players.length; i++) {
+        const player = players[i];
+
         const message = {
-            clientID: players[i].clientID,
+            clientID: player.clientID,
             playerState: {
-                x: players[i].x,
-                y: players[i].y,
-                anim: players[i].sprite.curAnimName
+                x: player.x,
+                y: player.y,
             }
         };
+
+        if(player.sprite) {
+            message.playerState.anim = player.sprite.curAnimName;
+        }
+
         sendMessage(message);
     }
 }
