@@ -39,6 +39,7 @@ socket.on("create wall", function(x, y, dir, life) {
     createWall(x, y, dir, life);
 });
 socket.on("remove wall", removeWall);
+socket.on("set selected item", setSelectedItem);
 
 socket.on("player left", function(id) {
     removePlayer(id);

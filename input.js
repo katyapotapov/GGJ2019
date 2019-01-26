@@ -9,7 +9,8 @@ let input = {
     down: false,
     left: false,
     right: false,
-    use: false
+    use: false,
+    invSelect: 0
 };
 
 function setKeyState(key, down) {
@@ -23,6 +24,28 @@ function setKeyState(key, down) {
         input.down = down;
     } else if(key == USE_KEY) {
         input.use = down;
+    } else if(down) {
+        if(key == "1") {
+            input.invSelect = 0;
+        } else if(key == "2") {
+            input.invSelect = 1;
+        } else if(key == "3") {
+            input.invSelect = 2;
+        } else if(key == "4") {
+            input.invSelect = 3;
+        } else if(key == "5") {
+            input.invSelect = 4;
+        } else if(key == "6") {
+            input.invSelect = 5;
+        } else if(key == "7") {
+            input.invSelect = 6;
+        } else if(key == "8") {
+            input.invSelect = 7;
+        } else if(key == "9") {
+            input.invSelect = 8;
+        } else if(key == "0") {
+            input.invSelect = 9;
+        }
     }
 }
 
