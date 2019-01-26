@@ -40,7 +40,7 @@ io.on("connection", function(socket) {
             }
 
             for(let i = 0; i < data.walls.length; ++i) {
-                socket.emit("create wall", data.walls[i].x, data.walls[i].y, data.walls[i].dir, data.walls[i].life);
+                socket.emit("create wall", data.walls[i].x, data.walls[i].y, data.walls[i].direction, data.walls[i].life);
             }
 
             for(let i = 0; i < data.resources.length; ++i) {
