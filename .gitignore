@@ -1,2 +1,3 @@
 *.swp 
 server/node_modules
+.vscode/
