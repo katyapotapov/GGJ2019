@@ -1,56 +1,64 @@
-const WebSocket = require("ws");
+const io = require("socket.io").listen(8080);
 
-const wss = new WebSocket.Server({port: 8080});
+let id = 0;
+let playerIDs = [];
 
-let connections = [];
+io.on("connection", function(socket) {
+    console.log("Player joined!"); 
+    
+    socket.playerID = id++;
+    playerIDs.push(socket.playerID);
 
-function handleDisconnection(ws) {
-    const i = connections.indexOf(ws);
+    // Even the player that joined receives this message
+    io.emit("player joined", socket.playerID);
 
-    if(i < 0) {
-        return;
-    }
+    // Now we send it a "player joined" for every other player connected
+    playerIDs.forEach(function(id) {
+        if(id == socket.playerID) {
+            return;
+        }
 
-    connections.splice(i, 1);
-
-    console.log("Handled disconnect.");
-    ws.terminate();  
-}
-
-wss.on("connection", function(ws) {
-    console.log("Connection!");
-    let id = connections.length();
-
-    for(let i = 0; i < id; i++) {
-        connections[i].send(JSON.stringify({'player': true}));
-    }
-
-    connections.push(ws);
-    ws.send(JSON.stringify({'init': {
-        'host': id === 0,
-        'clientID': id
-    }}));
-
-    ws.isAlive = true;
-
-    ws.on("error", function(err) {
-        handleDisconnection(ws);
+        socket.emit("player joined", id);
     });
 
-    ws.on("pong", function() {
-        ws.isAlive = true;
+    if(playerIDs.length == 1) {
+        socket.emit("host", socket.playerID);
+    }
+
+    socket.emit("set player id", socket.playerID);
+
+    socket.on("create bullet", function(x, y, dir) {
+        socket.broadcast.emit("create bullet", x, y, dir);
     });
 
-    ws.on("message", function(message) {
-        try {
-            for(let i = 0; i < connections.length; ++i) {
-                // Forward all messages to everyone else
-                if(connections[i] != ws) {
-                    connections[i].send(message);
-                }
-            }
-        } catch(e) {
-            console.log(e);
-        }        
+    socket.on("remove bullet", function(index) {
+        socket.broadcast.emit("remove bullet", index);
+    });
+
+    socket.on("bullet state", function(index, x, y) {
+        socket.broadcast.volatile.emit("bullet state", index, x, y);
+    });
+
+    socket.on("set item quantity", function(id, type, quantity) {
+        socket.broadcast.emit("set item quantity", id, type, quantity);
+    });
+
+    socket.on("player input", function(input) { 
+        socket.broadcast.emit("player input", socket.playerID, input);
+    });
+    
+    socket.on("player state", function(id, x, y, anim) {
+        socket.broadcast.volatile.emit("player state", id, x, y, anim);
+    });
+
+    socket.on("disconnect", function() {
+        console.log("Player left!");
+        io.emit("player left", socket.playerID);
+        playerIDs.splice(playerIDs.indexOf(socket.playerID), 1);
+
+        if(playerIDs.length == 1) {
+            // Reassign host
+            io.emit("host", playerIDs[0]);
+        }
     });
 });
