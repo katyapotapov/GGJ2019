@@ -25,6 +25,18 @@ io.on("connection", function(socket) {
         socket.emit("host", socket.playerID);
     }
 
+    socket.on("create bullet", function(x, y, dir) {
+        socket.broadcast.emit("create bullet", x, y, dir);
+    });
+
+    socket.on("remove bullet", function(index) {
+        socket.broadcast.emit("remove bullet", index);
+    });
+
+    socket.on("bullet state", function(index, x, y) {
+        socket.broadcast.emit("bullet state", index, x, y);
+    });
+
     socket.on("player input", function(input) { 
         socket.broadcast.emit("player input", socket.playerID, input);
     });

@@ -2,12 +2,14 @@ const LEFT_KEY = "a";
 const RIGHT_KEY = "d";
 const UP_KEY = "w";
 const DOWN_KEY = "s";
+const USE_KEY = "j";
 
 let input = {
     up: false,
     down: false,
     left: false,
-    right: false
+    right: false,
+    use: false
 };
 
 function setKeyState(key, down) {
@@ -19,6 +21,8 @@ function setKeyState(key, down) {
         input.up = down;
     } else if(key == DOWN_KEY) {
         input.down = down;
+    } else if(key == USE_KEY) {
+        input.use = down;
     }
 }
 

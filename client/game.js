@@ -15,29 +15,13 @@ function shakeCamera(duration, magnitude) {
 }
 
 function initGame() {
+    initBullets();
 }
 
 function updateGame() {
     if(camera.shake.timer > 0) {
         camera.shake.timer -= SEC_PER_FRAME;
     }
-
-    /*
-    updatePlayers();
-    
-    if(host) {
-        handleInput(clientID, input);
-        if(tickCount == 1) {
-            sendPlayers();
-            tickCount = 0;
-        }
-    } else {
-        if(tickCount == 1) {
-            sendInput();
-            tickCount = 0;
-        }
-    }
-    */
 
     if(host) {
         if(players) {
@@ -47,7 +31,10 @@ function updateGame() {
         
         movePlayers();
         updatePlayerSpritePositions();
+        updateBullets();
+
         sendPlayers();
+        sendBullets();
     } else {
         sendInput();
         updatePlayerSpritePositions();
@@ -75,5 +62,6 @@ function drawGame() {
     cam.y = Math.floor(cam.y);
 
     drawTilemap(cam);
+    drawBullets(cam);
     drawSprites(cam);
 }

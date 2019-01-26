@@ -1,4 +1,5 @@
 const PLAYER_MOVE_SPEED = 6;
+const PLAYER_SHOOT_COOLDOWN = 1;
 
 let players = [];
 
@@ -15,7 +16,8 @@ function createPlayer(id, x, y) {
             y: 32,
             w: 32,
             h: 32
-        }
+        },
+        cooldown: 0
     };
 
     loadImage("assets/rick.png", function(image) {
@@ -88,6 +90,11 @@ function handleInput(id, input) {
                 players[i].dy = 0;
             }
 
+            if(input.use && players[i].cooldown <= 0) {
+                createBullet(players[i].x, players[i].y, DIR_UP);
+                players[i].cooldown += PLAYER_SHOOT_COOLDOWN;
+            }
+
             return;
         }
     }
@@ -126,6 +133,10 @@ function updatePlayerSpritePositions() {
 function movePlayers() {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
+
+        if(player.cooldown > 0) {
+            player.cooldown -= SEC_PER_FRAME;
+        }
 
         moveCollideTileMap(player, true);
     }
