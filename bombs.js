@@ -15,7 +15,6 @@ function initExplosions() {
     });
 }
 
-
 function createBomb(x, y) {
     let bomb = {
         x: x,
