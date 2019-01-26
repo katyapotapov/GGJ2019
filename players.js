@@ -1,5 +1,5 @@
 const PLAYER_MOVE_SPEED = 6;
-const PLAYER_SHOOT_COOLDOWN = 1;
+const PLAYER_SHOOT_COOLDOWN = 0.3;
 
 const ITEM_GUN = 0;
 const ITEM_BOMB = 1;
