@@ -3,7 +3,7 @@ let clientID = 0;
 
 function handleMessage(message) {
     if(message.init) {
-        host = message.host;
+        host = message.init.host;
         clientID = message.clientID;
     }
 
