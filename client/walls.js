@@ -32,7 +32,13 @@ function createWall(x, y, direction, life) {
         x: x,
         y: y,
         direction: direction,
-        life: 3
+        life: 3,
+        rect: {
+            x: 0,
+            y: 0,
+            w: 32,
+            h: 32
+        }
     }
 
     if(host) {
@@ -46,14 +52,17 @@ function createWall(x, y, direction, life) {
 
 function removeWall(index) {
     walls.splice(index, 1);
-
-    if(host) {
-        socket.emit("remove wall", index);
-    }
 }
 
 function setWallLife(index, life) {
     walls[index].life = life;
+    if (walls[index].life === 0) {
+        removeWall(index);
+    }
+
+    if(host) {
+        socket.emit("set wall life", index, life)
+    }
 }
 
 function drawWalls(cam) {

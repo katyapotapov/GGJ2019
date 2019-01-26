@@ -42,6 +42,14 @@ io.on("connection", function(socket) {
             for(let i = 0; i < data.walls.length; ++i) {
                 socket.emit("create wall", data.walls[i].x, data.walls[i].y, data.walls[i].dir, data.walls[i].life);
             }
+
+            for(let i = 0; i < data.resources.length; ++i) {
+                socket.emit("create resource", data.resources[i].type, data.resources[i].x, data.resources[i].y);
+            }
+
+            for(let i = 0; i < data.bombs.length; ++i) {
+                socket.emit("create bomb", data.bombs[i].x, data.bombs[i].y);
+            }
         });
 
         newPlayers.length = 0;
@@ -62,13 +70,13 @@ io.on("connection", function(socket) {
     socket.on("set item quantity", function(id, type, quantity) {
         socket.broadcast.emit("set item quantity", id, type, quantity);
     });
-    
+
     socket.on("set selected item", function(id, index) {
         socket.broadcast.emit("set selected item", id, index);
     });
 
     socket.on("player input", function(input) {
-        socket.broadcast.emit("player input", socket.playerID, input);
+        socket.broadcast.volatile.emit("player input", socket.playerID, input);
     });
 
     socket.on("player state", function(id, x, y, anim) {
@@ -79,13 +87,34 @@ io.on("connection", function(socket) {
         socket.broadcast.emit("create wall", x, y, dir, life);
     });
 
-    socket.on("remove wall", function(index) {
-        socket.broadcast.emit("remove wall", index);
-    });
-
     socket.on("set wall life", function(index, life) {
         socket.broadcast.emit("set wall life", index, life);
     });
+
+    socket.on("create resource", function(type, x, y) {
+        socket.broadcast.emit("create resource", type, x, y);
+    });
+
+    socket.on("set resource life", function(index, life) {
+        socket.broadcast.emit("set resource life", index, life);
+    });
+
+    socket.on("create bomb", function(type, x, y) {
+        socket.broadcast.emit("create bomb", type, x, y);
+    });
+
+    socket.on("remove bomb", function(type, x, y) {
+        socket.broadcast.emit("remove bomb", type, x, y);
+    });
+
+    socket.on("create explosion", function(type, x, y) {
+        socket.broadcast.emit("create explosion", type, x, y);
+    });
+
+    socket.on("remove explosion", function(type, x, y) {
+        socket.broadcast.emit("remove explosion", type, x, y);
+    });
+
 
     socket.on("disconnect", function() {
         console.log("Player left!");

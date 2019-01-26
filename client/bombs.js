@@ -15,7 +15,6 @@ function initExplosions() {
     });
 }
 
-
 function createBomb(x, y) {
     let bomb = {
         x: x,
@@ -56,7 +55,7 @@ function createExplosion(x, y) {
             },
 
             onLoop: function(sprite) {
-                removeExplosion(sprite.explosionIndex);
+                removeExplosion(explosions.indexOf(sprite.explosion));
             }
         });
 
@@ -65,7 +64,7 @@ function createExplosion(x, y) {
         explosion.sprite.x = x-120;
         explosion.sprite.y = y-94;
 
-        explosion.sprite.explosionIndex = index;
+        explosion.sprite.explosion = explosion;
     });
 
     if(host) {

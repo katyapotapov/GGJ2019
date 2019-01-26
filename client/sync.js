@@ -11,7 +11,7 @@ socket.on("set player id", function(id) {
     myPlayerID = id;
 
     if(host) {
-        initDefaultBuilding();
+        initHost();
     }
 });
 
@@ -34,12 +34,17 @@ socket.on("bullet state", handleBulletState);
 
 socket.on("set item quantity", setItemQuantity);
 socket.on("set wall life", setWallLife);
-socket.on("create wall", function(x, y, dir, life) {
-    if (host) throw "You are the host";
-    createWall(x, y, dir, life);
-});
-socket.on("remove wall", removeWall);
+socket.on("create wall", createWall);
 socket.on("set selected item", setSelectedItem);
+
+socket.on("create resource", createResource);
+socket.on("set resource life", setResourceLife);
+
+socket.on("create bomb", createBomb);
+socket.on("remove bomb", removeBomb);
+
+socket.on("create explosion", createExplosion);
+socket.on("remove explosion", removeExplosion);
 
 socket.on("player left", function(id) {
     removePlayer(id);
@@ -49,6 +54,8 @@ socket.on("player left", function(id) {
 function sendSnapshot() {
     socket.emit("snapshot", {
         bullets: bullets,
-        walls: walls
+        walls: walls,
+        resources: resources,
+        bombs: bombs
     });
 }
