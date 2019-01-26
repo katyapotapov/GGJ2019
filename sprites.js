@@ -56,6 +56,7 @@ function playAnim(sprite, name, reset) {
         sprite.animTimer = 0;
     }
 
+    sprite.curAnimName = name;
     sprite.curAnim = anim;
 }
 
