@@ -1,5 +1,6 @@
 let resources = [];
-const TREE = 2;
+const BROWN_TREE = 1;
+const GREEN_TREE = 2;
 const ROCK = 3;
 const DIRT = 4;
 const RESOURCE_IMAGES = {
@@ -18,13 +19,17 @@ function initResources() {
     loadImage("assets/rock.png", function (image) {
         RESOURCE_IMAGES.rock = image;
     });
+    resources.push(createResource(BROWN_TREE, 50, 50));
 }
 
-function createResource(type) {
+function createResource(type, x, y) {
     let setHealth;
     switch (type) {
-        case TREE:
+        case BROWN_TREE:
             setHealth = 4;
+            break;
+        case GREEN_TREE:
+            setHealth = 5;
             break;
         case ROCK:
             setHealth = 6;
@@ -37,8 +42,10 @@ function createResource(type) {
         type: type,
         x: x,
         y: y,
-        health: setHealth
+        height: setHeight,
+        health: setHealth,
     };
+    return resource;
 }
 
 //TODO: Add item to players inventory when resource dies
@@ -48,12 +55,23 @@ function updateResource() {
             resources.splice(i, 1);
             continue;
         }
-        resources[i].health--;
     }
 }
 
-function drawResoures() {
+function drawResources(cam) {
+    if (!RESOURCE_IMAGES.greenTree || !RESOURCE_IMAGES.brownTree || !RESOURCE_IMAGES.rock) {
+        return;
+    }
     for (let i = 0; i < resources.length; ++i) {
-        ctx.drawImage(10, 10, 90, 100);
+        let resource = resources[i];
+        if (resource.type == BROWN_TREE) {
+            ctx.drawImage(RESOURCE_IMAGES.greenTree, resource.x - cam.x, resource.y - cam.y);
+        } else if (resource.type == GREEN_TREE) {
+
+        } else if (resource.type == ROCK) {
+
+        } else if (resource.type == DIRT) {
+
+        }
     }
 }

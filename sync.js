@@ -26,6 +26,7 @@ socket.on("remove bullet", removeBullet);
 socket.on("bullet state", handleBulletState);
 
 socket.on("set item quantity", setItemQuantity);
+socket.on("set selected item", setSelectedItem);
 
 socket.on("player left", function(id) {
     removePlayer(id);
