@@ -12,6 +12,7 @@ socket.on("set player id", function(id) {
 
     if(host) {
         initDefaultBuilding();
+        initDefaultResources();
     }
 });
 
@@ -38,8 +39,10 @@ socket.on("create wall", function(x, y, dir, life) {
     if (host) throw "You are the host";
     createWall(x, y, dir, life);
 });
-socket.on("remove wall", removeWall);
 socket.on("set selected item", setSelectedItem);
+
+socket.on("create resource", createResource);
+socket.on("set resource life", setResourceLife);
 
 socket.on("player left", function(id) {
     removePlayer(id);
@@ -49,6 +52,7 @@ socket.on("player left", function(id) {
 function sendSnapshot() {
     socket.emit("snapshot", {
         bullets: bullets,
-        walls: walls
+        walls: walls,
+        resources: resources
     });
 }
