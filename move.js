@@ -1,12 +1,17 @@
 const SWEEP_SAMPLES = 5;
 
-function moveCollideTileMap(e, sweep) { 
-    if(collideTileMap(e.x + e.rect.x + e.dx, e.y + e.rect.y, e.rect.w, e.rect.h)) {
+function moveCollide(e, sweep) { 
+    function collide(x, y) {
+        return collideTileMap(x + e.rect.x, y + e.rect.y, e.rect.w, e.rect.h) ||
+               getFirstCollidingObject(e, x, y, walls);
+    }
+
+    if(collide(e.x + e.dx, e.y)) {
         if(sweep) {
             let mx = e.dx / SWEEP_SAMPLES;
 
             for(let i = 0; i < SWEEP_SAMPLES; ++i) { 
-                if(collideTileMap(e.x + e.rect.x + mx, e.y + e.rect.y, e.rect.w, e.rect.h)) {
+                if(collide(e.x + mx, e.y)) {
                     e.dx = 0;
                     break;
                 } else {
@@ -18,12 +23,12 @@ function moveCollideTileMap(e, sweep) {
         }
     }
 
-    if(collideTileMap(e.x + e.rect.x, e.y + e.rect.y + e.dy, e.rect.w, e.rect.h)) {
+    if(collide(e.x, e.y + e.dy)) {
         if(sweep) {
             let my = e.dy / SWEEP_SAMPLES;
 
             for(let i = 0; i < SWEEP_SAMPLES; ++i) { 
-                if(collideTileMap(e.x + e.rect.x, e.y + e.rect.y + my, e.rect.w, e.rect.h)) {
+                if(collide(e.x, e.y + my)) {
                     e.dy = 0;
                     break;
                 } else {
