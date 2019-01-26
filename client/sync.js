@@ -8,7 +8,7 @@ function handleMessage(message) {
     }
 
     if(message.player) {
-        createPlayer(message.clientID, 100, 100);
+        createPlayer(message.clientID, 300, 300);
     }
 
     if(host) {
