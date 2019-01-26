@@ -1,3 +1,5 @@
+"use strict";
+
 const SWEEP_SAMPLES = 5;
 
 function moveCollide(e, sweep) { 
@@ -21,6 +23,8 @@ function moveCollide(e, sweep) {
         } else {
             e.dx = 0;
         }
+    } else {
+        e.x += e.dx;
     }
 
     if(collide(e.x, e.y + e.dy)) {
@@ -38,8 +42,7 @@ function moveCollide(e, sweep) {
         } else {
             e.dy = 0;
         }
+    } else {
+        e.y += e.dy;
     }
-
-    e.x += e.dx;
-    e.y += e.dy;
 }
