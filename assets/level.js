@@ -38,16 +38,15 @@
          "name":"Objects",
          "objects":[
                 {
-                 "gid":401,
-                 "height":128,
-                 "id":1,
-                 "name":"",
+                 "height":64,
+                 "id":3,
+                 "name":"player",
                  "rotation":0,
-                 "type":"",
+                 "type":"player",
                  "visible":true,
-                 "width":128,
-                 "x":256,
-                 "y":352
+                 "width":64,
+                 "x":128,
+                 "y":160
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -55,7 +54,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":2,
+ "nextobjectid":4,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.1.5",
@@ -73,32 +72,6 @@
          "tilecount":400,
          "tileheight":32,
          "tilewidth":32
-        }, 
-        {
-         "columns":0,
-         "firstgid":401,
-         "grid":
-            {
-             "height":1,
-             "orientation":"orthogonal",
-             "width":1
-            },
-         "margin":0,
-         "name":"objects",
-         "spacing":0,
-         "tilecount":1,
-         "tileheight":128,
-         "tiles":
-            {
-             "0":
-                {
-                 "image":"..\/..\/assets\/player_icon.png",
-                 "imageheight":128,
-                 "imagewidth":128,
-                 "type":"player"
-                }
-            },
-         "tilewidth":128
         }],
  "tilewidth":32,
  "type":"map",
