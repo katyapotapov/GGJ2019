@@ -17,6 +17,8 @@ function shakeCamera(duration, magnitude) {
 function initGame() {
     initBullets();
     initResources();
+    initBombs();
+    initExplosions();
 }
 
 function updateGame() {
@@ -33,6 +35,7 @@ function updateGame() {
         movePlayers();
         updatePlayerSpritePositions();
         updateBullets();
+        updateBombs();
 
         if (tickCount == 1) {
             sendPlayers();
@@ -87,4 +90,5 @@ function drawGame() {
     drawSprites(cam);
     drawResources(cam);
     drawInventory();
+    drawBombs(cam);
 }

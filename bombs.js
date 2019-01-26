@@ -4,7 +4,7 @@ let bombImage = null;
 let explosionImage = null;
 
 function initBombs() {
-    loadImage("assets/bomb2.png", function(image) {
+    loadImage("assets/bomb3.png", function(image) {
         bombImage = image;
     });
 }
@@ -35,15 +35,42 @@ function createBomb(x, y) {
 function createExplosion(x, y) {
     let explosion = {
         x: x,
-        y: y,
-        timer: 60
+        y: y
     }
+
+    let index = explosions.length;
+    explosions.push(explosion);
+
+    loadImage("assets/explosion.png", function(image) {
+        explosion.sprite = createSprite({
+            image: image,
+            frameWidth: 240,
+            frameHeight: 188,
+
+            anims: {
+                explode: {
+                    startFrame: 0,
+                    length: 9,
+                    frameTime: 0.05
+                }
+            },
+
+            onLoop: function(sprite) {
+                removeExplosion(sprite.explosionIndex);
+            }
+        });
+
+        playAnim(explosion.sprite, "explode");
+
+        explosion.sprite.x = x-120;
+        explosion.sprite.y = y-94;
+
+        explosion.sprite.explosionIndex = index;
+    });
 
     if(host) {
         socket.emit("create explosion", x, y);
     }
-
-    explosions.push(explosion);
 
     return explosion;
 }
@@ -57,6 +84,7 @@ function removeBomb(index) {
 }
 
 function removeExplosion(index) {
+    removeSprite(explosions[index].sprite);
     explosions.splice(index, 1);
 
     if(host) {
@@ -64,38 +92,23 @@ function removeExplosion(index) {
     }
 }
 
-function updateBombs() { 
+function updateBombs() {
     for(let i = 0; i < bombs.length; ++i) {
         if (bombs[i].timer == 0){
-            removeBomb(i);
             createExplosion(bombs[i].x,bombs[i].y);
-        } 
-        bombs[i].timer -= 1;
+            removeBomb(i);
+        } else {
+            bombs[i].timer -= 1;
+        }
     }
 }
 
-function updateExplosions() { 
-    for(let i = 0; i < explosions.length; ++i) {
-        if (explosions[i].timer == 0){
-            removeExplosion(i);
-        } 
-        explosions[i].timer -= 1;
-    }
-}
 
 
 function drawBombs(cam) {
+    if (!bombImage){ return; }
     for(let i = 0; i < bombs.length; ++i) {
         let bomb = bombs[i];
         ctx.drawImage(bombImage, bomb.x - cam.x, bomb.y - cam.y);
     }
 }
-
-function drawExplosions(cam) {
-    for(let i = 0; i < explosions.length; ++i) {
-        let explosion = explosions[i];
-        ctx.drawImage(explosionImage, explosion.x - cam.x, explosion.y - cam.y);
-    }
-}
-
-
