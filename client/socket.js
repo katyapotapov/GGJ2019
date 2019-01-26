@@ -5,5 +5,9 @@ ws.onmessage = function(e) {
 }
 
 function sendMessage(message) {
+    if(ws.readyState != 1) {
+        return;
+    }
+
     ws.send(JSON.stringify(message));
 }
