@@ -64,7 +64,7 @@ function removePlayer(id) {
 
 function handleInput(id, input) {
     for (let i = 0; i < players.length; i++) {
-        if (players[i].clientID === id) {
+        if (players[i].clientID == id) {
             if(input.left) {
                 players[i].dx = -PLAYER_MOVE_SPEED;
                 playAnim(players[i].sprite, "left");
@@ -84,42 +84,47 @@ function handleInput(id, input) {
             } else {
                 players[i].dy = 0;
             }
-            return;
         }
     }
-    throw "Couldn't find player to update";
 }
 
-function updatePlayers() {
-
+function handlePlayerState(id, state) {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
 
-        moveCollideTileMap(player, true);
+        if(player.clientID == id) {
+            player.x = state.x;
+            player.y = state.y;
+            playAnim(player.sprite, state.anim);
+        }
+    }
+}
+
+function updatePlayers() {
+    for (let i = 0; i < players.length; i++) {
+        let player = players[i];
+
+        if(host) {
+            moveCollideTileMap(player, true);
+        }
+
         if(player.sprite) {
             player.sprite.x = player.x;
             player.sprite.y = player.y;
         }
     }
-
-}
-
-function updatePlayerVelocity(player, input) {
-    if (!host) return;
-
 }
 
 function sendPlayers() {
-    if (!host) return;
-
     for (let i = 0; i < players.length; i++) {
         const message = {
-            clientID: players[i].id,
-            playerPos: {
+            clientID: players[i].clientID,
+            playerState: {
                 x: players[i].x,
-                y: players[i].y
+                y: players[i].y,
+                anim: players[i].sprite.curAnimName
             }
         };
-        handleMessage(message);
+        sendMessage(message);
     }
 }

@@ -4,7 +4,7 @@ let clientID = 0;
 function handleMessage(message) {
     if(message.init) {
         host = message.init.host;
-        clientID = message.clientID;
+        clientID = message.init.clientID;
     }
 
     if(message.player) {
@@ -16,8 +16,8 @@ function handleMessage(message) {
             handleInput(message.clientID, message.input);
         }
     } else {
-        if(message.playerPos) {
-            setPlayerPos(message.clientID, message.playerPos.x, message.playerPos.y);
+        if(message.playerState) {
+            handlePlayerState(message.clientID, message.playerState);
         }
     }
 }
