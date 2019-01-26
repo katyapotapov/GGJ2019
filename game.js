@@ -22,6 +22,11 @@ function initGame() {
     initExplosions();
 }
 
+function initHost() {
+    initDefaultBuilding();
+    initDefaultResources();
+}
+
 function updateGame() {
     if (camera.shake.timer > 0) {
         camera.shake.timer -= SEC_PER_FRAME;
@@ -31,6 +36,13 @@ function updateGame() {
         if (players) {
             // Handle host player's input locally
             handleInput(myPlayerID, input);
+
+            // Everybody gets a gun
+            for(let i = 0; i < players.length; ++i) {
+                if(players[i].id != myPlayerID && players[i].inventory.items.length == 0) {
+                    addItem(players[i], ITEM_GUN, 1);
+                }
+            }
         }
 
         movePlayers();
