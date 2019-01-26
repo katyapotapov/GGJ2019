@@ -56,8 +56,8 @@ function collideRectCircle(ax, ay, aw, ah, bx, by, radius) {
     const cx = ax + aw / 2;
     const cy = ay + ah / 2;
 
-    const dx = (bx - cx);
-    const dy = (by - cy);
+    let dx = (bx - cx);
+    let dy = (by - cy);
 
     // Clamp dx and dy to half extents
     dx = clamp(dx, -aw / 2, aw / 2);
@@ -72,19 +72,44 @@ function collideRectCircle(ax, ay, aw, ah, bx, by, radius) {
     return dx * dx + dy * dy < radius * radius;
 }
 
-function getFirstCollidingObject(object, x, y, objects) {
-    for(let i = 0; i < objects.length; ++i) {
-        let obj = objects[i];
+function getCollidingObjects(object, x, y) {
+    let col = [];
 
-        if(obj == object) {
-            continue;
-        }
+    for(let arg = 3; arg < arguments.length; ++arg) {
+        let objects = arguments[arg];
 
-        if(collideRects(x + object.rect.x, y + object.rect.y, object.rect.w, object.rect.h,
-                        obj.x + obj.rect.x, obj.y + obj.rect.y, obj.rect.w, obj.rect.h)) {
-            return obj;
+        for(let i = 0; i < objects.length; ++i) {
+            let obj = objects[i];
+
+            if(obj == object) {
+                continue;
+            }
+
+            if(collideRects(x + object.rect.x, y + object.rect.y, object.rect.w, object.rect.h,
+                            obj.x + obj.rect.x, obj.y + obj.rect.y, obj.rect.w, obj.rect.h)) {
+                col.push(obj);
+            }
         }
     }
 
-    return null;
+    return col;
+}
+
+function getObjectsInCircle(x, y, radius) {
+    let col = [];
+
+    for(let arg = 3; arg < arguments.length; ++arg) {
+        let objects = arguments[arg];
+
+        for(let i = 0; i < objects.length; ++i) {
+            let obj = objects[i];
+
+            if(collideRectCircle(obj.x + obj.rect.x, obj.y + obj.rect.y, obj.rect.w, obj.rect.h,
+                                 x, y, radius)) {
+                col.push(obj);
+            }
+        }
+    }
+
+    return col;
 }

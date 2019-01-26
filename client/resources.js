@@ -45,6 +45,7 @@ function createResource(type, x, y) {
         type: type,
         x: x,
         y: y,
+        life: setHealth
     };
 
     resources.push(resource);
@@ -60,8 +61,8 @@ function removeResource(index) {
 
 //TODO: Add item to players inventory when resource dies
 function setResourceLife(index, life) {
-    resources[index].health = life;
-    if (resources[index].health == 0) {
+    resources[index].life = life;
+    if (resources[index].life == 0) {
         removeResource(index);
     }
 

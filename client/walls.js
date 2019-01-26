@@ -92,9 +92,3 @@ function drawWalls(cam) {
     }
 }
 
-function sendWalls() {
-    for(let i = 0; i < walls.length; ++i) {
-        socket.emit("wall state", i, walls[i].life);
-    }
-}
-
