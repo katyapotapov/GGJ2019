@@ -25,6 +25,8 @@ io.on("connection", function(socket) {
         socket.emit("host", socket.playerID);
     }
 
+    socket.emit("set player id", socket.playerID);
+
     socket.on("create bullet", function(x, y, dir) {
         socket.broadcast.emit("create bullet", x, y, dir);
     });
