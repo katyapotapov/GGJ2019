@@ -1,27 +1,31 @@
 let host = false;
-let clientID = 0;
+let myPlayerID = -1;
 
-function handleMessage(message) {
-    if(message.init) {
-        host = message.init.host;
-        clientID = message.init.clientID;
-    }
+let socket = io("ws://localhost:8080");
 
-    if(message.player) {
-        createPlayer(message.clientID, 300, 300);
-    }
+socket.on("host", function() {
+    host = true;
+});
 
-    if(message.disconnect) {
-        removePlayer(message.clientID);
-    }
+socket.on("set player id", function(id) {
+    myPlayerID = id;
+});
 
-    if(host) {
-        if(message.input) {
-            handleInput(message.clientID, message.input);
-        }
-    } else {
-        if(message.playerState) {
-            handlePlayerState(message.clientID, message.playerState);
-        }
-    }
-}
+socket.on("player joined", function(id) {
+    console.log("Hello " + id);
+    createPlayer(id, 300, 300);
+});
+
+socket.on("player input", handleInput);
+
+socket.on("player state", handlePlayerState);
+
+socket.on("create bullet", createBullet);
+socket.on("remove bullet", removeBullet);
+
+socket.on("bullet state", handleBulletState);
+
+socket.on("player left", function(id) {
+    removePlayer(id);
+    console.log("Goodbye " + id);
+});

@@ -15,6 +15,7 @@ function shakeCamera(duration, magnitude) {
 }
 
 function initGame() {
+    initBullets();
 }
 
 function updateGame() {
@@ -22,12 +23,19 @@ function updateGame() {
         camera.shake.timer -= SEC_PER_FRAME;
     }
 
-    updatePlayers();
-    
     if(host) {
-        handleInput(clientID, input);
+        if(players) {
+            // Handle host player's input locally
+            handleInput(myPlayerID, input);
+        }
+        
+        movePlayers();
+        updatePlayerSpritePositions();
+        updateBullets();
+
         if(tickCount == 1) {
             sendPlayers();
+            sendBullets();
             tickCount = 0;
         }
     } else {
@@ -35,9 +43,17 @@ function updateGame() {
             sendInput();
             tickCount = 0;
         }
+        updatePlayerSpritePositions();
     }
 
     updateSprites();
+
+    let myPlayer = getPlayerWithID(myPlayerID);
+
+    if(myPlayer) {
+        camera.x += (myPlayer.x + myPlayer.rect.x + myPlayer.rect.w / 2 - camera.x - canvas.width / 2) * 0.1;
+        camera.y += (myPlayer.y + myPlayer.rect.y + myPlayer.rect.h / 2 - camera.y - canvas.height / 2) * 0.1;
+    }
 
     ++tickCount;
 }
@@ -59,5 +75,6 @@ function drawGame() {
     cam.y = Math.floor(cam.y);
 
     drawTilemap(cam);
+    drawBullets(cam);
     drawSprites(cam);
 }

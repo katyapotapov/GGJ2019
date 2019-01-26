@@ -1,9 +1,11 @@
 const PLAYER_MOVE_SPEED = 6;
+const PLAYER_SHOOT_COOLDOWN = 1;
+
 let players = [];
 
 function createPlayer(id, x, y) {
     let player = {
-        clientID: id,
+        id: id,
         x: x,
         y: y,
         dx: 0,
@@ -14,7 +16,8 @@ function createPlayer(id, x, y) {
             y: 32,
             w: 32,
             h: 32
-        }
+        },
+        cooldown: 0
     };
 
     loadImage("assets/rick.png", function(image) {
@@ -53,19 +56,30 @@ function createPlayer(id, x, y) {
     players.push(player);
 }
 
+function getPlayerWithID(id) {
+    for(let i = 0; i < players.length; ++i) {
+        if(players[i].id == id) {
+            return players[i];
+        }
+    }
+
+    return null;
+}
+
 function removePlayer(id) {
     for (let i = 0; i < players.length; i++) {
-        if (players[i].clientID === id) {
+        if (players[i].id === id) {
             removeSprite(players[i].sprite);
             players.splice(i, 1);
         }
     }
+
     throw "Couldn't find player to remove";
 }
 
 function handleInput(id, input) {
     for (let i = 0; i < players.length; i++) {
-        if (players[i].clientID == id) {
+        if (players[i].id == id) {
             if(input.left) {
                 players[i].dx = -PLAYER_MOVE_SPEED;
                 playAnim(players[i].sprite, "left");
@@ -85,32 +99,39 @@ function handleInput(id, input) {
             } else {
                 players[i].dy = 0;
             }
-        }
-    }
-}
 
-function handlePlayerState(id, state) {
-    for (let i = 0; i < players.length; i++) {
-        let player = players[i];
-
-        if(player.clientID == id) {
-            player.x = state.x;
-            player.y = state.y;
-
-            if(state.anim) {
-                playAnim(player.sprite, state.anim);
+            if(input.use && players[i].cooldown <= 0) {
+                createBullet(players[i].x, players[i].y, DIR_UP);
+                players[i].cooldown += PLAYER_SHOOT_COOLDOWN;
             }
+
+            return;
+        }
+    }
+
+    throw "Couldn't find player for input";
+}
+
+function handlePlayerState(id, x, y, anim) {
+    for (let i = 0; i < players.length; i++) {
+        let player = players[i];
+
+        if(player.id != id) {
+            continue;
+        }
+
+        player.x = x;
+        player.y = y;
+
+        if(anim) {
+            playAnim(player.sprite, anim);
         }
     }
 }
 
-function updatePlayers() {
+function updatePlayerSpritePositions() {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
-
-        if(host) {
-            moveCollideTileMap(player, true);
-        }
 
         if(player.sprite) {
             player.sprite.x = player.x;
@@ -119,22 +140,23 @@ function updatePlayers() {
     }
 }
 
-function sendPlayers() {
+function movePlayers() {
     for (let i = 0; i < players.length; i++) {
-        const player = players[i];
+        let player = players[i];
 
-        const message = {
-            clientID: player.clientID,
-            playerState: {
-                x: player.x,
-                y: player.y,
-            }
-        };
-
-        if(player.sprite) {
-            message.playerState.anim = player.sprite.curAnimName;
+        if(player.cooldown > 0) {
+            player.cooldown -= SEC_PER_FRAME;
         }
 
-        sendMessage(message);
+        moveCollideTileMap(player, true);
+    }
+}
+
+function sendPlayers() {
+    for(let i = 0; i < players.length; ++i) {
+        const player = players[i];
+
+        socket.emit("player state", player.id, player.x, player.y, 
+            player.sprite ? player.sprite.curAnimName : "up");
     }
 }
