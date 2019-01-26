@@ -53,7 +53,7 @@ function updateGame() {
     if(myPlayer) {
         if(host) {
             if(myPlayer.inventory.items.length == 0) {
-                addItem(myPlayerID, ITEM_GUN, 1);
+                addItem(myPlayer, ITEM_GUN, 1);
             }
         }
 

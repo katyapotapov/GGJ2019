@@ -129,21 +129,37 @@ function setItemQuantity(playerID, type, quantity) {
     });
 }
 
-function addItem(playerID, type, quantity) {
-    let player = getPlayerWithID(playerID);
-    
+function addItem(player, type, quantity) {  
     for(let i = 0; i < player.inventory.items.length; ++i) {
         if(player.inventory.items[i].type == type) {
-            setItemQuantity(playerID, type, player.inventory.items[i].quantity + quantity);
+            setItemQuantity(player.id, type, player.inventory.items[i].quantity + quantity);
             return;
         }
     }
 
-    setItemQuantity(playerID, type, quantity);
+    setItemQuantity(player.id, type, quantity);
+}
+
+function setSelectedItem(playerID, index) {
+    let player = getPlayerWithID(playerID);
+
+    if(index > 9) {
+        index = 9;
+    }
+
+    if(index < 0) {
+        index = 0;
+    }
+
+    if(host) {
+        socket.emit("set selected item", player.id, index);
+    }
+
+    player.inventory.selected = index;
 }
 
 function useSelectedItem(player) {
-    if(player.inventory.selected > player.inventory.items) {
+    if(player.inventory.selected >= player.inventory.items.length) {
         return;
     }
 
@@ -193,6 +209,8 @@ function handleInput(id, input) {
             if(input.use) {
                 useSelectedItem(players[i]);
             }
+
+            setSelectedItem(players[i].id, input.invSelect);
 
             return;
         }
@@ -247,8 +265,7 @@ function drawInventory() {
     }
 
     ctx.strokeStyle = "white";
-    ctx.rect(INV_DRAW_POS.x + player.inventory.selected * 60, INV_DRAW_POS.y, 60, 60);
-    ctx.stroke();
+    ctx.strokeRect(INV_DRAW_POS.x + player.inventory.selected * 60, INV_DRAW_POS.y, 60, 60);
 }
 
 function movePlayers() {
