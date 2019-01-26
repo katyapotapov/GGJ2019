@@ -11,8 +11,7 @@ socket.on("set player id", function(id) {
     myPlayerID = id;
 
     if(host) {
-        initDefaultBuilding();
-        initDefaultResources();
+        initHost();
     }
 });
 
@@ -35,10 +34,7 @@ socket.on("bullet state", handleBulletState);
 
 socket.on("set item quantity", setItemQuantity);
 socket.on("set wall life", setWallLife);
-socket.on("create wall", function(x, y, dir, life) {
-    if (host) throw "You are the host";
-    createWall(x, y, dir, life);
-});
+socket.on("create wall", createWall);
 socket.on("set selected item", setSelectedItem);
 
 socket.on("create resource", createResource);

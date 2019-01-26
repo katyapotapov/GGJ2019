@@ -72,7 +72,7 @@ io.on("connection", function(socket) {
     });
 
     socket.on("player input", function(input) {
-        socket.broadcast.emit("player input", socket.playerID, input);
+        socket.broadcast.volatile.emit("player input", socket.playerID, input);
     });
 
     socket.on("player state", function(id, x, y, anim) {
