@@ -48,7 +48,10 @@ function createResource(type, x, y) {
     };
 
     resources.push(resource);
-    socket.emit("create resource", type, x, y);
+
+    if(host) {
+        socket.emit("create resource", type, x, y);
+    }
 }
 
 function removeResource(index) {
