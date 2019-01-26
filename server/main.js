@@ -22,13 +22,27 @@ wss.on("connection", function(ws) {
     let id = connections.length;
 
     connections.push(ws);
-    ws.send(JSON.stringify({'init': {
-        'host': id === 0,
-        'clientID': id
-    }}));
+    ws.send(JSON.stringify({
+        init: {
+            host: id === 0,
+            clientID: id
+        }
+    }));
 
     for(let i = 0; i < connections.length; i++) {
-        connections[i].send(JSON.stringify({'player': true}));
+        if(i == connections.length - 1) {
+            for(let k = 0; k < connections.length; k++) {
+                connections[i].send(JSON.stringify({
+                    clientID: k,
+                    player: true
+                }));
+            }
+        } else {
+            connections[i].send(JSON.stringify({
+                clientID: connections.length - 1,
+                player: true
+            }));
+        }
     }
 
     ws.isAlive = true;
