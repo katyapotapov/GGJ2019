@@ -11,6 +11,10 @@ function handleMessage(message) {
         createPlayer(message.clientID, 300, 300);
     }
 
+    if(message.disconnect) {
+        removePlayer(message.clientID);
+    }
+
     if(host) {
         if(message.input) {
             handleInput(message.clientID, message.input);

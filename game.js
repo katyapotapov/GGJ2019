@@ -7,6 +7,8 @@ let camera = {
     }
 };
 
+let tickCount = 0;
+
 function shakeCamera(duration, magnitude) {
     camera.shake.timer = duration;
     camera.shake.magnitude = magnitude;
@@ -24,12 +26,20 @@ function updateGame() {
     
     if(host) {
         handleInput(clientID, input);
-        sendPlayers();
+        if(tickCount == 1) {
+            sendPlayers();
+            tickCount = 0;
+        }
     } else {
-        sendInput();
+        if(tickCount == 1) {
+            sendInput();
+            tickCount = 0;
+        }
     }
 
     updateSprites();
+
+    ++tickCount;
 }
 
 function drawGame() {
