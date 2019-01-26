@@ -17,6 +17,11 @@ socket.on("player input", handleInput);
 
 socket.on("player state", handlePlayerState);
 
+socket.on("create bullet", createBullet);
+socket.on("remove bullet", removeBullet);
+
+socket.on("bullet state", handleBulletState);
+
 socket.on("player left", function(id) {
     removePlayer(id);
     console.log("Goodbye " + id);
