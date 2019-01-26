@@ -51,6 +51,12 @@ function updateGame() {
     let myPlayer = getPlayerWithID(myPlayerID);
 
     if(myPlayer) {
+        if(host) {
+            if(myPlayer.inventory.items.length == 0) {
+                addItem(myPlayerID, ITEM_GUN, 1);
+            }
+        }
+
         camera.x += (myPlayer.x + myPlayer.rect.x + myPlayer.rect.w / 2 - camera.x - canvas.width / 2) * 0.1;
         camera.y += (myPlayer.y + myPlayer.rect.y + myPlayer.rect.h / 2 - camera.y - canvas.height / 2) * 0.1;
     }
@@ -77,4 +83,5 @@ function drawGame() {
     drawTilemap(cam);
     drawBullets(cam);
     drawSprites(cam);
+    drawInventory();
 }

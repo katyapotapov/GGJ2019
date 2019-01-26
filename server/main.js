@@ -39,6 +39,10 @@ io.on("connection", function(socket) {
         socket.broadcast.volatile.emit("bullet state", index, x, y);
     });
 
+    socket.on("set item quantity", function(id, type, quantity) {
+        socket.broadcast.emit("set item quantity", id, type, quantity);
+    });
+
     socket.on("player input", function(input) { 
         socket.broadcast.emit("player input", socket.playerID, input);
     });
