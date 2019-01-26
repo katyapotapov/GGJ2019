@@ -16,6 +16,7 @@ function shakeCamera(duration, magnitude) {
 
 function initGame() {
     initBullets();
+    initWalls();
 }
 
 function updateGame() {
@@ -28,7 +29,7 @@ function updateGame() {
             // Handle host player's input locally
             handleInput(myPlayerID, input);
         }
-        
+
         movePlayers();
         updatePlayerSpritePositions();
         updateBullets();
@@ -82,6 +83,7 @@ function drawGame() {
 
     drawTilemap(cam);
     drawBullets(cam);
+    drawWalls(cam);
     drawSprites(cam);
     drawInventory();
 }
