@@ -26,14 +26,17 @@ function createWall(x, y, direction, life) {
 
 function removeWall(index) {
     walls.splice(index, 1);
-
-    if(host) {
-        socket.emit("remove wall", index);
-    }
 }
 
 function setWallLife(index, life) {
     walls[index].life = life;
+    if (walls[index].life === 0) {
+        removeWall(index);
+    }
+
+    if(host) {
+        socket.emit("set wall life", index, life)
+    }
 }
 
 function drawWalls(cam) {
