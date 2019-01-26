@@ -36,7 +36,7 @@ io.on("connection", function(socket) {
     });
 
     socket.on("bullet state", function(index, x, y) {
-        socket.broadcast.emit("bullet state", index, x, y);
+        socket.broadcast.volatile.emit("bullet state", index, x, y);
     });
 
     socket.on("player input", function(input) { 
@@ -44,7 +44,7 @@ io.on("connection", function(socket) {
     });
     
     socket.on("player state", function(id, x, y, anim) {
-        socket.broadcast.emit("player state", id, x, y, anim);
+        socket.broadcast.volatile.emit("player state", id, x, y, anim);
     });
 
     socket.on("disconnect", function() {
