@@ -16,6 +16,7 @@ function shakeCamera(duration, magnitude) {
 
 function initGame() {
     initBullets();
+    initResources();
 }
 
 function updateGame() {
@@ -83,6 +84,6 @@ function drawGame() {
     drawTilemap(cam);
     drawBullets(cam);
     drawSprites(cam);
-    drawResoures(cam);
+    drawResources(cam);
     drawInventory();
 }
