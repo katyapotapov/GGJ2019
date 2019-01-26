@@ -20,11 +20,11 @@ function updateGame() {
         camera.shake.timer -= SEC_PER_FRAME;
     }
 
+    updatePlayers();
+    
     if(host) {
         handleInput(clientID, input);
-        updatePlayers();
         sendPlayers();
-        //sendGame();
     } else {
         sendInput();
     }
