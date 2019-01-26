@@ -19,7 +19,10 @@ function initResources() {
     loadImage("assets/rock.png", function (image) {
         RESOURCE_IMAGES.rock = image;
     });
-    resources.push(createResource(BROWN_TREE, 50, 50));
+}
+
+function initDefaultResources() {
+    createResource(BROWN_TREE, 50, 50);
 }
 
 function createResource(type, x, y) {
@@ -43,17 +46,23 @@ function createResource(type, x, y) {
         x: x,
         y: y,
     };
-    return resource;
+
+    resources.push(resource);
+    socket.emit("create resource", type, x, y);
+}
+
+function removeResource(index) {
+   resources.splice(index, 1);
 }
 
 //TODO: Add item to players inventory when resource dies
-function updateResource() {
-    for (let i = 0; i < resources.length; ++i) {
-        if (resources[i].health == 0) {
-            resources.splice(i, 1);
-            continue;
-        }
+function setResourceLife(index, life) {
+    resources[index].health = life;
+    if (resources[index].health == 0) {
+        removeResource(index);
     }
+
+    socket.emit("set resource life", index, life);
 }
 
 function drawResources(cam) {
