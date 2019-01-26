@@ -56,6 +56,7 @@ function createPlayer(id, x, y) {
 function removePlayer(id) {
     for (let i = 0; i < players.length; i++) {
         if (players[i].clientID === id) {
+            removeSprite(players[i].sprite);
             players.splice(i, 1);
         }
     }
