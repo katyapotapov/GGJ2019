@@ -1,7 +1,7 @@
 let host = false;
 let myPlayerID = -1;
 
-let socket = io("ws://63ff3bc7.ngrok.io");
+let socket = io("ws://localhost:8080");
 
 socket.on("host", function() {
     host = true;
