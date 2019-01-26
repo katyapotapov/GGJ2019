@@ -19,9 +19,9 @@ let player = {
     dy: 0,
     rect: {
         x: 48,
-        y: 0,
+        y: 90,
         w: 20,
-        h: 128
+        h: 40
     },
     cooldownTimer: 0
 };
@@ -128,5 +128,6 @@ function debugDrawPlayer(camera) {
     const offset = player.sprite.flip ? PLAYER_GUN_OFFSET_FLIPPED : PLAYER_GUN_OFFSET;
 
     ctx.fillStyle = "red";
-    ctx.fillRect(player.x + offset.x - camera.x, player.y + offset.y - camera.y, 4, 4);
+    ctx.fillRect(player.x + offset.x - camera.x, player.y + offset.y - camera.y, 4, 4);  
+    ctx.fillRect(player.x + player.rect.x - camera.x, player.y + player.rect.y - camera.y, player.rect.w, player.rect.h);
 }

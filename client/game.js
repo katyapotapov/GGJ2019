@@ -50,6 +50,6 @@ function drawGame() {
     drawTilemap(cam);
     debugDrawEnemies(cam);
     drawWaves(cam);
-    drawSprites(cam);
     debugDrawPlayer(cam);
+    drawSprites(cam);
 }
