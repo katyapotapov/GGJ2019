@@ -18,10 +18,10 @@ let player = {
     dx: 0,
     dy: 0,
     rect: {
-        x: 48,
-        y: 90,
-        w: 20,
-        h: 40
+        x: 16,
+        y: 32,
+        w: 32,
+        h: 32
     },
     cooldownTimer: 0
 };
@@ -30,53 +30,57 @@ function initPlayer(x, y) {
     player.x = x;
     player.y = y;
 
-    loadImage("assets/player.png", function(image) {
+    loadImage("assets/rick.png", function(image) {
         player.sprite = createSprite({
             image: image,
-            frameWidth: 128,
-            frameHeight: 128,
+            frameWidth: 64,
+            frameHeight: 64,
 
             anims: {
-                idle: {
-                    startFrame: 0,
-                    length: 1,
-                    frameTime: 1
-                },
-                run: {
-                    startFrame: 6,
-                    length: 7,
-                    frameTime: 0.08
-                },
-                air: {
+                up: {
                     startFrame: 1,
-                    length: 1,
-                    frameTime: 1
+                    length: 8,
+                    frameTime: 0.1
+                },
+                left: {
+                    startFrame: 10,
+                    length: 8,
+                    frameTime: 0.1
+                },
+                down: {
+                    startFrame: 19,
+                    length: 8,
+                    frameTime: 0.1
+                },
+                right: {
+                    startFrame: 28,
+                    length: 8,
+                    frameTime: 0.1
                 }
             }
         });
 
-        playAnim(player.sprite, "idle");
+        playAnim(player.sprite, "down");
     });
 }
 
 function updatePlayer() {
     if(input.left) {
         player.dx = -PLAYER_MOVE_SPEED;
-        player.sprite.flip = true;
-        playAnim(player.sprite, "run");
+        playAnim(player.sprite, "left");
     } else if(input.right) {
         player.dx = PLAYER_MOVE_SPEED;
-        player.sprite.flip = false;
-        playAnim(player.sprite, "run");
+        playAnim(player.sprite, "right");
     } else {
         player.dx = 0;
-        playAnim(player.sprite, "idle");
     }
 
     if(input.up) {
         player.dy = -PLAYER_MOVE_SPEED;
+        playAnim(player.sprite, "up");
     } else if(input.down) {
         player.dy = PLAYER_MOVE_SPEED;
+        playAnim(player.sprite, "down");
     } else {
         player.dy = 0;
     }
