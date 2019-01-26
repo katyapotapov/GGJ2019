@@ -43,8 +43,12 @@ io.on("connection", function(socket) {
                 socket.emit("create wall", data.walls[i].x, data.walls[i].y, data.walls[i].dir, data.walls[i].life);
             }
 
-            for (let i = 0; i < data.resources.length; ++i) {
+            for(let i = 0; i < data.resources.length; ++i) {
                 socket.emit("create resource", data.resources[i].type, data.resources[i].x, data.resources[i].y);
+            }
+
+            for(let i = 0; i < data.bombs.length; ++i) {
+                socket.emit("create bomb", data.bombs[i].x, data.bombs[i].y);
             }
         });
 
@@ -94,6 +98,23 @@ io.on("connection", function(socket) {
     socket.on("set resource life", function(index, life) {
         socket.broadcast.emit("set resource life", index, life);
     });
+
+    socket.on("create bomb", function(type, x, y) {
+        socket.broadcast.emit("create bomb", type, x, y);
+    });
+
+    socket.on("remove bomb", function(type, x, y) {
+        socket.broadcast.emit("remove bomb", type, x, y);
+    });
+
+    socket.on("create explosion", function(type, x, y) {
+        socket.broadcast.emit("create explosion", type, x, y);
+    });
+
+    socket.on("remove explosion", function(type, x, y) {
+        socket.broadcast.emit("remove explosion", type, x, y);
+    });
+
 
     socket.on("disconnect", function() {
         console.log("Player left!");
