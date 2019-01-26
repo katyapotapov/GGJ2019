@@ -178,7 +178,10 @@ function useSelectedItem(player) {
         // TODO: Place buildings
         setItemQuantity(player.id, item.type, item.quantity - 1);
     } else if(item.type == ITEM_BOMB) {
-        // TODO: Place bombs
+        if(player.cooldown <= 0) {
+            createBomb(player.x, player.y);
+            player.cooldown += PLAYER_SHOOT_COOLDOWN;
+        }
         setItemQuantity(player.id, item.type, item.quantity - 1);
     }
 }
