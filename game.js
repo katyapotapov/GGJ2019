@@ -51,10 +51,10 @@ function updateGame() {
 
     let myPlayer = getPlayerWithID(myPlayerID);
 
-    if (myPlayer) {
-        if (host) {
-            if (myPlayer.inventory.items.length == 0) {
-                addItem(myPlayerID, ITEM_GUN, 1);
+    if(myPlayer) {
+        if(host) {
+            if(myPlayer.inventory.items.length == 0) {
+                addItem(myPlayer, ITEM_GUN, 1);
             }
         }
 
