@@ -42,8 +42,6 @@ function createResource(type, x, y) {
         type: type,
         x: x,
         y: y,
-        height: setHeight,
-        health: setHealth,
     };
     return resource;
 }
