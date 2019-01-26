@@ -42,10 +42,6 @@ function onTileMapLoaded(name, data) {
             let tile = tileMap.objectTileset.tiles[(object.gid - tileMap.objectTileset.firstgid).toString()];
             object.type = tile.type;
         }
-
-        if(object.type == PLAYER_OBJECT_TYPE) {
-            initPlayer(object.x, object.y - object.height);
-        }
     }
 }
 
