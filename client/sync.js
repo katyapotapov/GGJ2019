@@ -1,27 +1,23 @@
 let host = false;
-let clientID = 0;
+let hostPlayerID = -1;
 
-function handleMessage(message) {
-    if(message.init) {
-        host = message.init.host;
-        clientID = message.init.clientID;
-    }
+let socket = io("ws://63ff3bc7.ngrok.io");
 
-    if(message.player) {
-        createPlayer(message.clientID, 300, 300);
-    }
+socket.on("host", function(id) {
+    host = true;
+    hostPlayerID = id;
+});
 
-    if(message.disconnect) {
-        removePlayer(message.clientID);
-    }
+socket.on("player joined", function(id) {
+    console.log("Hello " + id);
+    createPlayer(id, 300, 300);
+});
 
-    if(host) {
-        if(message.input) {
-            handleInput(message.clientID, message.input);
-        }
-    } else {
-        if(message.playerState) {
-            handlePlayerState(message.clientID, message.playerState);
-        }
-    }
-}
+socket.on("player input", handleInput);
+
+socket.on("player state", handlePlayerState);
+
+socket.on("player left", function(id) {
+    removePlayer(id);
+    console.log("Goodbye " + id);
+});

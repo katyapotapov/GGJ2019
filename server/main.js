@@ -1,86 +1,46 @@
-const WebSocket = require("ws");
+const io = require("socket.io").listen(8080);
 
-const wss = new WebSocket.Server({port: 8080});
+let id = 0;
+let playerIDs = [];
 
-let connections = [];
+io.on("connection", function(socket) {
+    console.log("Player joined!"); 
+    
+    socket.playerID = id++;
+    playerIDs.push(socket.playerID);
 
-function handleDisconnection(ws) {
-    const i = connections.indexOf(ws);
+    // Even the player that joined receives this message
+    io.emit("player joined", socket.playerID);
 
-    if(i < 0) {
-        return;
-    }
-
-    connections.splice(i, 1);
-
-    for(let i = 0; i < connections.length; ++i) {
-        if(connections[i].readyState != 1) {
-            continue;
-        } 
-
-        connections[i].send(JSON.stringify({
-            clientID: ws.id,
-            disconnect: true
-        }));
-    }
-
-    console.log("Handled disconnect.");
-    ws.terminate();  
-}
-
-let counter = 0;
-
-wss.on("connection", function(ws) {
-    console.log("Connection!");
-    let id = counter;
-    counter += 1;
-
-    connections.push(ws);
-    ws.send(JSON.stringify({
-        init: {
-            host: id == 0,
-            clientID: id
+    // Now we send it a "player joined" for every other player connected
+    playerIDs.forEach(function(id) {
+        if(id == socket.playerID) {
+            return;
         }
-    }));
 
-    ws.id = id;
-
-    for(let i = 0; i < connections.length; i++) {
-        if(i == connections.length - 1) {
-            for(let k = 0; k < connections.length; k++) {
-                connections[i].send(JSON.stringify({
-                    clientID: connections[k].id,
-                    player: true
-                }));
-            }
-        } else if(connections[i].readyState == 1) {
-            connections[i].send(JSON.stringify({
-                clientID: ws.id,
-                player: true
-            }));
-        }
-    }
-
-    ws.isAlive = true;
-
-    ws.on("error", function(err) {
-        handleDisconnection(ws);
+        socket.emit("player joined", id);
     });
 
-    ws.on("pong", function() {
-        ws.isAlive = true;
+    if(playerIDs.length == 1) {
+        socket.emit("host", socket.playerID);
+    }
+
+    socket.on("player input", function(input) { 
+        socket.broadcast.emit("player input", socket.playerID, input);
+    });
+    
+    socket.on("player state", function(id, x, y, anim) {
+        socket.broadcast.emit("player state", id, x, y, anim);
     });
 
-    ws.on("message", function(message) {
-        try {
-            for(let i = 0; i < connections.length; ++i) {
-                // Forward all messages to everyone else
-                if(connections[i] != ws) {
-                    connections[i].send(message);
-                }
-            }
-        } catch(e) {
-            console.log(e);
-        }        
+    socket.on("disconnect", function() {
+        console.log("Player left!");
+        io.emit("player left", socket.playerID);
+        playerIDs.splice(playerIDs.indexOf(socket.playerID), 1);
+
+        if(playerIDs.length == 1) {
+            // Reassign host
+            io.emit("host", playerIDs[0]);
+        }
     });
 });

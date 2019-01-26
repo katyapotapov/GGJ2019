@@ -31,12 +31,5 @@ window.addEventListener("keyup", function(e) {
 });
 
 function sendInput() {
-    let message = {
-        clientID: clientID,
-        input: {}
-    };
-
-    Object.assign(message.input, input);
-
-    sendMessage(message);
+    socket.emit("player input", input);
 }
