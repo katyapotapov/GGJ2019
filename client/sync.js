@@ -1,5 +1,4 @@
 let host = false;
-let myPlayerID = -1;
 
 let socket = io("ws://localhost:8080");
 
@@ -8,6 +7,7 @@ socket.on("host", function() {
 });
 
 socket.on("set player id", function(id) {
+    // Declared in players.js
     myPlayerID = id;
 });
 
@@ -24,6 +24,8 @@ socket.on("create bullet", createBullet);
 socket.on("remove bullet", removeBullet);
 
 socket.on("bullet state", handleBulletState);
+
+socket.on("set item quantity", setItemQuantity);
 
 socket.on("player left", function(id) {
     removePlayer(id);

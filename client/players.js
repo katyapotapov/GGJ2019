@@ -1,6 +1,25 @@
 const PLAYER_MOVE_SPEED = 6;
 const PLAYER_SHOOT_COOLDOWN = 1;
 
+const ITEM_GUN = 0;
+const ITEM_BOMB = 1;
+const ITEM_WALL = 2;
+
+const INV_DRAW_POS = {
+    x: 100,
+    y: 540
+};
+
+const INV_DRAW_WIDTH = 600;
+const INV_DRAW_HEIGHT = 60;
+
+const INV_ITEM_COLOR = [
+    "#ff0000",
+    "#00ff00",
+    "#0000ff"
+];
+
+let myPlayerID = -1;
 let players = [];
 
 function createPlayer(id, x, y) {
@@ -16,6 +35,10 @@ function createPlayer(id, x, y) {
             y: 32,
             w: 32,
             h: 32
+        },
+        inventory: {
+            selected: 0,
+            items: []
         },
         cooldown: 0
     };
@@ -77,6 +100,73 @@ function removePlayer(id) {
     throw "Couldn't find player to remove";
 }
 
+function setItemQuantity(playerID, type, quantity) {
+    if(host) {
+        socket.emit("set item quantity", playerID, type, quantity);
+    }
+
+    let player = getPlayerWithID(playerID);
+
+    for(let i = 0; i < player.inventory.items.length; ++i) {
+        if(player.inventory.items[i].type == type) {
+            if(quantity <= 0) {
+                player.inventory.items.splice(i, 1);
+                return;
+            }
+
+            player.inventory.items[i].quantity = quantity;
+            return;
+        }
+    }
+
+    if(quantity <= 0) {
+        return;
+    }
+
+    player.inventory.items.push({
+        type: type,
+        quantity: quantity
+    });
+}
+
+function addItem(playerID, type, quantity) {
+    let player = getPlayerWithID(playerID);
+    
+    for(let i = 0; i < player.inventory.items.length; ++i) {
+        if(player.inventory.items[i].type == type) {
+            setItemQuantity(playerID, type, player.inventory.items[i].quantity + quantity);
+            return;
+        }
+    }
+
+    setItemQuantity(playerID, type, quantity);
+}
+
+function useSelectedItem(player) {
+    if(player.inventory.selected > player.inventory.items) {
+        return;
+    }
+
+    let item = player.inventory.items[player.inventory.selected];
+
+    if(item.quantity <= 0) {
+        return;
+    }
+
+    if(item.type == ITEM_GUN) {
+        if(player.cooldown <= 0) {
+            createBullet(player.x, player.y, DIR_UP);
+            player.cooldown += PLAYER_SHOOT_COOLDOWN;
+        }
+    } else if(item.type == ITEM_WALL) {
+        // TODO: Place buildings
+        setItemQuantity(player.id, item.type, item.quantity - 1);
+    } else if(item.type == ITEM_BOMB) {
+        // TODO: Place bombs
+        setItemQuantity(player.id, item.type, item.quantity - 1);
+    }
+}
+
 function handleInput(id, input) {
     for (let i = 0; i < players.length; i++) {
         if (players[i].id == id) {
@@ -100,9 +190,8 @@ function handleInput(id, input) {
                 players[i].dy = 0;
             }
 
-            if(input.use && players[i].cooldown <= 0) {
-                createBullet(players[i].x, players[i].y, DIR_UP);
-                players[i].cooldown += PLAYER_SHOOT_COOLDOWN;
+            if(input.use) {
+                useSelectedItem(players[i]);
             }
 
             return;
@@ -138,6 +227,28 @@ function updatePlayerSpritePositions() {
             player.sprite.y = player.y;
         }
     }
+}
+
+function drawInventory() {
+    let player = getPlayerWithID(myPlayerID);
+    
+    if(!player) {
+        return;
+    }
+
+    ctx.fillStyle = "#f287c7";
+    ctx.fillRect(INV_DRAW_POS.x, INV_DRAW_POS.y, INV_DRAW_WIDTH, INV_DRAW_HEIGHT);
+
+    for(let i = 0; i < player.inventory.items.length; ++i) {
+        let item = player.inventory.items[i];
+
+        ctx.fillStyle = INV_ITEM_COLOR[item.type];
+        ctx.fillRect(INV_DRAW_POS.x + i * 60, INV_DRAW_POS.y, 60, 60);
+    }
+
+    ctx.strokeStyle = "white";
+    ctx.rect(INV_DRAW_POS.x + player.inventory.selected * 60, INV_DRAW_POS.y, 60, 60);
+    ctx.stroke();
 }
 
 function movePlayers() {
