@@ -22,6 +22,7 @@ function updateGame() {
         camera.shake.timer -= SEC_PER_FRAME;
     }
 
+    /*
     updatePlayers();
     
     if(host) {
@@ -35,6 +36,21 @@ function updateGame() {
             sendInput();
             tickCount = 0;
         }
+    }
+    */
+
+    if(host) {
+        if(players) {
+            // Handle host player's input locally
+            handleInput(hostPlayerID, input);
+        }
+        
+        movePlayers();
+        updatePlayerSpritePositions();
+        sendPlayers();
+    } else {
+        sendInput();
+        updatePlayerSpritePositions();
     }
 
     updateSprites();

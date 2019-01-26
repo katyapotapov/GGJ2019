@@ -1,9 +1,10 @@
 const PLAYER_MOVE_SPEED = 6;
+
 let players = [];
 
 function createPlayer(id, x, y) {
     let player = {
-        clientID: id,
+        id: id,
         x: x,
         y: y,
         dx: 0,
@@ -55,17 +56,18 @@ function createPlayer(id, x, y) {
 
 function removePlayer(id) {
     for (let i = 0; i < players.length; i++) {
-        if (players[i].clientID === id) {
+        if (players[i].id === id) {
             removeSprite(players[i].sprite);
             players.splice(i, 1);
         }
     }
+
     throw "Couldn't find player to remove";
 }
 
 function handleInput(id, input) {
     for (let i = 0; i < players.length; i++) {
-        if (players[i].clientID == id) {
+        if (players[i].id == id) {
             if(input.left) {
                 players[i].dx = -PLAYER_MOVE_SPEED;
                 playAnim(players[i].sprite, "left");
@@ -85,32 +87,34 @@ function handleInput(id, input) {
             } else {
                 players[i].dy = 0;
             }
+
+            return;
+        }
+    }
+
+    throw "Couldn't find player for input";
+}
+
+function handlePlayerState(id, x, y, anim) {
+    for (let i = 0; i < players.length; i++) {
+        let player = players[i];
+
+        if(player.id != id) {
+            continue;
+        }
+
+        player.x = x;
+        player.y = y;
+
+        if(anim) {
+            playAnim(player.sprite, anim);
         }
     }
 }
 
-function handlePlayerState(id, state) {
+function updatePlayerSpritePositions() {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
-
-        if(player.clientID == id) {
-            player.x = state.x;
-            player.y = state.y;
-
-            if(state.anim) {
-                playAnim(player.sprite, state.anim);
-            }
-        }
-    }
-}
-
-function updatePlayers() {
-    for (let i = 0; i < players.length; i++) {
-        let player = players[i];
-
-        if(host) {
-            moveCollideTileMap(player, true);
-        }
 
         if(player.sprite) {
             player.sprite.x = player.x;
@@ -119,22 +123,19 @@ function updatePlayers() {
     }
 }
 
-function sendPlayers() {
+function movePlayers() {
     for (let i = 0; i < players.length; i++) {
+        let player = players[i];
+
+        moveCollideTileMap(player, true);
+    }
+}
+
+function sendPlayers() {
+    for(let i = 0; i < players.length; ++i) {
         const player = players[i];
 
-        const message = {
-            clientID: player.clientID,
-            playerState: {
-                x: player.x,
-                y: player.y,
-            }
-        };
-
-        if(player.sprite) {
-            message.playerState.anim = player.sprite.curAnimName;
-        }
-
-        sendMessage(message);
+        socket.emit("player state", player.id, player.x, player.y, 
+            player.sprite ? player.sprite.curAnimName : "up");
     }
 }
