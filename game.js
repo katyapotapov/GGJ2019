@@ -20,6 +20,12 @@ function initGame() {
     initResources();
     initBombs();
     initExplosions();
+    initHearth(200, 200);
+}
+
+function initHost() {
+    initDefaultBuilding();
+    initDefaultResources();
 }
 
 function updateGame() {
@@ -31,6 +37,13 @@ function updateGame() {
         if (players) {
             // Handle host player's input locally
             handleInput(myPlayerID, input);
+
+            // Everybody gets a gun
+            for(let i = 0; i < players.length; ++i) {
+                if(players[i].id != myPlayerID && players[i].inventory.items.length == 0) {
+                    addItem(players[i], ITEM_GUN, 1);
+                }
+            }
         }
 
         movePlayers();
@@ -55,11 +68,11 @@ function updateGame() {
 
     let myPlayer = getPlayerWithID(myPlayerID);
 
-    if(myPlayer) {
-        if(host) {
-            if(myPlayer.inventory.items.length == 0) {
+    if (myPlayer) {
+        if (host) {
+            if (myPlayer.inventory.items.length == 0) {
                 addItem(myPlayer, ITEM_GUN, 1);
-                addItem(myPlayer, ITEM_BOMB, 10);
+                addItem(myPlayer, ITEM_BOMB, 100);
             }
         }
 
