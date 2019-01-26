@@ -1,8 +1,8 @@
 let resources = [];
-
 const TREE = 2;
 const ROCK = 3;
 const DIRT = 4;
+const RESOURCE_IMAGES = {};
 
 function initResources() {}
 
@@ -38,4 +38,8 @@ function updateResource() {
   }
 }
 
-function drawResoures() {}
+function drawResoures() {
+  for (let i = 0; i < resources.length; ++i) {
+    ctx.draw;
+  }
+}
