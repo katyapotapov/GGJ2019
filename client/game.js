@@ -13,6 +13,7 @@ function shakeCamera(duration, magnitude) {
 }
 
 function initGame() {
+    initPlayers();
 }
 
 function updateGame() {
@@ -20,7 +21,13 @@ function updateGame() {
         camera.shake.timer -= SEC_PER_FRAME;
     }
 
-    updatePlayer();
+    if(host) {
+        updatePlayers();
+        sendGame();
+    } else {
+        sendInput();
+    }
+
     updateSprites();
 }
 
@@ -41,6 +48,5 @@ function drawGame() {
     cam.y = Math.floor(cam.y);
 
     drawTilemap(cam);
-    debugDrawPlayer(cam);
     drawSprites(cam);
 }

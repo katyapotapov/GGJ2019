@@ -71,3 +71,20 @@ function collideRectCircle(ax, ay, aw, ah, bx, by, radius) {
 
     return dx * dx + dy * dy < radius * radius;
 }
+
+function getFirstCollidingObject(object, x, y, objects) {
+    for(let i = 0; i < objects.length; ++i) {
+        let obj = objects[i];
+
+        if(obj == object) {
+            continue;
+        }
+
+        if(collideRects(x + object.rect.x, y + object.rect.y, object.rect.w, object.rect.h,
+                        obj.x + obj.rect.x, obj.y + obj.rect.y, obj.rect.w, obj.rect.h)) {
+            return obj;
+        }
+    }
+
+    return null;
+}
