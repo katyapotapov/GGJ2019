@@ -19,27 +19,27 @@ function initGame() {
 }
 
 function updateGame() {
-    if(camera.shake.timer > 0) {
+    if (camera.shake.timer > 0) {
         camera.shake.timer -= SEC_PER_FRAME;
     }
 
-    if(host) {
-        if(players) {
+    if (host) {
+        if (players) {
             // Handle host player's input locally
             handleInput(myPlayerID, input);
         }
-        
+
         movePlayers();
         updatePlayerSpritePositions();
         updateBullets();
 
-        if(tickCount == 1) {
+        if (tickCount == 1) {
             sendPlayers();
             sendBullets();
             tickCount = 0;
         }
     } else {
-        if(tickCount == 1) {
+        if (tickCount == 1) {
             sendInput();
             tickCount = 0;
         }
@@ -50,9 +50,9 @@ function updateGame() {
 
     let myPlayer = getPlayerWithID(myPlayerID);
 
-    if(myPlayer) {
-        if(host) {
-            if(myPlayer.inventory.items.length == 0) {
+    if (myPlayer) {
+        if (host) {
+            if (myPlayer.inventory.items.length == 0) {
                 addItem(myPlayerID, ITEM_GUN, 1);
             }
         }
@@ -72,7 +72,7 @@ function drawGame() {
         y: camera.y
     };
 
-    if(camera.shake.timer > 0) {
+    if (camera.shake.timer > 0) {
         cam.x += 2 * (Math.random() - 0.5) * camera.shake.magnitude;
         cam.y += 2 * (Math.random() - 0.5) * camera.shake.magnitude;
     }
@@ -83,5 +83,6 @@ function drawGame() {
     drawTilemap(cam);
     drawBullets(cam);
     drawSprites(cam);
+    drawResoures(cam);
     drawInventory();
 }
