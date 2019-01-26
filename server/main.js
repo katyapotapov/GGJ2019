@@ -19,6 +19,17 @@ function handleDisconnection(ws) {
 
 wss.on("connection", function(ws) {
     console.log("Connection!");
+    let id = connections.length();
+
+    for(let i = 0; i < id; i++) {
+        connections[i].send(JSON.stringify({'player': true}));
+    }
+
+    connections.push(ws);
+    ws.send(JSON.stringify({'init': {
+        'host': id === 0,
+        'clientID': id
+    }}));
 
     ws.isAlive = true;
 
