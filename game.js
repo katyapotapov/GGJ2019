@@ -13,7 +13,6 @@ function shakeCamera(duration, magnitude) {
 }
 
 function initGame() {
-    initPlayers();
 }
 
 function updateGame() {
@@ -22,8 +21,10 @@ function updateGame() {
     }
 
     if(host) {
+        handleInput(clientID, input);
         updatePlayers();
-        sendGame();
+        sendPlayers();
+        //sendGame();
     } else {
         sendInput();
     }

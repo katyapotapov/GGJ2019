@@ -16,7 +16,7 @@ function setKeyState(key, down) {
     } else if(key == RIGHT_KEY) {
         input.right = down;
     } else if(key == UP_KEY) {
-        input..up = down;
+        input.up = down;
     } else if(key == DOWN_KEY) {
         input.down = down;
     }
