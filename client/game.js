@@ -13,8 +13,6 @@ function shakeCamera(duration, magnitude) {
 }
 
 function initGame() {
-    initEnemies();
-    initWaves();
 }
 
 function updateGame() {
@@ -23,8 +21,6 @@ function updateGame() {
     }
 
     updatePlayer();
-    updateEnemies();
-    updateWaves();
     updateSprites();
 }
 
@@ -45,8 +41,6 @@ function drawGame() {
     cam.y = Math.floor(cam.y);
 
     drawTilemap(cam);
-    debugDrawEnemies(cam);
-    drawWaves(cam);
     debugDrawPlayer(cam);
     drawSprites(cam);
 }
