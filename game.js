@@ -26,21 +26,34 @@ function updateGame() {
     if(host) {
         if(players) {
             // Handle host player's input locally
-            handleInput(hostPlayerID, input);
+            handleInput(myPlayerID, input);
         }
         
         movePlayers();
         updatePlayerSpritePositions();
         updateBullets();
 
-        sendPlayers();
-        sendBullets();
+        if(tickCount == 1) {
+            sendPlayers();
+            sendBullets();
+            tickCount = 0;
+        }
     } else {
-        sendInput();
+        if(tickCount == 1) {
+            sendInput();
+            tickCount = 0;
+        }
         updatePlayerSpritePositions();
     }
 
     updateSprites();
+
+    let myPlayer = getPlayerWithID(myPlayerID);
+
+    if(myPlayer) {
+        camera.x += (myPlayer.x + myPlayer.rect.x + myPlayer.rect.w / 2 - camera.x - canvas.width / 2) * 0.1;
+        camera.y += (myPlayer.y + myPlayer.rect.y + myPlayer.rect.h / 2 - camera.y - canvas.height / 2) * 0.1;
+    }
 
     ++tickCount;
 }

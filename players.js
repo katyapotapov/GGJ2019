@@ -56,6 +56,16 @@ function createPlayer(id, x, y) {
     players.push(player);
 }
 
+function getPlayerWithID(id) {
+    for(let i = 0; i < players.length; ++i) {
+        if(players[i].id == id) {
+            return players[i];
+        }
+    }
+
+    return null;
+}
+
 function removePlayer(id) {
     for (let i = 0; i < players.length; i++) {
         if (players[i].id === id) {

@@ -1,11 +1,14 @@
 let host = false;
-let hostPlayerID = -1;
+let myPlayerID = -1;
 
 let socket = io("ws://63ff3bc7.ngrok.io");
 
-socket.on("host", function(id) {
+socket.on("host", function() {
     host = true;
-    hostPlayerID = id;
+});
+
+socket.on("set player id", function(id) {
+    myPlayerID = id;
 });
 
 socket.on("player joined", function(id) {
