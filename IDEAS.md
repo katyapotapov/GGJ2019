@@ -28,6 +28,8 @@
         - One character can mine quickly/chop trees quickly
     - The heart of the house can have high hp so the first destroyer can't just rekt it on their own
     - Destroyers have an offensive advantage
+	- Or destroyers weapons are better at destroying structures, and protectors weapons are better
+	  at killing people
 =============================
 
 - Non-euclidean thing
