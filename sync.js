@@ -40,6 +40,12 @@ socket.on("set selected item", setSelectedItem);
 socket.on("create resource", createResource);
 socket.on("set resource life", setResourceLife);
 
+socket.on("create bomb", createBomb);
+socket.on("remove bomb", removeBomb);
+
+socket.on("create explosion", createExplosion);
+socket.on("remove explosion", removeExplosion);
+
 socket.on("player left", function(id) {
     removePlayer(id);
     console.log("Goodbye " + id);
@@ -49,6 +55,7 @@ function sendSnapshot() {
     socket.emit("snapshot", {
         bullets: bullets,
         walls: walls,
-        resources: resources
+        resources: resources,
+        bombs: bombs
     });
 }
