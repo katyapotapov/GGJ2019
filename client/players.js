@@ -279,7 +279,7 @@ function movePlayers() {
             player.cooldown -= SEC_PER_FRAME;
         }
 
-        moveCollideTileMap(player, true);
+        moveCollide(player, true);
     }
 }
 

@@ -12,7 +12,13 @@ function createWall(x, y, direction, life) {
         x: x,
         y: y,
         direction: direction,
-        life: 3
+        life: 3,
+        rect: {
+            x: 0,
+            y: 0,
+            w: 32,
+            h: 32
+        }
     }
 
     if(host) {
