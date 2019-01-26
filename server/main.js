@@ -2,10 +2,11 @@ const io = require("socket.io").listen(8080);
 
 let id = 0;
 let playerIDs = [];
+let newPlayers = [];
 
 io.on("connection", function(socket) {
-    console.log("Player joined!"); 
-    
+    console.log("Player joined!");
+
     socket.playerID = id++;
     playerIDs.push(socket.playerID);
 
@@ -23,9 +24,28 @@ io.on("connection", function(socket) {
 
     if(playerIDs.length == 1) {
         socket.emit("host", socket.playerID);
+    } else {
+        newPlayers.push(socket);
     }
 
     socket.emit("set player id", socket.playerID);
+
+    // TODO only add these to the host
+
+    socket.on("snapshot", function(data) {
+        console.log(`Sending ${newPlayers.length} snapshots`);
+        newPlayers.forEach(function(socket) {
+            for(let i = 0; i < data.bullets.length; ++i) {
+                socket.emit("create bullet", data.bullets[i].x, data.bullets[i].y, data.bullets[i].dir);
+            }
+
+            for(let i = 0; i < data.walls.length; ++i) {
+                socket.emit("create wall", data.walls[i].x, data.walls[i].y, data.walls[i].dir, data.walls[i].life);
+            }
+        });
+
+        newPlayers.length = 0;
+    });
 
     socket.on("create bullet", function(x, y, dir) {
         socket.broadcast.emit("create bullet", x, y, dir);
@@ -43,12 +63,24 @@ io.on("connection", function(socket) {
         socket.broadcast.emit("set item quantity", id, type, quantity);
     });
 
-    socket.on("player input", function(input) { 
+    socket.on("player input", function(input) {
         socket.broadcast.emit("player input", socket.playerID, input);
     });
-    
+
     socket.on("player state", function(id, x, y, anim) {
         socket.broadcast.volatile.emit("player state", id, x, y, anim);
+    });
+
+    socket.on("create wall", function(x, y, dir, life) {
+        socket.broadcast.emit("create wall", x, y, dir, life);
+    });
+
+    socket.on("remove wall", function(index) {
+        socket.broadcast.emit("remove wall", index);
+    });
+
+    socket.on("set wall life", function(index, life) {
+        socket.broadcast.emit("set wall life", index, life);
     });
 
     socket.on("disconnect", function() {
