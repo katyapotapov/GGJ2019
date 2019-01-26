@@ -62,7 +62,9 @@ function setResourceLife(index, life) {
         removeResource(index);
     }
 
-    socket.emit("set resource life", index, life);
+    if (host) {
+        socket.emit("set resource life", index, life);
+    }
 }
 
 function drawResources(cam) {
