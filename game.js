@@ -15,9 +15,6 @@ function shakeCamera(duration, magnitude) {
 function initGame() {
     initEnemies();
     initWaves();
-
-    createEnemy(60, 60, "red");
-    createEnemy(200, 60, "red");
 }
 
 function updateGame() {

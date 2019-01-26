@@ -100,14 +100,6 @@ function updatePlayer() {
         player.cooldownTimer += PLAYER_SHOOT_COOLDOWN;
     }
 
-    if(input.shootRed) {
-        shoot("red");
-    } else if(input.shootBlue) {
-        shoot("blue");
-    } else if(input.shootYellow) {
-        shoot("yellow");
-    }
-
     let playerRect = player.rect;
 
     moveCollideTileMap(player, true);
@@ -132,6 +124,6 @@ function debugDrawPlayer(camera) {
     const offset = player.sprite.flip ? PLAYER_GUN_OFFSET_FLIPPED : PLAYER_GUN_OFFSET;
 
     ctx.fillStyle = "red";
-    ctx.fillRect(player.x + offset.x - camera.x, player.y + offset.y - camera.y, 4, 4);  
-    ctx.fillRect(player.x + player.rect.x - camera.x, player.y + player.rect.y - camera.y, player.rect.w, player.rect.h);
+    //ctx.fillRect(player.x + offset.x - camera.x, player.y + offset.y - camera.y, 4, 4);  
+    //ctx.fillRect(player.x + player.rect.x - camera.x, player.y + player.rect.y - camera.y, player.rect.w, player.rect.h);
 }
