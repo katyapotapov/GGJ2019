@@ -382,7 +382,7 @@ function handlePlayerState(id, x, y, anim, sequenceNumber, name, life) {
 function predictUpdatePlayer() {
     let player = getPlayerWithID(myPlayerID);
 
-    if (!player || !player.serverSequenceNumber) {
+    if (!player || !player.serverSequenceNumber || player.life <= 0) {
         return;
     }
 

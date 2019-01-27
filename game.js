@@ -85,9 +85,11 @@ function updateGame() {
     }
 
     updateDebugRects();
+    
+    let myPlayer = getPlayerWithID(myPlayerID);
 
     if (host) {
-        if (players) {
+        if (myPlayer && myPlayer.life > 0) {
             // Handle host player's input locally
             handleInput(myPlayerID, input);
         }
@@ -107,16 +109,35 @@ function updateGame() {
             tickCount = 0;
         }
     } else {
-        sendInput();
+        if(myPlayer && myPlayer.life > 0) {
+            sendInput();
+        }
+
         predictUpdatePlayer();
         updatePlayerSpritePositions(true);
     }
 
     updateSprites();
 
-    let myPlayer = getPlayerWithID(myPlayerID);
+    if(myPlayer && myPlayer.life <= 0) {
+        if(input.left) {
+            camera.x -= 300 * SEC_PER_FRAME;
+        }
 
-    if (myPlayer) {
+        if(input.right) {
+            camera.x += 300 * SEC_PER_FRAME;
+        }
+
+        if(input.up) {
+            camera.y -= 300 * SEC_PER_FRAME;
+        }
+
+        if(input.down) {
+            camera.y += 300 * SEC_PER_FRAME;
+        }
+    }
+
+    if (myPlayer && myPlayer.life > 0) {
         if (host) {
             if (myPlayer.inventory.items.length == 0) {
                 addItemToInventory(myPlayer, ITEM_GUN, 1);
@@ -127,22 +148,22 @@ function updateGame() {
             camera.x += (myPlayer.x + myPlayer.rect.x + myPlayer.rect.w / 2 - camera.x - canvas.width / 2) * 0.1;
             camera.y += (myPlayer.y + myPlayer.rect.y + myPlayer.rect.h / 2 - camera.y - canvas.height / 2) * 0.1;
         }
+    }
 
-        if (camera.x < 0) {
-            camera.x = 0;
-        }
+    if (camera.x < 0) {
+        camera.x = 0;
+    }
 
-        if (camera.x >= tileMap.width * TILE_SIZE - canvas.width) {
-            camera.x = tileMap.width * TILE_SIZE - canvas.width;
-        }
+    if (camera.x >= tileMap.width * TILE_SIZE - canvas.width) {
+        camera.x = tileMap.width * TILE_SIZE - canvas.width;
+    }
 
-        if (camera.y < 0) {
-            camera.y = 0;
-        }
+    if (camera.y < 0) {
+        camera.y = 0;
+    }
 
-        if (camera.y >= tileMap.height * TILE_SIZE - canvas.height) {
-            camera.y = tileMap.height * TILE_SIZE - canvas.height;
-        }
+    if (camera.y >= tileMap.height * TILE_SIZE - canvas.height) {
+        camera.y = tileMap.height * TILE_SIZE - canvas.height;
     }
 
     ++tickCount;
@@ -164,6 +185,7 @@ function drawGame() {
     cam.x = Math.floor(cam.x);
     cam.y = Math.floor(cam.y);
 
+
     drawTilemap(cam);
     drawWalls(cam);
     drawResources(cam);
@@ -172,11 +194,23 @@ function drawGame() {
     drawBullets(cam);
     drawSprites(cam);
     drawHearthLife(cam);
+
+    let myPlayer = getPlayerWithID(myPlayerID);
+
+    if(myPlayer && myPlayer.life <= 0) {
+        drawMinimap();
+        return;
+    }
+
     drawStatus(cam);
     drawDebugRects(cam);
     drawPlayerNames(cam);
     drawHealth(cam);
-    drawMinimap();
+    
+    if(myPlayer && !myPlayer.isProtector) {
+        drawMinimap();
+    }
+
     drawInventory();
 
     if(!socket) {
