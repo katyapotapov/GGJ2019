@@ -46,6 +46,8 @@ socket.on("remove bomb", removeBomb);
 socket.on("create explosion", createExplosion);
 socket.on("remove explosion", removeExplosion);
 
+socket.on("create punch", createPunch);
+
 socket.on("player left", function(id) {
     removePlayer(id);
     console.log("Goodbye " + id);

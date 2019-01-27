@@ -1,4 +1,4 @@
-function createPunch(x, y) {
+function createPunch(x, y, direction) {
     loadImage("assets/slash3.png", function(image) {
         let sprite = createSprite({
             image: image,
@@ -18,11 +18,25 @@ function createPunch(x, y) {
 
         playAnim(sprite, "slash");
 
-        sprite.x = x;
-        sprite.y = y;
+        let xPunch = x - 50;
+        let yPunch = y - 47;
+        if (direction === DIR_DOWN) {
+            yPunch += 32;
+        } else if (direction === DIR_UP) {
+            yPunch -= 32;
+        } else if (direction === DIR_LEFT) {
+            xPunch -= 32;
+        } else if (direction === DIR_RIGHT) {
+            xPunch += 32;
+        } else {
+            throw "Direction is invalid";
+        }
+
+        sprite.x = xPunch;
+        sprite.y = yPunch;
     });
 
     if(host) {
-        socket.emit("create punch", x, y);   
+        socket.emit("create punch", x, y);
     }
 }
