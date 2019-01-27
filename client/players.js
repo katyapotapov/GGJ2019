@@ -7,6 +7,11 @@ const INV_DRAW_POS = {
     y: 540
 };
 
+const ROLE_DRAW_POS = {
+    x: 50,
+    y: 50
+};
+
 const INV_DRAW_WIDTH = 600;
 const INV_DRAW_HEIGHT = 60;
 
@@ -17,6 +22,7 @@ const INV_ITEM_COLOR = [
 ];
 
 let myPlayerID = -1;
+let role;
 let players = [];
 
 function createPlayer(id, x, y) {
@@ -385,6 +391,14 @@ function drawInventory() {
             INV_DRAW_POS.y + 58,
         );
     }
+}
+
+function drawStatus(cam) {
+    if (!role) return;
+    ctx.fillText(
+        role,
+        ROLE_DRAW_POS.x,
+        ROLE_DRAW_POS.y);
 }
 
 function playerPickupTouchingItems() {
