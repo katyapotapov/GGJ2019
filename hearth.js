@@ -2,7 +2,7 @@ const HEARTH = {
     sprite: null,
     x: 0,
     y: 0,
-    life: 200,
+    life: 10,
     rect: {
         x: 0,
         y: 0,
