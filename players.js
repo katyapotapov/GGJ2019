@@ -47,7 +47,7 @@ function createPlayer(id, x, y, isProtector) {
             x: 20,
             y: 32,
             w: 24,
-            h: 24
+            h: 28
         },
         inventory: {
             selected: 0,
@@ -454,7 +454,9 @@ function drawStatus(cam) {
     if (!player) {
         return;
     }
-
+    
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "blue";
     ctx.fillText(
         player.isProtector ? "Protector" : "Homewrecker",
         ROLE_DRAW_POS.x,

@@ -114,15 +114,17 @@ function removeResource(index) {
     if (host) {
         if (resources[index].type == TREE) {
             if (magicWoodDropCounter <= 0) {
-                createItem(ITEM_MAGIC_WOOD, resources[index].x, resources[index].y);
+                createItem(ITEM_MAGIC_WOOD, resources[index].x + resources[index].width / 2,
+                    resources[index].y + resources[index].height / 2);
                 magicWoodDropCounter = randomNumInRange(magicWoodDropCounterMin,
                     magicWoodDropCounterMax);
             } else {
-                createItem(ITEM_WOOD, resources[index].x, resources[index].y);
+                createItem(ITEM_WOOD, resources[index].x + resources[index].width / 2,
+                    resources[index].y + resources[index].height / 2);
                 magicWoodDropCounter--;
             }
         } else {
-            createItem(ITEM_WALL, resources[index].x, resources[index].y);
+            createItem(ITEM_WALL, resources[index].x + resources[index].width / 2, resources[index].y + resources[index].height / 2);
         }
     }
 

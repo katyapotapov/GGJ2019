@@ -1,7 +1,10 @@
-const HOUSE_X = 200;
-const HOUSE_Y = 400;
+const TILEMAP_WIDTH = 100*32;
+const TILEMAP_HEIGHT = 100*32;
+
 const HOUSE_BLOCKS_LEFT = 10;
 const HOUSE_BLOCKS_DOWN = 10;
+const HOUSE_X = TILEMAP_WIDTH / 2 - HOUSE_BLOCKS_LEFT * TILE_SIZE / 2;
+const HOUSE_Y = TILEMAP_HEIGHT / 2  - HOUSE_BLOCKS_DOWN * TILE_SIZE / 2;
 const HOUSE_DOOR_BLOCK_WALL = DIR_UP;
 const HOUSE_DOOR_BLOCK_DIST = 5;
 
@@ -10,18 +13,18 @@ const HOUSE_DOOR_BLOCK_DIST = 5;
 function createBuilding(x, y, l, w, doorWall, doorDist) {
     for (let i = 1; i < l; i++) {
         if (doorWall !== DIR_UP || doorDist !== i) {
-            createWall(x + 32 * i, y, DIR_UP, 10);
+            createWall(x + TILE_SIZE * i, y, DIR_UP, 10);
         }
         if (doorWall !== DIR_DOWN || doorDist !== i) {
-            createWall(x + 32 * i, y + 32 * w, DIR_DOWN, 10);
+        createWall(x + TILE_SIZE * i, y + TILE_SIZE * w, DIR_DOWN, 10);
         }
     }
     for (let j = 0; j <= w; j++) {
         if (doorWall !== DIR_LEFT || doorDist !== j) {
-            createWall(x, y + 32 * j, DIR_LEFT, 10);
+            createWall(x, y + TILE_SIZE * j, DIR_LEFT, 10);
         }
         if (doorWall !== DIR_RIGHT || doorDist !== j) {
-            createWall(x + 32 * l, y + 32 * j, DIR_RIGHT, 10);
+            createWall(x + TILE_SIZE * l, y + TILE_SIZE * j, DIR_RIGHT, 10);
         }
     }
 }
