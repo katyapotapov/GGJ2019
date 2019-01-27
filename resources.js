@@ -6,10 +6,12 @@ const RESOURCE_IMAGES = {
     tree: null,
     rock: null,
 };
-const FORBIDDEN_X = HOUSE_X;
-const FORBIDDEN_Y = HOUSE_Y;
-const FORBIDDEN_WIDTH = HOUSE_BLOCKS_LEFT * TILE_SIZE;
-const FORBIDDEN_HEIGHT = HOUSE_BLOCKS_DOWN * TILE_SIZE;
+
+const FORBIDDEN_PADDING = 500;
+let FORBIDDEN_X = 0;
+let FORBIDDEN_Y = 0;
+let FORBIDDEN_WIDTH = 0;
+let FORBIDDEN_HEIGHT = 0;
 
 function initResources() {
     loadImage("assets/greentree.png", function (image) {
@@ -18,6 +20,10 @@ function initResources() {
     loadImage("assets/rock.png", function (image) {
         RESOURCE_IMAGES.rock = image;
     });
+    FORBIDDEN_X = HOUSE_X - FORBIDDEN_PADDING;
+    FORBIDDEN_Y = HOUSE_Y - FORBIDDEN_PADDING;
+    FORBIDDEN_WIDTH = HOUSE_BLOCKS_LEFT * TILE_SIZE + FORBIDDEN_PADDING * 2;
+    FORBIDDEN_HEIGHT = HOUSE_BLOCKS_DOWN * TILE_SIZE + FORBIDDEN_PADDING * 2;
 }
 
 function initDefaultResources() {
