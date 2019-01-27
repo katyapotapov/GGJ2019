@@ -214,11 +214,14 @@ function handleInput(id, input) {
                 players[i].dy = 0;
             }
 
-            if(input.use) {
-                useSelectedItem(players[i]);
-            }
+            if(host) {
+                if(input.use) {
+                    useSelectedItem(players[i]);
+                }
 
-            setSelectedItem(players[i].id, input.invSelect);
+                setSelectedItem(players[i].id, input.invSelect);
+                players[i].inputSequenceNumber = input.sequenceNumber;
+            }
 
             return;
         }
@@ -227,7 +230,7 @@ function handleInput(id, input) {
     throw "Couldn't find player for input";
 }
 
-function handlePlayerState(id, x, y, anim) {
+function handlePlayerState(id, x, y, anim, sequenceNumber) {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
 
@@ -235,22 +238,53 @@ function handlePlayerState(id, x, y, anim) {
             continue;
         }
 
-        player.x = x;
-        player.y = y;
+        if(id == myPlayerID) {
+            // Client side prediction
+            player.x = x;
+            player.y = y;
 
-        if(anim) {
-            playAnim(player.sprite, anim);
+            player.serverSequenceNumber = sequenceNumber;
+        } else {
+            player.x = x;
+            player.y = y;
         }
+
+        playAnim(player.sprite, anim);
     }
 }
 
-function updatePlayerSpritePositions() {
+function predictUpdatePlayer() {
+    let player = getPlayerWithID(myPlayerID);
+
+    if(!player || !player.serverSequenceNumber) {
+        return;
+    }
+
+    inputBuffer = inputBuffer.filter(function(input) {
+        return input.sequenceNumber < player.serverSequenceNumber;
+    });
+
+    for(let i = 0; i < inputBuffer.length; ++i) {
+        handleInput(myPlayerID, inputBuffer[i]);
+        moveCollide(player, true);
+    }
+
+    camera.x += (player.x + player.rect.x + player.rect.w / 2 - camera.x - canvas.width / 2) * 0.1;
+    camera.y += (player.y + player.rect.y + player.rect.h / 2 - camera.y - canvas.height / 2) * 0.1;
+}
+
+function updatePlayerSpritePositions(interpolate) {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
 
         if(player.sprite) {
-            player.sprite.x = player.x;
-            player.sprite.y = player.y;
+            if(interpolate) {
+                player.sprite.x += (player.x - player.sprite.x) * 0.2;
+                player.sprite.y += (player.y - player.sprite.y) * 0.2;
+            } else {
+                player.sprite.x = player.x;
+                player.sprite.y = player.y;
+            }
         }
     }
 }
@@ -309,6 +343,7 @@ function sendPlayers() {
         const player = players[i];
 
         socket.emit("player state", player.id, player.x, player.y,
-            player.sprite ? player.sprite.curAnimName : "up");
+            player.sprite ? player.sprite.curAnimName : "up",
+            player.inputSequenceNumber ? player.inputSequenceNumber : 0);
     }
 }
