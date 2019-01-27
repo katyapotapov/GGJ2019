@@ -36,7 +36,9 @@ function initHearth(x, y) {
 }
 
 function setHearthLife(life) {
-    HEARTH.life = life;
+    if (HEARTH.life > 0) {
+        HEARTH.life = life;
+    }
 
     if (host) {
         socket.emit("set hearth life", life);

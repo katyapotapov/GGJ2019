@@ -198,14 +198,13 @@ function useSelectedItem(player) {
         return;
     }
 
-    if (item.type == ITEM_GUN) {
-        if (player.cooldown <= 0) {
-            createBullet(player.x, player.y, DIR_UP);
+    if(item.type == ITEM_GUN) {
+        if(player.cooldown <= 0) {
+            createBullet(player.x + 26, player.y + 32, stringToDirection(player.sprite.curAnimName));
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
     } else if (item.type == ITEM_WALL) {
         if (player.cooldown <= 0) {
-            // TODO: Place buildings
             setItemQuantity(player.id, item.type, item.quantity - 1);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
