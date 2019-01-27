@@ -454,7 +454,9 @@ function drawStatus(cam) {
     if (!player) {
         return;
     }
-
+    
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "blue";
     ctx.fillText(
         player.isProtector ? "Protector" : "Homewrecker",
         ROLE_DRAW_POS.x,
