@@ -61,7 +61,7 @@ function updateGame() {
         updateBullets();
         updateBombs();
 
-        if (tickCount >= 2) {
+        if (tickCount >= 1) {
             sendPlayers();
             sendBullets();
             tickCount = 0;
@@ -126,10 +126,10 @@ function drawGame() {
     drawTilemap(cam);
     drawBullets(cam);
     drawWalls(cam);
-    drawSprites(cam);
-    drawResources(cam);
     drawBombs(cam);
+    drawResources(cam);
     drawItems(cam);
+    drawSprites(cam);
     drawHearthLife(cam);
     drawDebugRects(cam);
     drawPlayerNames(cam);
