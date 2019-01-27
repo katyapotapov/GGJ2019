@@ -47,8 +47,8 @@ function removeBullet(index) {
 }
 
 function handleBulletState(index, x, y) {
-    bullets[index].x = x;
-    bullets[index].y = y;
+    bullets[index].x += (x - bullets[index].x) * 0.4;
+    bullets[index].y += (y - bullets[index].y) * 0.4;
 }
 
 function updateBullets() {
