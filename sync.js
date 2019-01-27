@@ -1,21 +1,21 @@
 let host = false;
 
-let socket = io("ws://localhost:8080");
+let socket = io("ws://e78437bc.ngrok.io");
 
-socket.on("host", function() {
+socket.on("host", function () {
     host = true;
 });
 
-socket.on("set player id", function(id) {
+socket.on("set player id", function (id) {
     // Declared in players.js
     myPlayerID = id;
 
-    if(host) {
+    if (host) {
         initHost();
     }
 });
 
-socket.on("player joined", function(id) {
+socket.on("player joined", function (id) {
     console.log("Hello " + id);
     createPlayer(id, 300, 300);
     if (host && id != myPlayerID) {
@@ -52,7 +52,7 @@ socket.on("create punch", createPunch);
 
 socket.on("set hearth life", setHearthLife);
 
-socket.on("player left", function(id) {
+socket.on("player left", function (id) {
     removePlayer(id);
     console.log("Goodbye " + id);
 });
