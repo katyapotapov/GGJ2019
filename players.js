@@ -10,12 +10,6 @@ const INV_DRAW_POS = {
 const INV_DRAW_WIDTH = 600;
 const INV_DRAW_HEIGHT = 60;
 
-const INV_ITEM_COLOR = [
-    "#ff0000",
-    "#00ff00",
-    "#0000ff"
-];
-
 let myPlayerID = -1;
 let players = [];
 
@@ -205,8 +199,9 @@ function useSelectedItem(player, direction) {
         }
     } else if (item.type == ITEM_WALL) {
         if (player.cooldown <= 0) {
+            createWall(player.x, player.y, direction, WALL_LIFE);
             setItemQuantity(player.id, item.type, item.quantity - 1);
-            player.cooldown += PLAYER_SHOOT_COOLDOWN;
+            player.cooldown += WALL_PLACE_COOLDOWN;
         }
     } else if (item.type == ITEM_BOMB) {
         if (!bombImage) {
