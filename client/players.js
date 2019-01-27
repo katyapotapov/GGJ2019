@@ -31,9 +31,9 @@ function createPlayer(id, x, y) {
         dy: 0,
         sprite: null,
         rect: {
-            x: 16,
+            x: 20,
             y: 32,
-            w: 32,
+            w: 24,
             h: 32
         },
         inventory: {
@@ -129,7 +129,7 @@ function setItemQuantity(playerID, type, quantity) {
     });
 }
 
-function addItem(player, type, quantity) {  
+function addItem(player, type, quantity) {
     for(let i = 0; i < player.inventory.items.length; ++i) {
         if(player.inventory.items[i].type == type) {
             setItemQuantity(player.id, type, player.inventory.items[i].quantity + quantity);
@@ -183,6 +183,9 @@ function useSelectedItem(player) {
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
             setItemQuantity(player.id, item.type, item.quantity - 1);
         }
+    } else {
+        createPunch(player.x, player.y, player.sprite.curAnimName);
+        player.cooldown += PLAYER_SHOOT_COOLDOWN;
     }
 }
 
@@ -252,7 +255,7 @@ function updatePlayerSpritePositions() {
 
 function drawInventory() {
     let player = getPlayerWithID(myPlayerID);
-    
+
     if(!player) {
         return;
     }
@@ -287,7 +290,7 @@ function sendPlayers() {
     for(let i = 0; i < players.length; ++i) {
         const player = players[i];
 
-        socket.emit("player state", player.id, player.x, player.y, 
+        socket.emit("player state", player.id, player.x, player.y,
             player.sprite ? player.sprite.curAnimName : "up");
     }
 }
