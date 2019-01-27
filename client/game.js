@@ -14,6 +14,12 @@ function shakeCamera(duration, magnitude) {
     camera.shake.magnitude = magnitude;
 }
 
+function requestHost() {
+    if(!host) {
+        socket.emit("request host");
+    }
+}
+
 function initGame() {
     initItems();
     initBullets();
