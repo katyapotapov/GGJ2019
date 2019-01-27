@@ -50,6 +50,10 @@ io.on("connection", function(socket) {
             for(let i = 0; i < data.bombs.length; ++i) {
                 socket.emit("create bomb", data.bombs[i].x, data.bombs[i].y);
             }
+
+            for(let i = 0; i < data.items.length; ++i) {
+                socket.emit("create item", data.items[i].type, data.items[i].x, data.items[i].y);
+            }
         });
 
         newPlayers.length = 0;
@@ -99,20 +103,24 @@ io.on("connection", function(socket) {
         socket.broadcast.emit("set resource life", index, life);
     });
 
-    socket.on("create bomb", function(type, x, y) {
-        socket.broadcast.emit("create bomb", type, x, y);
+    socket.on("create bomb", function(x, y) {
+        socket.broadcast.emit("create bomb", x, y);
     });
 
-    socket.on("remove bomb", function(type, x, y) {
-        socket.broadcast.emit("remove bomb", type, x, y);
+    socket.on("remove bomb", function(x, y) {
+        socket.broadcast.emit("remove bomb", x, y);
     });
 
-    socket.on("create explosion", function(type, x, y) {
-        socket.broadcast.emit("create explosion", type, x, y);
+    socket.on("create explosion", function(x, y) {
+        socket.broadcast.emit("create explosion", x, y);
     });
 
-    socket.on("remove explosion", function(type, x, y) {
-        socket.broadcast.emit("remove explosion", type, x, y);
+    socket.on("create item", function(type, x, y) {
+        socket.broadcast.emit("create item", type, x, y);
+    });
+
+    socket.on("remove item", function(index) {
+        socket.broadcast.emit("remove item", index);
     });
 
 

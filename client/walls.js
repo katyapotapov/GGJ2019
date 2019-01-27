@@ -54,17 +54,22 @@ function createWall(x, y, direction, life) {
 }
 
 function removeWall(index) {
+    if (host) {
+        createItem(ITEM_WALL, walls[index].x, walls[index].y);
+    }
+
     walls.splice(index, 1);
 }
 
 function setWallLife(index, life) {
     walls[index].life = life;
-    if (walls[index].life === 0) {
-        removeWall(index);
+    
+    if(host) {
+        socket.emit("set wall life", index, life);
     }
 
-    if (host) {
-        socket.emit("set wall life", index, life)
+    if (walls[index].life === 0) {
+        removeWall(index);
     }
 }
 
