@@ -33,7 +33,7 @@ function initGame() {
     initResources();
 
     setTimeout(function() {
-        socket = io("ws://localhost:8080");
+        socket = io("http://a071ee5a.ngrok.io");
         registerSocketCallbacks();
     }, 2000);
 }
@@ -147,7 +147,7 @@ function updateGame() {
     ++tickCount;
 }
 
-function drawGame() { 
+function drawGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const cam = {
