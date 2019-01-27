@@ -34,7 +34,7 @@ function initGame() {
     initDefaultHearth();
 
     setTimeout(function() {
-        socket = io("ws://localhost:8080");
+        socket = io("http://4cab0263.ngrok.io");
         registerSocketCallbacks();
     }, 2000);
 }
@@ -146,7 +146,7 @@ function updateGame() {
     ++tickCount;
 }
 
-function drawGame() { 
+function drawGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const cam = {
