@@ -23,7 +23,7 @@ function registerSocketCallbacks() {
 socket.on("player joined", function (id, isProtector) {
     console.log("Hello " + id);
     let spawnPoint = getSpawnPoint(isProtector);
-    createPlayer(id, spawnPoint.x, spawnPoint.y);
+    createPlayer(id, spawnPoint.x, spawnPoint.y, isProtector);
     if (host && id != myPlayerID) {
         sendSnapshot();
     }
