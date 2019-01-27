@@ -44,7 +44,11 @@ socket.on("create bomb", createBomb);
 socket.on("remove bomb", removeBomb);
 
 socket.on("create explosion", createExplosion);
-socket.on("remove explosion", removeExplosion);
+
+socket.on("create item", createItem);
+socket.on("remove item", removeItem);
+
+socket.on("create punch", createPunch);
 
 socket.on("player left", function(id) {
     removePlayer(id);
@@ -56,6 +60,7 @@ function sendSnapshot() {
         bullets: bullets,
         walls: walls,
         resources: resources,
-        bombs: bombs
+        bombs: bombs,
+        items: items
     });
 }

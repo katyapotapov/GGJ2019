@@ -1,10 +1,6 @@
 const PLAYER_MOVE_SPEED = 6;
 const PLAYER_SHOOT_COOLDOWN = 0.3;
 
-const ITEM_GUN = 0;
-const ITEM_BOMB = 1;
-const ITEM_WALL = 2;
-
 const INV_DRAW_POS = {
     x: 100,
     y: 540
@@ -97,7 +93,8 @@ function removePlayer(id) {
         }
     }
 
-    throw "Couldn't find player to remove";
+    console.log("Couldn't find player to remove ", id);
+    //throw "Couldn't find player to remove";
 }
 
 function setItemQuantity(playerID, type, quantity) {
@@ -129,7 +126,7 @@ function setItemQuantity(playerID, type, quantity) {
     });
 }
 
-function addItem(player, type, quantity) {
+function addItemToInventory(player, type, quantity) {
     for(let i = 0; i < player.inventory.items.length; ++i) {
         if(player.inventory.items[i].type == type) {
             setItemQuantity(player.id, type, player.inventory.items[i].quantity + quantity);
@@ -160,6 +157,10 @@ function setSelectedItem(playerID, index) {
 
 function useSelectedItem(player) {
     if(player.inventory.selected >= player.inventory.items.length) {
+        if(player.cooldown <= 0) {
+            createPunch(player.x, player.y, stringToDirection(player.sprite.curAnimName));
+            player.cooldown += PLAYER_SHOOT_COOLDOWN;
+        }
         return;
     }
 
@@ -183,9 +184,6 @@ function useSelectedItem(player) {
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
             setItemQuantity(player.id, item.type, item.quantity - 1);
         }
-    } else {
-        createPunch(player.x, player.y, player.sprite.curAnimName);
-        player.cooldown += PLAYER_SHOOT_COOLDOWN;
     }
 }
 
@@ -272,6 +270,22 @@ function drawInventory() {
 
     ctx.strokeStyle = "white";
     ctx.strokeRect(INV_DRAW_POS.x + player.inventory.selected * 60, INV_DRAW_POS.y, 60, 60);
+}
+
+function playerPickupTouchingItems() {
+    if(!host) {
+        throw "DO NOT CALL THIS OUTSIDE OF HOST";
+    }
+
+    for(let i = 0; i < players.length; ++i) {
+        let player = players[i];
+        let colItems = getCollidingObjects(player, player.x, player.y, items);
+
+        for(let j = 0; j < colItems.length; ++j) {
+            addItemToInventory(player, colItems[j].type, 1);
+            removeItem(items.indexOf(colItems[j]));
+        }
+    }
 }
 
 function movePlayers() {

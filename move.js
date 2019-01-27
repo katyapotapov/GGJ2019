@@ -2,17 +2,17 @@
 
 const SWEEP_SAMPLES = 5;
 
-function moveCollide(e, sweep) { 
+function moveCollide(e, sweep) {
     function collide(x, y) {
         return collideTileMap(x + e.rect.x, y + e.rect.y, e.rect.w, e.rect.h) ||
-               getCollidingObjects(e, x, y, walls).length > 0;
+               getCollidingObjects(e, x, y, walls, resources).length > 0;
     }
 
     if(collide(e.x + e.dx, e.y)) {
         if(sweep) {
             let mx = e.dx / SWEEP_SAMPLES;
 
-            for(let i = 0; i < SWEEP_SAMPLES; ++i) { 
+            for(let i = 0; i < SWEEP_SAMPLES; ++i) {
                 if(collide(e.x + mx, e.y)) {
                     e.dx = 0;
                     break;
@@ -31,7 +31,7 @@ function moveCollide(e, sweep) {
         if(sweep) {
             let my = e.dy / SWEEP_SAMPLES;
 
-            for(let i = 0; i < SWEEP_SAMPLES; ++i) { 
+            for(let i = 0; i < SWEEP_SAMPLES; ++i) {
                 if(collide(e.x, e.y + my)) {
                     e.dy = 0;
                     break;
