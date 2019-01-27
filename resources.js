@@ -113,9 +113,9 @@ function generateRandResources() {
 function removeResource(index) {
     if(host) {
         if (resources[index].type == TREE) {
-            createItem(ITEM_WOOD, resources[index].x + resources[index].width / 2, resources[index].y + resources[index].height / 2);
+            createItem(ITEM_WOOD, resources[index].x + resources[index].rect.w / 2, resources[index].y + resources[index].rect.h / 2);
         } else {
-            createItem(ITEM_WALL, resources[index].x + resources[index].width / 2, resources[index].y + resources[index].height / 2);
+            createItem(ITEM_WALL, resources[index].x + resources[index].rect.w / 2, resources[index].y + resources[index].rect.h / 2);
         }
     }
 
