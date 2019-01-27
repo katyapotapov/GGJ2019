@@ -90,6 +90,7 @@ function removePlayer(id) {
         if (players[i].id === id) {
             removeSprite(players[i].sprite);
             players.splice(i, 1);
+            return;
         }
     }
 
