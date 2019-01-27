@@ -20,7 +20,7 @@ function createPunch(x, y, direction) {
         playAnim(sprite, "slash");
 
         xPunch = x - 50;
-        yPunch = y - 47;
+        yPunch = y - 50;
         if (direction === DIR_DOWN) {
             yPunch += 32;
         } else if (direction === DIR_UP) {
@@ -40,7 +40,8 @@ function createPunch(x, y, direction) {
     if(host) {
         socket.emit("create punch", x, y, direction);
 
-        let objects = getObjectsInRect(xPunch, yPunch, 32, 32, walls, resources);
+        let objects = getObjectsInRect(xPunch+64, yPunch+64, 32, 32, walls, resources);
+        // createDebugRect(xPunch+64, yPunch+64, 32, 32, "black", 2);
 
         for (let i = 0; i < objects.length; ++i) {
             let obj = objects[i];
