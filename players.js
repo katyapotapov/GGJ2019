@@ -283,13 +283,15 @@ function handleInput(id, input) {
     throw "Couldn't find player for input";
 }
 
-function handlePlayerState(id, x, y, anim, sequenceNumber) {
+function handlePlayerState(id, x, y, anim, sequenceNumber, name) {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
 
         if (player.id != id) {
             continue;
         }
+
+        player.name = name;
 
         if (id == myPlayerID) {
             // Client side prediction
@@ -407,6 +409,7 @@ function sendPlayers() {
 
         socket.emit("player state", player.id, player.x, player.y,
             player.sprite ? player.sprite.curAnimName : "up",
-            player.inputSequenceNumber ? player.inputSequenceNumber : 0);
+            player.inputSequenceNumber ? player.inputSequenceNumber : 0,
+            player.name);
     }
 }
