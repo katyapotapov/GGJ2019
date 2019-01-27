@@ -78,6 +78,22 @@ function updateGame() {
 
         camera.x += (myPlayer.x + myPlayer.rect.x + myPlayer.rect.w / 2 - camera.x - canvas.width / 2) * 0.1;
         camera.y += (myPlayer.y + myPlayer.rect.y + myPlayer.rect.h / 2 - camera.y - canvas.height / 2) * 0.1;
+
+        if(camera.x < 0) {
+            camera.x = 0;
+        }
+
+        if(camera.x >= tileMap.width * TILE_SIZE - canvas.width) {
+            camera.x = tileMap.width * TILE_SIZE - canvas.width;
+        }
+
+        if(camera.y < 0) {
+            camera.y = 0;
+        }
+
+        if(camera.y >= tileMap.height * TILE_SIZE - canvas.height) {
+            camera.y = tileMap.height * TILE_SIZE - canvas.height;
+        }
     }
 
     ++tickCount;
