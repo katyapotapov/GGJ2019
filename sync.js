@@ -1,13 +1,13 @@
 let host = false;
 
-let socket = io("ws://e78437bc.ngrok.io");
+let socket = io("ws://localhost:8080");
 
 socket.on("host", function () {
     host = true;
     console.log("I AM ALMIGHTY HOST");
 });
 
-socket.on("unhost", function() {
+socket.on("unhost", function () {
     host = false;
     console.log("I HAVE BEEN DETHRONED FROM HOSTITUDE");
 });
