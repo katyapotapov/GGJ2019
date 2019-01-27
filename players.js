@@ -47,7 +47,7 @@ function createPlayer(id, x, y, isProtector) {
             x: 20,
             y: 32,
             w: 24,
-            h: 32
+            h: 24
         },
         inventory: {
             selected: 0,
