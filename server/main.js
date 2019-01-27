@@ -23,6 +23,7 @@ io.on("connection", function(socket) {
     });
 
     if(players.length == 1) {
+        console.log("Host: ", socket.playerID);
         socket.emit("host", socket.playerID);
         hostPlayer = socket;
     } else {
@@ -139,12 +140,13 @@ io.on("connection", function(socket) {
 
         io.emit("player left", socket.playerID);
 
+        players.splice(players.indexOf(socket), 1);
+
         if(socket == hostPlayer && players.length >= 1) {
             // Reassign host
+            console.log("Migrated host to ", players[0].playerID);
             players[0].emit("host", players[0].playerID);
             hostPlayer = players[0];
         }
-
-        players.splice(players.indexOf(socket), 1);
     });
 });
