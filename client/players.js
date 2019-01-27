@@ -82,6 +82,11 @@ function createPlayer(id, x, y, isProtector) {
                     startFrame: 28,
                     length: 8,
                     frameTime: 0.1
+                },
+                dead: {
+                    startFrame: 36,
+                    length: 1,
+                    frameTime: 0.1
                 }
             }
         });
@@ -406,6 +411,10 @@ function updatePlayerSpritePositions(interpolate) {
         let player = players[i];
 
         if (player.sprite) {
+            if (player.life <= 0) {
+                playAnim(player.sprite, "dead");
+            }
+
             if (interpolate) {
                 player.sprite.x += (player.x - player.sprite.x) * 0.2;
                 player.sprite.y += (player.y - player.sprite.y) * 0.2;
@@ -454,7 +463,7 @@ function drawStatus(cam) {
     if (!player) {
         return;
     }
-    
+
     ctx.font = "20px Arial";
     ctx.fillStyle = "blue";
     ctx.fillText(
