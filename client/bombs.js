@@ -1,6 +1,5 @@
 let bombs = [];
 let bombImage = null;
-let explosionImage = null;
 
 function initBombs() {
     loadImage("assets/bomb3.png", function(image) {
@@ -9,9 +8,6 @@ function initBombs() {
 }
 
 function initExplosions() {
-    loadImage("assets/explosion2.png", function(image) {
-        explosionImage = image;
-    });
 }
 
 function createBomb(x, y) {
