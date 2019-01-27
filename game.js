@@ -35,7 +35,9 @@ function initHost() {
     initDefaultBuilding();
     initDefaultResources();
 
-    createItem(ITEM_GUN, 800, 300);
+    for(let i = 0; i < 5; ++i) {
+        createItem(ITEM_GUN, 800 + i * 100, 400);
+    }
 
     for (let i = 0; i < 20; ++i) {
         createItem(ITEM_BOMB, 1000 + i * 100, 300);
@@ -78,11 +80,6 @@ function updateGame() {
 
     if (myPlayer) {
         if (host) {
-            if (myPlayer.inventory.items.length == 0) {
-                addItemToInventory(myPlayer, ITEM_GUN, 1);
-                addItemToInventory(myPlayer, ITEM_BOMB, 100);
-            }
-
             camera.x += (myPlayer.x + myPlayer.rect.x + myPlayer.rect.w / 2 - camera.x - canvas.width / 2) * 0.1;
             camera.y += (myPlayer.y + myPlayer.rect.y + myPlayer.rect.h / 2 - camera.y - canvas.height / 2) * 0.1;
         }
