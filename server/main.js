@@ -10,18 +10,6 @@ io.on("connection", function(socket) {
     socket.playerID = id++;
     players.push(socket);
 
-    // Even the player that joined receives this message
-    io.emit("player joined", socket.playerID);
-
-    // Now we send it a "player joined" for every other player connected
-    players.forEach(function(playerSocket) {
-        if(socket == playerSocket) {
-            return;
-        }
-
-        socket.emit("player joined", playerSocket.playerID);
-    });
-
     function setHost(sock) {
         console.log("Host: ", socket.playerID);
         sock.emit("host");
@@ -34,6 +22,18 @@ io.on("connection", function(socket) {
     } else {
         newPlayers.push(socket);
     }
+
+    // Even the player that joined receives this message
+    io.emit("player joined", socket.playerID);
+
+    // Now we send it a "player joined" for every other player connected
+    players.forEach(function(playerSocket) {
+        if(socket == playerSocket) {
+            return;
+        }
+
+        socket.emit("player joined", playerSocket.playerID);
+    });
 
     socket.emit("set player id", socket.playerID);
 
