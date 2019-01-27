@@ -8,7 +8,11 @@ function moveCollide(e, sweep, callback) {
             return true;
         }
 
-        let objects = getCollidingObjects(e, x, y, walls, resources, [HEARTH]);
+        let objects = getCollidingObjects(e, x, y, walls, resources, [HEARTH], players);
+
+        if (objects.length === 1 && objects[0].id && (objects[0].id === e.ownerID)) {
+            return false;
+        }
 
         if(objects.length > 0) {
             return objects;
@@ -34,7 +38,7 @@ function moveCollide(e, sweep, callback) {
                             callback();
                         }
                     }
-                    
+
                     e.dx = 0;
                     break;
                 } else {
@@ -54,7 +58,7 @@ function moveCollide(e, sweep, callback) {
     } else {
         e.x += e.dx;
     }
-    
+
     res = collide(e.x, e.y + e.dy);
 
     if(res) {

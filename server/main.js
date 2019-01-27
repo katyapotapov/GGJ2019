@@ -72,7 +72,7 @@ io.on("connection", function(socket) {
         console.log(`Sending ${newPlayers.length} snapshots`);
         newPlayers.forEach(function(socket) {
             for(let i = 0; i < data.bullets.length; ++i) {
-                socket.emit("create bullet", data.bullets[i].x, data.bullets[i].y, data.bullets[i].dir);
+                socket.emit("create bullet", data.bullets[i].x, data.bullets[i].y, data.bullets[i].ownerID, data.bullets[i].direction);
             }
 
             for(let i = 0; i < data.walls.length; ++i) {
@@ -101,8 +101,8 @@ io.on("connection", function(socket) {
         setHost(socket);
     });
 
-    socket.on("create bullet", function(x, y, dir) {
-        socket.broadcast.emit("create bullet", x, y, dir);
+    socket.on("create bullet", function(x, y, owner, dir) {
+        socket.broadcast.emit("create bullet", x, y, owner, dir);
     });
 
     socket.on("remove bullet", function(index) {
@@ -125,8 +125,8 @@ io.on("connection", function(socket) {
         socket.broadcast.volatile.emit("player input", socket.playerID, input);
     });
 
-    socket.on("player state", function(id, x, y, anim, sequenceNumber, name) {
-        socket.broadcast.volatile.emit("player state", id, x, y, anim, sequenceNumber, name);
+    socket.on("player state", function(id, x, y, anim, sequenceNumber, name, life) {
+        socket.broadcast.volatile.emit("player state", id, x, y, anim, sequenceNumber, name, life);
     });
 
     socket.on("create wall", function(x, y, dir, life) {
