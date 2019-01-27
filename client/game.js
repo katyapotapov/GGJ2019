@@ -81,6 +81,7 @@ function updateGame() {
             if (myPlayer.inventory.items.length == 0) {
                 addItemToInventory(myPlayer, ITEM_GUN, 1);
                 addItemToInventory(myPlayer, ITEM_BOMB, 100);
+                addItemToInventory(myPlayer, ITEM_WALL, 100);
             }
 
             camera.x += (myPlayer.x + myPlayer.rect.x + myPlayer.rect.w / 2 - camera.x - canvas.width / 2) * 0.1;
