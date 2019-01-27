@@ -57,17 +57,20 @@ function createExplosion(x, y) {
     if(host) {
         socket.emit("create explosion", x, y);
 
-        let objects = getObjectsInCircle(x, y, 120, walls);
+        let objects = getObjectsInCircle(x, y, 120, walls, resources);
 
         for(let i = 0; i < objects.length; ++i) {
             let obj = objects[i];
 
             let wallIndex = walls.indexOf(obj);
-
+            let resourceIndex = resources.indexOf(obj);
             if(wallIndex >= 0) {
                 console.log("Damaged wall: ", wallIndex);
                 setWallLife(wallIndex, obj.life - 1);
                 continue;
+            } else if (resourceIndex >= 0) {
+                console.log("Damaged resource: ", resourceIndex);
+                setResourceLife(resourceIndex, obj.life - 1);
             }
         }
     }
