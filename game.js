@@ -44,6 +44,28 @@ function initHost() {
     }
 }
 
+function damageObjects(objects, damage) {
+    if (!objects) return;
+    for(let i = 0; i < objects.length; ++i) {
+        let obj = objects[i];
+
+        let wallIndex = walls.indexOf(obj);
+        let resourceIndex = resources.indexOf(obj);
+        let playerIndex = players.indexOf(obj);
+        if(wallIndex >= 0) {
+            setWallLife(wallIndex, obj.life - damage);
+            continue;
+        } else if (resourceIndex >= 0) {
+            setResourceLife(resourceIndex, obj.life - damage);
+
+        } else if (playerIndex >= 0) {
+            players[playerIndex].life -= damage;
+        } else {
+            setHearthLife(obj.life - damage);
+        }
+    }
+}
+
 function updateGame() {
     if (camera.shake.timer > 0) {
         camera.shake.timer -= SEC_PER_FRAME;
@@ -140,5 +162,6 @@ function drawGame() {
     drawStatus(cam);
     drawDebugRects(cam);
     drawPlayerNames(cam);
+    drawHealth(cam);
     drawInventory();
 }
