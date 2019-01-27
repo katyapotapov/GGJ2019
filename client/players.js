@@ -308,9 +308,9 @@ function useSelectedItem(player, direction) {
             if (distanceSquared(player.x, player.y, HEARTH.x, HEARTH.y) < HEARTH_FEED_RADIUS * HEARTH_FEED_RADIUS) {
                 console.log("FEEDING THE HEARTH");
                 if (item.type == ITEM_WOOD) {
-                    setHearthLife(HEARTH.life + 1);
+                    setHearthLife(HEARTH.life + 5);
                 } else {
-                    setHearthLife(HEARTH.life + 7);
+                    setHearthLife(HEARTH.life + 10);
                     setHearthMagicWood(HEARTH.magicWood + 1);
                 }
                 setItemQuantity(player.id, item.type, item.quantity - 1);
