@@ -45,25 +45,8 @@ function createPunch(x, y, direction) {
     if(host) {
         socket.emit("create punch", x, y, direction);
 
-        let objects = getObjectsInRect(xPunch+64, yPunch+64, 32, 32, walls, resources, [HEARTH]);
+        let objects = getObjectsInRect(xPunch+64, yPunch+64, 32, 32, walls, resources, [HEARTH], players);
         // createDebugRect(xPunch+64, yPunch+64, 32, 32, "black", 2);
-
-        for (let i = 0; i < objects.length; ++i) {
-            let obj = objects[i];
-            let wallIndex = walls.indexOf(obj);
-            let resourceIndex = resources.indexOf(obj);
-            if (wallIndex >= 0) {
-                console.log("Damaged wall: ", wallIndex);
-                setWallLife(wallIndex, obj.life - 1);
-                continue;
-            } else if (resourceIndex >= 0) {
-                console.log("Damaged resource: ", resourceIndex);
-                setResourceLife(resourceIndex, obj.life - 1);
-                continue;
-            } else {
-                console.log("Damaged hearth!");
-                setHearthLife(obj.life - 1);
-            }
-        }
+        damageObjects(objects, 1);
     }
 }

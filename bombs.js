@@ -55,22 +55,8 @@ function createExplosion(x, y) {
     if (host) {
         socket.emit("create explosion", x, y);
 
-        let objects = getObjectsInCircle(x, y, 120, walls, resources, [HEARTH]);
-
-        for (let i = 0; i < objects.length; ++i) {
-            let obj = objects[i];
-
-            let wallIndex = walls.indexOf(obj);
-            let resourceIndex = resources.indexOf(obj);
-            if (wallIndex >= 0) {
-                setWallLife(wallIndex, obj.life - BOMB_DAMAGE);
-                continue;
-            } else if (resourceIndex >= 0) {
-                setResourceLife(resourceIndex, obj.life - BOMB_DAMAGE);
-            } else {
-                setHearthLife(obj.life - BOMB_DAMAGE);
-            }
-        }
+        let objects = getObjectsInCircle(x, y, 120, walls, resources, [HEARTH], players);
+        damageObjects(objects, 3);
     }
 }
 
