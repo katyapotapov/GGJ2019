@@ -50,7 +50,7 @@ function updateGame() {
 
         movePlayers();
         playerPickupTouchingItems();
-        updatePlayerSpritePositions();
+        updatePlayerSpritePositions(true);
         updateBullets();
         updateBombs();
 
@@ -60,12 +60,9 @@ function updateGame() {
             tickCount = 0;
         }
     } else {
-        if(tickCount == 1) {
-            sendInput();
-            tickCount = 0;
-        }
-
-        updatePlayerSpritePositions();
+        sendInput();
+        predictUpdatePlayer();
+        updatePlayerSpritePositions(true);
     }
 
     updateSprites();
@@ -78,10 +75,10 @@ function updateGame() {
                 addItemToInventory(myPlayer, ITEM_GUN, 1);
                 addItemToInventory(myPlayer, ITEM_BOMB, 100);
             }
-        }
 
-        camera.x += (myPlayer.x + myPlayer.rect.x + myPlayer.rect.w / 2 - camera.x - canvas.width / 2) * 0.1;
-        camera.y += (myPlayer.y + myPlayer.rect.y + myPlayer.rect.h / 2 - camera.y - canvas.height / 2) * 0.1;
+            camera.x += (myPlayer.x + myPlayer.rect.x + myPlayer.rect.w / 2 - camera.x - canvas.width / 2) * 0.1;
+            camera.y += (myPlayer.y + myPlayer.rect.y + myPlayer.rect.h / 2 - camera.y - canvas.height / 2) * 0.1;
+        }
 
         if(camera.x < 0) {
             camera.x = 0;
