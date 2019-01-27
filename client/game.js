@@ -194,6 +194,24 @@ function drawGame() {
         return;
     }
 
+    if(myPlayer && HEARTH.magicWood >= 5) {
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        let text;
+
+        if(myPlayer.isProtector) {
+            text = "YOU'VE REKINDLED THE HEARTH! YOU WIN!";
+        } else {
+            text = "THE PROTECTORS HAVE REKINDLED THE HEARTH! YOU LOSE!";
+        }
+
+        ctx.font = "20px Arial";
+        ctx.fillStyle = "white";
+        ctx.fillText(text, canvas.width / 2 - ctx.measureText(text).width / 2, canvas.height / 2);
+        return;
+    }
+
     const cam = {
         x: camera.x,
         y: camera.y
