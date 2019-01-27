@@ -119,6 +119,7 @@ function removeResource(index) {
                     magicWoodDropCounterMax);
             } else {
                 createItem(ITEM_WOOD, resources[index].x, resources[index].y);
+                magicWoodDropCounter--;
             }
         } else {
             createItem(ITEM_WALL, resources[index].x, resources[index].y);

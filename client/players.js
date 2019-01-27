@@ -215,7 +215,7 @@ function setSelectedItem(playerID, index) {
 function useSelectedItem(player, direction) {
     if (player.inventory.selected >= player.inventory.items.length) {
         if (player.cooldown <= 0) {
-            createPunch(player.x, player.y, direction, player.isProtector);
+            createPunch(player.x, player.y, direction);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
         return;
