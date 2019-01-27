@@ -8,6 +8,11 @@ const RESOURCE_IMAGES = {
     greenTree: null,
     rock: null,
 };
+const FORBIDDEN_X = HOUSE_X;
+const FORBIDDEN_Y = HOUSE_Y;
+const FORBIDDEN_WIDTH = HOUSE_BLOCKS_LEFT * TILE_WIDTH;
+const FORBIDDEN_HEIGHT = HOUSE_BLOCKS_DOWN * TILE_HEIGHT;
+
 
 function initResources() {
     loadImage("assets/browntree.png", function (image) {
@@ -50,13 +55,17 @@ function createResource(type, x, y) {
 
     resources.push(resource);
 
-    if(host) {
+    if (host) {
         socket.emit("create resource", type, x, y);
     }
 }
 
+function generateResources(type) {
+
+}
+
 function removeResource(index) {
-   resources.splice(index, 1);
+    resources.splice(index, 1);
 }
 
 //TODO: Add item to players inventory when resource dies
