@@ -7,10 +7,16 @@ const INV_DRAW_POS = {
     y: 540
 };
 
+const ROLE_DRAW_POS = {
+    x: 50,
+    y: 50
+};
+
 const INV_DRAW_WIDTH = 600;
 const INV_DRAW_HEIGHT = 60;
 
 let myPlayerID = -1;
+let role;
 let players = [];
 
 function createPlayer(id, x, y) {
@@ -141,6 +147,12 @@ function setItemQuantity(playerID, type, quantity) {
     if (quantity <= 0) {
         return;
     }
+    
+    if(host) {
+        if(player.inventory.selected == player.inventory.items.length) {
+            setSelectedItem(player.id, player.inventory.selected + 1);
+        }
+    }
 
     player.inventory.items.push({
         type: type,
@@ -247,6 +259,15 @@ function useSelectedItem(player, direction) {
             createBomb(x, y);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
             setItemQuantity(player.id, item.type, item.quantity - 1);
+        } 
+    } else if(item.type == ITEM_WOOD) {
+        if(player.cooldown <= 0) {
+            if(distanceSquared(player.x, player.y, HEARTH.x, HEARTH.y) < HEARTH_FEED_RADIUS * HEARTH_FEED_RADIUS) {
+                console.log("FEEDING THE HEARTH");
+                setHearthLife(HEARTH.life + 1);
+                setItemQuantity(player.id, item.type, item.quantity - 1);
+                player.cooldown += PLAYER_SHOOT_COOLDOWN;
+            }
         }
     }
 }
@@ -285,7 +306,10 @@ function handleInput(id, input) {
                     useSelectedItem(players[i], DIR_RIGHT);
                 }
 
-                setSelectedItem(players[i].id, input.invSelect);
+                if(input.invSelect >= 0) {
+                    setSelectedItem(players[i].id, input.invSelect);
+                }
+
                 players[i].inputSequenceNumber = input.sequenceNumber;
             }
 
@@ -388,6 +412,14 @@ function drawInventory() {
             INV_DRAW_POS.y + 58,
         );
     }
+}
+
+function drawStatus(cam) {
+    if (!role) return;
+    ctx.fillText(
+        role,
+        ROLE_DRAW_POS.x,
+        ROLE_DRAW_POS.y);
 }
 
 function playerPickupTouchingItems() {
