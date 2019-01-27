@@ -1,8 +1,8 @@
 const HEARTH_FEED_RADIUS = 64;
 const HEARTH_LOSS_PER_SEC = 1 / 2;
 
-const HEARTH_X = Math.floor(350 / TILE_SIZE) * TILE_SIZE + 16;
-const HEARTH_Y = Math.floor(600 / TILE_SIZE) * TILE_SIZE;
+const HEARTH_X = Math.floor((HOUSE_X + HOUSE_BLOCKS_LEFT * TILE_SIZE / 2) / TILE_SIZE) * TILE_SIZE;
+const HEARTH_Y = Math.floor((HOUSE_Y + HOUSE_BLOCKS_DOWN * TILE_SIZE / 2) / TILE_SIZE) * TILE_SIZE;
 
 const HEARTH = {
     sprite: null,
