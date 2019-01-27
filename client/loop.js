@@ -28,4 +28,4 @@ function loop() {
 }
 
 initGame();
-loop();
+setTimeout(3000, loop);
