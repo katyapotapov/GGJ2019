@@ -1,3 +1,6 @@
+const WALL_LIFE = 10;
+const WALL_PLACE_COOLDOWN = 0.1;
+
 let walls = [];
 let wallImage01 = null;
 let wallImage02 = null;
@@ -28,10 +31,10 @@ function initWalls() {
 }
 
 function createWall(x, y, direction, life) {
-    if(host) {
+    if (host) {
         let otherWalls = getObjectsInRect(x, y, TILE_SIZE, TILE_SIZE, walls);
 
-        if(otherWalls.length > 0) {
+        if (otherWalls.length > 0) {
             return;
         }
     }
@@ -68,8 +71,8 @@ function removeWall(index) {
 
 function setWallLife(index, life) {
     walls[index].life = life;
-    
-    if(host) {
+
+    if (host) {
         socket.emit("set wall life", index, life);
     }
 
