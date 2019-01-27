@@ -198,16 +198,16 @@ function drawGame() {
 
     let myPlayer = getPlayerWithID(myPlayerID);
 
-    if(myPlayer && myPlayer.life <= 0) {
-        drawMinimap();
-        return;
-    }
-
     drawStatus(cam);
     drawDebugRects(cam);
     drawPlayerNames(cam);
     drawHealth(cam);
-    
+
+    if(myPlayer && myPlayer.life <= 0) {
+        drawMinimap();
+        return;
+    }
+  
     if(myPlayer && !myPlayer.isProtector) {
         drawMinimap();
     }
