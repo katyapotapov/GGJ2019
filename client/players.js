@@ -1,6 +1,6 @@
 const PLAYER_MOVE_SPEED = 4;
 const PLAYER_SHOOT_COOLDOWN = 0.3;
-const PLAYER_NAMES = ["Merek", "Carac", "Borin", "Ulric", "Brom", "Sadon", "Logan", "Cedric"];
+const PLAYER_NAMES = ["Brom", "Carac", "Borin", "Ulric", "Merek", "Sadon", "Logan", "Cedric"];
 
 const INV_DRAW_POS = {
     x: 100,
