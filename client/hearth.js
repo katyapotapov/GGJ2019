@@ -9,6 +9,7 @@ const HEARTH = {
     x: 0,
     y: 0,
     life: 100,
+    magicWood: 0,
     rect: {
         x: 0,
         y: 0,
@@ -59,16 +60,26 @@ function setHearthLife(life) {
     }
 }
 
+function setHearthMagicWood(amount) {
+    if (HEARTH.magicWood >= 0) {
+        HEARTH.magicWood = amount;
+    }
+
+    if (host) {
+        socket.emit("set hearth magic wood", amount);
+    }
+}
+
 function removeHearth() {
 }
 
 function updateAndSendHearth() {
     let life = HEARTH.life;
 
-    if(life > 0) {
+    if (life > 0) {
         life -= HEARTH_LOSS_PER_SEC * SEC_PER_FRAME;
 
-        if(Math.ceil(life) != Math.ceil(HEARTH.life)) {
+        if (Math.ceil(life) != Math.ceil(HEARTH.life)) {
             // We only send this message when the hearth changes a significant digit
             setHearthLife(life);
         } else {
@@ -88,5 +99,12 @@ function drawHearthLife(cam) {
     ctx.fillText(
         lifeDrawn,
         HEARTH.x - cam.x + (HEARTH.sprite.info.frameWidth) / 2 - 12,
-        HEARTH.y - cam.y + HEARTH.sprite.info.frameHeight - 55); //Added some magic numbers to adjust pos of text
+        HEARTH.y - cam.y + HEARTH.sprite.info.frameHeight - 55
+    ); //Added some magic numbers to adjust pos of text
+    ctx.fillStyle = "purple";
+    ctx.fillText(
+        HEARTH.magicWood,
+        HEARTH.x - cam.x + (HEARTH.sprite.info.frameWidth) / 2 - 5,
+        HEARTH.y - cam.y + HEARTH.sprite.info.frameHeight + 30
+    ); //Added some magic numbers to adjust pos of text
 }
