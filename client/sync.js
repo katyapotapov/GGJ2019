@@ -6,6 +6,10 @@ socket.on("host", function() {
     host = true;
 });
 
+socket.on("unhost", function() {
+    host = false;
+});
+
 socket.on("set player id", function(id) {
     // Declared in players.js
     myPlayerID = id;
