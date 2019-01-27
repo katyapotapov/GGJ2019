@@ -90,6 +90,7 @@ function removePlayer(id) {
         if (players[i].id === id) {
             removeSprite(players[i].sprite);
             players.splice(i, 1);
+            return;
         }
     }
 
@@ -176,8 +177,11 @@ function useSelectedItem(player) {
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
     } else if(item.type == ITEM_WALL) {
-        // TODO: Place buildings
-        setItemQuantity(player.id, item.type, item.quantity - 1);
+        if(player.cooldown <= 0) {
+            // TODO: Place buildings
+            setItemQuantity(player.id, item.type, item.quantity - 1);
+            player.cooldown += PLAYER_SHOOT_COOLDOWN;
+        }
     } else if(item.type == ITEM_BOMB) {
         if(player.cooldown <= 0) {
             createBomb(player.x, player.y);
