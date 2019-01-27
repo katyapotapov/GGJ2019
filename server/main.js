@@ -4,11 +4,40 @@ let id = 0;
 let players = [];
 let newPlayers = [];
 
+function computeRole() {
+    let isProtector;
+    let diff = 0;
+
+    // Want the first joined player to be the protector
+    if (players.length === 1) {
+        return true;
+    }
+    for (let i = 0; i < players.length; i++) {
+        let socket = players[i];
+        if (socket.isProtector) {
+            diff++;
+        } else {
+            diff--;
+        }
+    }
+    if (diff > 1) {
+        return false;
+    } else if (diff < -1) {
+        return true;
+    } else {
+        return Math.round(Math.random());
+    }
+}
+
 io.on("connection", function(socket) {
     console.log("Player joined!");
 
     socket.playerID = id++;
+    socket.isProtector = computeRole();
+
     players.push(socket);
+
+    socket.emit("is protector", socket.isProtector);
 
     function setHost(sock) {
         console.log("Host: ", socket.playerID);

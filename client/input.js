@@ -16,7 +16,7 @@ let input = {
     useDown: false,
     useLeft: false,
     useRight: false,
-    invSelect: 0,
+    invSelect: -1,
 
     sequenceNumber: 0
 };
@@ -61,6 +61,10 @@ function setKeyState(key, down) {
             input.invSelect = 8;
         } else if (key == "0") {
             input.invSelect = 9;
+        }
+    } else {
+        if(input.invSelect > 0) {
+            input.invSelect = -1;
         }
     }
 }
