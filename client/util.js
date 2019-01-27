@@ -94,7 +94,7 @@ function getCollidingObjects(object, x, y) {
         for (let i = 0; i < objects.length; ++i) {
             let obj = objects[i];
 
-            if (obj == object) {
+            if (obj === object) {
                 continue;
             }
 

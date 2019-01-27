@@ -39,9 +39,9 @@ function createPlayer(id, x, y) {
         sprite: null,
         rect: {
             x: 20,
-            y: 32,
+            y: 38,
             w: 24,
-            h: 32
+            h: 24
         },
         inventory: {
             selected: 0,
@@ -198,8 +198,8 @@ function useSelectedItem(player) {
         return;
     }
 
-    if(item.type == ITEM_GUN) {
-        if(player.cooldown <= 0) {
+    if (item.type == ITEM_GUN) {
+        if (player.cooldown <= 0) {
             createBullet(player.x + 26, player.y + 32, stringToDirection(player.sprite.curAnimName));
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
@@ -322,18 +322,28 @@ function drawInventory() {
         return;
     }
 
-    ctx.fillStyle = "#f287c7";
+    ctx.fillStyle = "#a1a1a1";
     ctx.fillRect(INV_DRAW_POS.x, INV_DRAW_POS.y, INV_DRAW_WIDTH, INV_DRAW_HEIGHT);
+    ctx.strokeStyle = "white";
+    ctx.strokeRect(INV_DRAW_POS.x + player.inventory.selected * 60, INV_DRAW_POS.y, 60, 60);
 
     for (let i = 0; i < player.inventory.items.length; ++i) {
         let item = player.inventory.items[i];
+        if (!ITEM_IMAGES[item.type]) {
+            continue;
+        }
 
-        ctx.fillStyle = INV_ITEM_COLOR[item.type];
-        ctx.fillRect(INV_DRAW_POS.x + i * 60, INV_DRAW_POS.y, 60, 60);
+        ctx.drawImage(ITEM_IMAGES[item.type], INV_DRAW_POS.x + i * 60 + 14, INV_DRAW_POS.y + 14);
+
+        ctx.font = "10px Arial";
+        ctx.fillStyle = "blue";
+        let amt = item.quantity.toString();
+        let amtWidth = ctx.measureText(amt).width;
+        ctx.fillText(amt,
+            INV_DRAW_POS.x + i * 60 + 58 - amtWidth,
+            INV_DRAW_POS.y + 58,
+        );
     }
-
-    ctx.strokeStyle = "white";
-    ctx.strokeRect(INV_DRAW_POS.x + player.inventory.selected * 60, INV_DRAW_POS.y, 60, 60);
 }
 
 function playerPickupTouchingItems() {
