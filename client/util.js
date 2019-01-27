@@ -16,6 +16,11 @@ function loadImage(filename, callback) {
     image.src = filename;
 }
 
+function chooseRandom(objects) {
+    let k = Math.floor(Math.random() * objects.length);
+    return objects[k];
+}
+
 function clamp(v, min, max) {
     if (v < min) {
         return min;
