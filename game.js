@@ -61,7 +61,7 @@ function updateGame() {
         updateBullets();
         updateBombs();
 
-        if (tickCount >= 2) {
+        if (tickCount >= 1) {
             sendPlayers();
             sendBullets();
             tickCount = 0;
