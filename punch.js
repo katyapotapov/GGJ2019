@@ -1,4 +1,5 @@
 function createPunch(x, y, direction) {
+    let xPunch, yPunch;
     loadImage("assets/slash3.png", function(image) {
         let sprite = createSprite({
             image: image,
@@ -18,8 +19,8 @@ function createPunch(x, y, direction) {
 
         playAnim(sprite, "slash");
 
-        let xPunch = x - 50;
-        let yPunch = y - 47;
+        xPunch = x - 50;
+        yPunch = y - 47;
         if (direction === DIR_DOWN) {
             yPunch += 32;
         } else if (direction === DIR_UP) {
@@ -37,6 +38,23 @@ function createPunch(x, y, direction) {
     });
 
     if(host) {
-        socket.emit("create punch", x, y);
+        socket.emit("create punch", x, y, direction);
+
+        let objects = getObjectsInRect(xPunch, yPunch, 32, 32, walls, resources);
+
+        for (let i = 0; i < objects.length; ++i) {
+            let obj = objects[i];
+            let wallIndex = walls.indexOf(obj);
+            let resourceIndex = resources.indexOf(obj);
+            if (wallIndex >= 0) {
+                console.log("Damaged wall: ", wallIndex);
+                setWallLife(wallIndex, obj.life - 1);
+                continue;
+            } else if (resourceIndex >= 0) {
+                console.log("Damaged resource: ", resourceIndex);
+                setResourceLife(resourceIndex, obj.life - 1);
+                continue;
+            }
+        }
     }
 }
