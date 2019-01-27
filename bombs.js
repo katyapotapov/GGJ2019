@@ -37,7 +37,6 @@ function createExplosion(x, y) {
         y: y
     }
 
-    let index = explosions.length;
     explosions.push(explosion);
 
     loadImage("assets/explosion.png", function(image) {
@@ -55,7 +54,7 @@ function createExplosion(x, y) {
             },
 
             onLoop: function(sprite) {
-                removeExplosion(explosions.indexOf(sprite.explosion));
+                removeExplosion(explosions.indexOf(explosion));
             }
         });
 
@@ -63,8 +62,6 @@ function createExplosion(x, y) {
 
         explosion.sprite.x = x-120;
         explosion.sprite.y = y-94;
-
-        explosion.sprite.explosion = explosion;
     });
 
     if(host) {
