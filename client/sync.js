@@ -71,6 +71,7 @@ socket.on("player input", handleInput);
     socket.on("create punch", createPunch);
 
     socket.on("set hearth life", setHearthLife);
+    socket.on("set hearth magic wood", setHearthMagicWood);
 
     socket.on("player left", function (id) {
         removePlayer(id);
@@ -85,6 +86,7 @@ function sendSnapshot() {
         resources: resources,
         bombs: bombs,
         items: items,
-        hearthLife: HEARTH.life
+        hearthLife: HEARTH.life,
+        hearthMagicWood: HEARTH.magicWood
     });
 }

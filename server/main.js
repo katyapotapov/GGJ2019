@@ -12,7 +12,7 @@ function computeRole() {
     if (players.length === 1) {
         return true;
     }
-    
+
     for (let i = 0; i < players.length; i++) {
         let socket = players[i];
         if (socket.isProtector) {
@@ -92,6 +92,7 @@ io.on("connection", function(socket) {
             }
 
             socket.emit("set hearth life", data.hearthLife);
+            socket.emit("set hearth magic wood", data.hearthMagicWood);
         });
 
         newPlayers.length = 0;
@@ -171,6 +172,10 @@ io.on("connection", function(socket) {
 
     socket.on("set hearth life", function(life) {
         socket.broadcast.emit("set hearth life", life);
+    });
+
+    socket.on("set hearth magic wood", function(magicWood) {
+        socket.broadcast.emit("set hearth magic wood", magicWood);
     });
 
     socket.on("disconnect", function() {
