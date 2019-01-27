@@ -223,11 +223,18 @@ function useSelectedItem(player, direction) {
                 x = Math.floor(player_center_x / TILE_SIZE) * TILE_SIZE;
                 y = ((Math.floor((player.y + player.dy) + player.sprite.info.frameHeight) / TILE_SIZE) + 1) * TILE_SIZE;
             } else if (direction == DIR_RIGHT) {
-                x = (Math.floor((player.x + player.dx) / TILE_SIZE) + 3) * TILE_SIZE;
+                x = (Math.floor((player.x + player.dx) / TILE_SIZE) + 2) * TILE_SIZE;
                 y = Math.floor(player_center_y / TILE_SIZE) * TILE_SIZE;
+                if(player.x > x - TILE_SIZE - 12) {
+                    player.x = x - TILE_SIZE - 12;
+                }
             } else if (direction == DIR_LEFT) {
-                x = (Math.floor((player.x + player.dx) / TILE_SIZE) - 1) * TILE_SIZE;
+                x = Math.floor((player.x + player.dx) / TILE_SIZE) * TILE_SIZE;
                 y = Math.floor(player_center_y / TILE_SIZE) * TILE_SIZE;
+
+                if(player.x < x + 12) {
+                    player.x = x + 12;
+                }
             }
             x = Math.floor(x / TILE_SIZE) * TILE_SIZE;
             y = Math.floor(y / TILE_SIZE) * TILE_SIZE;
