@@ -30,12 +30,16 @@ function initGame() {
     initBombs();
     initExplosions();
     initPunch();
-    initDefaultHearth();
+    initResources();
+
+    socket = io("ws://localhost:8080");
+    registerSocketCallbacks();
 }
 
 function initHost() {
     initDefaultBuilding();
     initDefaultResources();
+    initDefaultHearth();
 
     for (let i = 0; i < 5; ++i) {
         createItem(ITEM_GUN, 800 + i * 100, 400);
