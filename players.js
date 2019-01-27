@@ -87,12 +87,13 @@ function createPlayer(id, x, y) {
 function drawPlayerNames(cam) {
     ctx.font = "15px Arial";
     ctx.fillStyle = "blue";
-    for (let i = 0; i < players.size(); i++) {
+    for (let i = 0; i < players.length; i++) {
         let name = players[i].name;
         let nameWidth = ctx.measureText(name).width;
         let center_x = (players[i].sprite.x + players[i].sprite.width) / 2;
         let x = center_x - (nameWidth / 2);
-        ctx.fillText(name)
+        let y = players[i].sprite.y;
+        ctx.fillText(name, x - cam.x, y - cam.y);
     }
 }
 
