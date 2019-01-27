@@ -235,6 +235,15 @@ function useSelectedItem(player, direction) {
             createBomb(x, y);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
             setItemQuantity(player.id, item.type, item.quantity - 1);
+        } 
+    } else if(item.type == ITEM_WOOD) {
+        if(player.cooldown <= 0) {
+            if(distanceSquared(player.x, player.y, HEARTH.x, HEARTH.y) < HEARTH_FEED_RADIUS * HEARTH_FEED_RADIUS) {
+                console.log("FEEDING THE HEARTH");
+                setHearthLife(HEARTH.life + 1);
+                setItemQuantity(player.id, item.type, item.quantity - 1);
+                player.cooldown += PLAYER_SHOOT_COOLDOWN;
+            }
         }
     }
 }
