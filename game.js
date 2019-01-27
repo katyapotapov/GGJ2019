@@ -34,7 +34,7 @@ function initGame() {
     initDefaultHearth();
 
     setTimeout(function() {
-        socket = io("ws://localhost:8080");
+        socket = io("http://4cab0263.ngrok.io");
         registerSocketCallbacks();
     }, 2000);
 }
@@ -58,14 +58,13 @@ function damageObjects(objects, damage) {
         let obj = objects[i];
 
         let wallIndex = walls.indexOf(obj);
-        let resourceIndex = resources.indexOf(obj);
-        let playerIndex = players.indexOf(obj);
+        let resourceIndex = wallIndex >= 0 ? -1 : resources.indexOf(obj);
+        let playerIndex = (resourceIndex >= 0 || wallIndex >= 0) ? -1 : players.indexOf(obj);
         if(wallIndex >= 0) {
             setWallLife(wallIndex, obj.life - damage);
             continue;
         } else if (resourceIndex >= 0) {
             setResourceLife(resourceIndex, obj.life - damage);
-
         } else if (playerIndex >= 0) {
             players[playerIndex].life -= damage;
         } else {
@@ -147,7 +146,7 @@ function updateGame() {
     ++tickCount;
 }
 
-function drawGame() { 
+function drawGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const cam = {
