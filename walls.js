@@ -1,6 +1,3 @@
-const TILE_WIDTH = 32;
-const TILE_HEIGHT = 32;
-
 let walls = [];
 let wallImage01 = null;
 let wallImage02 = null;
@@ -39,8 +36,8 @@ function createWall(x, y, direction, life) {
         rect: {
             x: 0,
             y: 0,
-            w: TILE_WIDTH,
-            h: TILE_HEIGHT,
+            w: TILE_SIZE,
+            h: TILE_SIZE,
         }
     }
 
