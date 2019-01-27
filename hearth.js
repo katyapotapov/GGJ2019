@@ -2,7 +2,13 @@ const HEARTH = {
     sprite: null,
     x: 0,
     y: 0,
-    life: 20,
+    life: 200,
+    rect: {
+        x: 0,
+        y: 0,
+        w: 64,
+        h: 64
+    }
 }
 
 function initHearth(x, y) {
@@ -29,8 +35,20 @@ function initHearth(x, y) {
     });
 }
 
-function updateHearth() {
-    HEARTH.life -= 0.1;
+function setHearthLife(life) {
+    HEARTH.life = life;
+
+    if (host) {
+        socket.emit("set hearth life", life);
+    }
+
+    if (HEARTH.life === 0) {
+        removeHearth();
+    }
+}
+
+function removeHearth() {
+    console.log("Homewreckers won :(");
 }
 
 function drawHearthLife(cam) {

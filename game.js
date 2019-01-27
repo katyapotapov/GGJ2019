@@ -21,6 +21,7 @@ function initGame() {
     initResources();
     initBombs();
     initExplosions();
+    initPunch();
     initHearth(200, 200);
 }
 
