@@ -3,6 +3,7 @@ let loadedImages = {};
 function loadImage(filename, callback) {
     if (loadedImages[filename]) {
         callback(loadedImages[filename]);
+        return;
     }
 
     let image = new Image();
