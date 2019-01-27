@@ -31,6 +31,7 @@ function initGame() {
     initExplosions();
     initPunch();
     initResources();
+    initDefaultHearth();
 
     setTimeout(function() {
         socket = io("ws://localhost:8080");
@@ -41,7 +42,6 @@ function initGame() {
 function initHost() {
     initDefaultBuilding();
     initDefaultResources();
-    initDefaultHearth();
 
     for (let i = 0; i < 5; ++i) {
         createItem(ITEM_GUN, 800 + i * 100, 400);
