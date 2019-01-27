@@ -15,7 +15,7 @@ function createDebugRect(x, y, w, h, fill, duration) {
     };
 
     debugRects.push(rect);
-    
+
     return rect;
 }
 
@@ -25,9 +25,9 @@ function removeDebugRect(index) {
 
 function updateDebugRects() {
     for(let i = 0; i < debugRects.length; ++i) {
-        if(debugRects.duration > 0) {
-            debugRects.duration -= SEC_PER_FRAME;
-            if(debugRects.duration <= 0) {
+        if(debugRects[i].time > 0) {
+            debugRects[i].time -= SEC_PER_FRAME;
+            if(debugRects[i].time <= 0) {
                 removeDebugRect(i);
             }
         }
@@ -37,6 +37,6 @@ function updateDebugRects() {
 function drawDebugRects(cam) {
     for(let i = 0; i < debugRects.length; ++i) {
         ctx.fillStyle = debugRects[i].fill;
-        ctx.fillRect(debugRects[i].x - cam.x, debugRects[i].y - cam.y, debugRects[i].w, debugRects.h);
+        ctx.fillRect(debugRects[i].x - cam.x, debugRects[i].y - cam.y, debugRects[i].w, debugRects[i].h);
     }
 }
