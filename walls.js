@@ -40,8 +40,8 @@ function createWall(x, y, direction, life) {
     }
 
     let wall = {
-        x: x_aligned,
-        y: y_aligned,
+        x: x,
+        y: y,
         direction: direction,
         life: life,
         rect: {
