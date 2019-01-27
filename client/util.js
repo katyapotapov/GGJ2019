@@ -16,6 +16,10 @@ function loadImage(filename, callback) {
     image.src = filename;
 }
 
+function distanceSquared(x1, y1, x2, y2) {
+    return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+}
+
 function chooseRandom(objects) {
     let k = Math.floor(Math.random() * objects.length);
     return objects[k];
@@ -52,8 +56,8 @@ function collideRects(ax, ay, aw, ah, bx, by, bw, bh) {
         bh *= -1;
     }
 
-    if (ax + aw < bx || bx + bw < ax) return false;
-    if (ay + ah < by || by + bh < ay) return false;
+    if (ax + aw <= bx || bx + bw <= ax) return false;
+    if (ay + ah <= by || by + bh <= ay) return false;
 
     return true;
 }

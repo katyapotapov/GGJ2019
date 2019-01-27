@@ -1,3 +1,7 @@
+const HEARTH_FEED_RADIUS = 64;
+// Lose one life every n seconds
+const HEARTH_LOSS_DURATION = 10000;
+
 const HEARTH_X = 350;
 const HEARTH_Y = 600;
 

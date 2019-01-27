@@ -28,6 +28,14 @@ function initWalls() {
 }
 
 function createWall(x, y, direction, life) {
+    if(host) {
+        let otherWalls = getObjectsInRect(x, y, TILE_SIZE, TILE_SIZE, walls);
+
+        if(otherWalls.length > 0) {
+            return;
+        }
+    }
+
     let wall = {
         x: x,
         y: y,
