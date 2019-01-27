@@ -119,6 +119,11 @@ function drawHealth(cam) {
         if (!players[i].sprite) {
             continue;
         }
+    
+        if(players[i].life <= 0) {
+            continue;
+        }
+
         let center_x = players[i].sprite.x + players[i].sprite.info.frameWidth / 2;
         let x = center_x - (HEALTH_BAR_DRAW_WIDTH / 2);
         let y = players[i].sprite.y;
@@ -392,7 +397,7 @@ function handlePlayerState(id, x, y, anim, sequenceNumber, name, life) {
 function predictUpdatePlayer() {
     let player = getPlayerWithID(myPlayerID);
 
-    if (!player || !player.serverSequenceNumber) {
+    if (!player || !player.serverSequenceNumber || player.life <= 0) {
         return;
     }
 
