@@ -4,6 +4,7 @@ const ITEM_WALL = 2;
 const ITEM_WOOD = 3;
 const ITEM_MAGIC_WOOD = 4;
 const ITEM_IMAGES = [null, null, null, null, null];
+const MAX_AMT_OF_ITEMS = 20;
 const magicWoodDropCounterMin = 0;
 const magicWoodDropCounterMax = 3;
 
