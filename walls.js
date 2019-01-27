@@ -73,7 +73,7 @@ function setWallLife(index, life) {
         socket.emit("set wall life", index, life);
     }
 
-    if (walls[index].life === 0) {
+    if (walls[index].life <= 0) {
         removeWall(index);
     }
 }
