@@ -132,6 +132,7 @@ function drawGame() {
     drawBullets(cam);
     drawSprites(cam);
     drawHearthLife(cam);
+    drawStatus(cam);
     drawDebugRects(cam);
     drawPlayerNames(cam);
     drawInventory();
