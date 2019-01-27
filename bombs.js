@@ -60,12 +60,7 @@ function createExplosion(x, y) {
 
             let wallIndex = walls.indexOf(obj);
             let resourceIndex = resources.indexOf(obj);
-<<<<<<< HEAD
             if (wallIndex >= 0) {
-                console.log("Damaged wall: ", wallIndex);
-=======
-            if(wallIndex >= 0) {
->>>>>>> 2947b2df0d7055c5d0a50bb74cfb5e8c25db08fd
                 setWallLife(wallIndex, obj.life - 1);
                 continue;
             } else if (resourceIndex >= 0) {

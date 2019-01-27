@@ -215,18 +215,23 @@ function useSelectedItem(player, direction) {
         if (player.cooldown <= 0) {
             let x = 0;
             let y = 0;
+            let player_center_x = player.x + (player.sprite.info.frameWidth) / 2;
+            let player_center_y = player.y + (player.sprite.info.frameHeight) / 2;
             if (direction == DIR_UP) {
-                let player_center = player.x + (player.sprite.info.frameWidth) / 2;
-                x = player_center - bombImage.width / 2;
+                x = player_center_x - bombImage.width / 2;
+                y = player.y;
             } else if (direction == DIR_DOWN) {
-
+                x = player_center_x - bombImage.width / 2;
+                y = player.y + (player.sprite.info.frameHeight);
             } else if (direction == DIR_LEFT) {
-
+                x = player.x;
+                y = player_center_y - bombImage.height / 2;
             } else if (direction == DIR_RIGHT) {
-
+                x = player.x + player.sprite.info.frameWidth;
+                y = player_center_y - bombImage.height / 2;
             }
 
-            createBomb(player.x, player.y);
+            createBomb(x, y);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
             setItemQuantity(player.id, item.type, item.quantity - 1);
         }
