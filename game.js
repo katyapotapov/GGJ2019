@@ -45,14 +45,6 @@ function initHost() {
     initDefaultBuilding();
     initDefaultResources();
     setInterval(generateRandResources, 20000);
-
-    for (let i = 0; i < 5; ++i) {
-        createItem(ITEM_GUN, 800 + i * 100, 400);
-    }
-
-    for (let i = 0; i < 20; ++i) {
-        createItem(ITEM_BOMB, 1000 + i * 100, 300);
-    }
 }
 
 function damageObjects(objects, damage) {
@@ -86,7 +78,7 @@ function updateGame() {
     }
 
     updateDebugRects();
-    
+
     let myPlayer = getPlayerWithID(myPlayerID);
 
     if (host) {
@@ -110,7 +102,8 @@ function updateGame() {
             tickCount = 0;
         }
     } else {
-        if(myPlayer && myPlayer.life > 0) {
+        // Once the player dies or the hearth dies and the player is a protector, stop sending input
+        if (myPlayer && myPlayer.life > 0 && (!myPlayer.isProtector || HEARTH.life > 0)) {
             sendInput();
         }
 
@@ -120,32 +113,26 @@ function updateGame() {
 
     updateSprites();
 
-    if(myPlayer && myPlayer.life <= 0) {
-        if(input.left) {
+    if (myPlayer && myPlayer.life <= 0) {
+        if (input.left) {
             camera.x -= 300 * SEC_PER_FRAME;
         }
 
-        if(input.right) {
+        if (input.right) {
             camera.x += 300 * SEC_PER_FRAME;
         }
 
-        if(input.up) {
+        if (input.up) {
             camera.y -= 300 * SEC_PER_FRAME;
         }
 
-        if(input.down) {
+        if (input.down) {
             camera.y += 300 * SEC_PER_FRAME;
         }
     }
 
     if (myPlayer && myPlayer.life > 0) {
         if (host) {
-            if (myPlayer.inventory.items.length == 0) {
-                addItemToInventory(myPlayer, ITEM_GUN, 1);
-                addItemToInventory(myPlayer, ITEM_BOMB, 100);
-                addItemToInventory(myPlayer, ITEM_WALL, 100);
-            }
-
             camera.x += (myPlayer.x + myPlayer.rect.x + myPlayer.rect.w / 2 - camera.x - canvas.width / 2) * 0.1;
             camera.y += (myPlayer.y + myPlayer.rect.y + myPlayer.rect.h / 2 - camera.y - canvas.height / 2) * 0.1;
         }
@@ -173,6 +160,44 @@ function updateGame() {
 function drawGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    let myPlayer = getPlayerWithID(myPlayerID);
+
+    if (myPlayer && HEARTH.life <= 0) {
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        let text;
+
+        if (myPlayer.isProtector) {
+            text = "THE HEARTH IS NO MORE! YOU LOSE!";
+        } else {
+            text = "THE HEARTH IS NO MORE! YOU WIN!";
+        }
+
+        ctx.font = "20px Arial";
+        ctx.fillStyle = "white";
+        ctx.fillText(text, canvas.width / 2 - ctx.measureText(text).width / 2, canvas.height / 2);
+        return;
+    }
+
+    if (myPlayer && HEARTH.magicWood >= 5) {
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        let text;
+
+        if (myPlayer.isProtector) {
+            text = "YOU'VE REKINDLED THE HEARTH! YOU WIN!";
+        } else {
+            text = "THE PROTECTORS HAVE REKINDLED THE HEARTH! YOU LOSE!";
+        }
+
+        ctx.font = "20px Arial";
+        ctx.fillStyle = "white";
+        ctx.fillText(text, canvas.width / 2 - ctx.measureText(text).width / 2, canvas.height / 2);
+        return;
+    }
+
     const cam = {
         x: camera.x,
         y: camera.y
@@ -186,7 +211,6 @@ function drawGame() {
     cam.x = Math.floor(cam.x);
     cam.y = Math.floor(cam.y);
 
-
     drawTilemap(cam);
     drawWalls(cam);
     drawResources(cam);
@@ -196,19 +220,17 @@ function drawGame() {
     drawSprites(cam);
     drawHearthLife(cam);
 
-    let myPlayer = getPlayerWithID(myPlayerID);
-
     drawStatus(cam);
     drawDebugRects(cam);
     drawPlayerNames(cam);
     drawHealth(cam);
 
-    if(myPlayer && myPlayer.life <= 0) {
+    if (myPlayer && myPlayer.life <= 0) {
         drawMinimap();
         return;
     }
-  
-    if(myPlayer && !myPlayer.isProtector) {
+
+    if (myPlayer && !myPlayer.isProtector) {
         drawMinimap();
     }
 

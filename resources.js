@@ -76,25 +76,41 @@ function generateRandResources() {
     if (resources.length >= MAX_AMT_OF_RESOURCES) {
         return;
     }
+    if (items.length >= MAX_AMT_OF_ITEMS) {
+        return;
+    }
     const mapWidth = tileMap.width * TILE_SIZE - 100;
     const mapHeight = tileMap.height * TILE_SIZE - 100;
 
+    let shouldCreateItem = false;
+    let rand = 0;
+    let typeOfItem = ITEM_BOMB;
     let x = 0;
     let y = 0;
     let type = ROCK;
     let width = 0;
     let height = 0;
-
-    x = randomNumInRange(0, 9);
-    if (x < 3) {
-        type = TREE;
+    rand = randomNumInRange(0, 9);
+    if (rand < 2) {
+        shouldCreateItem = true;
     }
-    if (type == ROCK) {
-        width = 80;
-        height = 65;
+    if (shouldCreateItem) {
+        rand = randomNumInRange(0, 9);
+        if (rand < 4) {
+            typeOfItem = ITEM_GUN;
+        }
     } else {
-        width = 120;
-        height = 140;
+        rand = randomNumInRange(0, 9);
+        if (rand < 3) {
+            type = TREE;
+        }
+        if (type == ROCK) {
+            width = 80;
+            height = 65;
+        } else {
+            width = 120;
+            height = 140;
+        }
     }
 
     for (let i = 0; i < 50; i++) {
@@ -111,7 +127,11 @@ function generateRandResources() {
         if (objects.length != 0) {
             continue;
         }
-        createResource(type, x, y);
+        if (shouldCreateItem) {
+            createItem(typeOfItem, x, y);
+        } else {
+            createResource(type, x, y);
+        }
         return;
     }
 }
