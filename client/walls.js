@@ -32,7 +32,7 @@ function createWall(x, y, direction, life) {
         x: x,
         y: y,
         direction: direction,
-        life: 3,
+        life: life,
         rect: {
             x: 0,
             y: 0,
