@@ -31,19 +31,14 @@ function initWalls() {
 }
 
 function createWall(x, y, direction, life) {
-<<<<<<< HEAD
-    let x_aligned = Math.floor(x / TILE_SIZE) * TILE_SIZE;
-    let y_aligned = Math.floor(y / TILE_SIZE) * TILE_SIZE;
-=======
-    if(host) {
+    if (host) {
         let otherWalls = getObjectsInRect(x, y, TILE_SIZE, TILE_SIZE, walls);
 
-        if(otherWalls.length > 0) {
+        if (otherWalls.length > 0) {
             return;
         }
     }
 
->>>>>>> 18708f7a110ac82028c3c91b883583c092432c06
     let wall = {
         x: x_aligned,
         y: y_aligned,
