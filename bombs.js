@@ -1,5 +1,4 @@
 let bombs = [];
-let explosions = [];
 let bombImage = null;
 let explosionImage = null;
 
@@ -32,15 +31,8 @@ function createBomb(x, y) {
 }
 
 function createExplosion(x, y) {
-    let explosion = {
-        x: x,
-        y: y
-    }
-
-    explosions.push(explosion);
-
     loadImage("assets/explosion.png", function(image) {
-        explosion.sprite = createSprite({
+        let sprite = createSprite({
             image: image,
             frameWidth: 240,
             frameHeight: 188,
@@ -53,15 +45,13 @@ function createExplosion(x, y) {
                 }
             },
 
-            onLoop: function(sprite) {
-                removeExplosion(explosions.indexOf(explosion));
-            }
+            onLoop: removeSprite
         });
 
-        playAnim(explosion.sprite, "explode");
+        playAnim(sprite, "explode");
 
-        explosion.sprite.x = x-120;
-        explosion.sprite.y = y-94;
+        sprite.x = x-120;
+        sprite.y = y-94;
     });
 
     if(host) {
@@ -81,8 +71,6 @@ function createExplosion(x, y) {
             }
         }
     }
-
-    return explosion;
 }
 
 function removeBomb(index) {
@@ -90,15 +78,6 @@ function removeBomb(index) {
 
     if(host) {
         socket.emit("remove bomb", index);
-    }
-}
-
-function removeExplosion(index) {
-    removeSprite(explosions[index].sprite);
-    explosions.splice(index, 1);
-
-    if(host) {
-        socket.emit("remove explosion", index);
     }
 }
 
@@ -112,8 +91,6 @@ function updateBombs() {
         }
     }
 }
-
-
 
 function drawBombs(cam) {
     if (!bombImage){ return; }
