@@ -1,7 +1,7 @@
 function loadImage(filename, callback) {
     let image = new Image();
 
-    image.onload = function() {
+    image.onload = function () {
         callback(image);
     };
 
@@ -9,9 +9,9 @@ function loadImage(filename, callback) {
 }
 
 function clamp(v, min, max) {
-    if(v < min) {
+    if (v < min) {
         return min;
-    } else if(v > max) {
+    } else if (v > max) {
         return max;
     }
 
@@ -19,28 +19,28 @@ function clamp(v, min, max) {
 }
 
 function collideRects(ax, ay, aw, ah, bx, by, bw, bh) {
-    if(aw < 0) {
+    if (aw < 0) {
         ax += aw;
         aw *= -1;
     }
 
-    if(ah < 0) {
+    if (ah < 0) {
         ay += ah;
         ah *= -1;
     }
 
-    if(bw < 0) {
+    if (bw < 0) {
         bx += bw;
         bw *= -1;
     }
 
-    if(bh < 0) {
+    if (bh < 0) {
         by += bh;
         bh *= -1;
     }
 
-    if(ax + aw < bx || bx + bw < ax) return false;
-    if(ay + ah < by || by + bh < ay) return false;
+    if (ax + aw < bx || bx + bw < ax) return false;
+    if (ay + ah < by || by + bh < ay) return false;
 
     return true;
 }
@@ -62,7 +62,7 @@ function collideRectCircle(ax, ay, aw, ah, bx, by, radius) {
     // Clamp dx and dy to half extents
     dx = clamp(dx, -aw / 2, aw / 2);
     dy = clamp(dy, -ah / 2, ah / 2);
-    
+
     const px = cx + dx;
     const py = cy + dy;
 
@@ -75,18 +75,18 @@ function collideRectCircle(ax, ay, aw, ah, bx, by, radius) {
 function getCollidingObjects(object, x, y) {
     let col = [];
 
-    for(let arg = 3; arg < arguments.length; ++arg) {
+    for (let arg = 3; arg < arguments.length; ++arg) {
         let objects = arguments[arg];
 
-        for(let i = 0; i < objects.length; ++i) {
+        for (let i = 0; i < objects.length; ++i) {
             let obj = objects[i];
 
-            if(obj == object) {
+            if (obj == object) {
                 continue;
             }
 
-            if(collideRects(x + object.rect.x, y + object.rect.y, object.rect.w, object.rect.h,
-                            obj.x + obj.rect.x, obj.y + obj.rect.y, obj.rect.w, obj.rect.h)) {
+            if (collideRects(x + object.rect.x, y + object.rect.y, object.rect.w, object.rect.h,
+                obj.x + obj.rect.x, obj.y + obj.rect.y, obj.rect.w, obj.rect.h)) {
                 col.push(obj);
             }
         }
@@ -97,15 +97,15 @@ function getCollidingObjects(object, x, y) {
 
 function getObjectsInRect(x, y, w, h) {
     let col = [];
-    
-    for(let arg = 3; arg < arguments.length; ++arg) {
+
+    for (let arg = 3; arg < arguments.length; ++arg) {
         let objects = arguments[arg];
 
-        for(let i = 0; i < objects.length; ++i) {
+        for (let i = 0; i < objects.length; ++i) {
             let obj = objects[i];
 
-            if(collideRects(x, y, w, h,
-                            obj.x + obj.rect.x, obj.y + obj.rect.y, obj.rect.w, obj.rect.h)) {
+            if (collideRects(x, y, w, h,
+                obj.x + obj.rect.x, obj.y + obj.rect.y, obj.rect.w, obj.rect.h)) {
                 col.push(obj);
             }
         }
@@ -117,18 +117,22 @@ function getObjectsInRect(x, y, w, h) {
 function getObjectsInCircle(x, y, radius) {
     let col = [];
 
-    for(let arg = 3; arg < arguments.length; ++arg) {
+    for (let arg = 3; arg < arguments.length; ++arg) {
         let objects = arguments[arg];
 
-        for(let i = 0; i < objects.length; ++i) {
+        for (let i = 0; i < objects.length; ++i) {
             let obj = objects[i];
 
-            if(collideRectCircle(obj.x + obj.rect.x, obj.y + obj.rect.y, obj.rect.w, obj.rect.h,
-                                 x, y, radius)) {
+            if (collideRectCircle(obj.x + obj.rect.x, obj.y + obj.rect.y, obj.rect.w, obj.rect.h,
+                x, y, radius)) {
                 col.push(obj);
             }
         }
     }
 
     return col;
+}
+
+function randomNumInRange(x, y) {
+    return Math.floor(Math.random() * (y - x)) + x;
 }
