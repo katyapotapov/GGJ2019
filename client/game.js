@@ -110,7 +110,8 @@ function updateGame() {
             tickCount = 0;
         }
     } else {
-        if(myPlayer && myPlayer.life > 0) {
+        // Once the player dies or the hearth dies and the player is a protector, stop sending input
+        if(myPlayer && myPlayer.life > 0 && (!myPlayer.isProtector || HEARTH.life > 0)) {
             sendInput();
         }
 
@@ -173,6 +174,26 @@ function updateGame() {
 function drawGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    let myPlayer = getPlayerWithID(myPlayerID);
+
+    if(myPlayer && HEARTH.life <= 0) {
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        let text;
+        
+        if(myPlayer.isProtector) {
+            text = "THE HEARTH IS NO MORE! YOU LOSE!";
+        } else {
+            text = "THE HEARTH IS NO MORE! YOU WIN!";
+        }
+ 
+        ctx.font = "20px Arial";
+        ctx.fillStyle = "white";
+        ctx.fillText(text, canvas.width / 2 - ctx.measureText(text).width / 2, canvas.height / 2);
+        return;
+    }
+
     const cam = {
         x: camera.x,
         y: camera.y
@@ -186,7 +207,6 @@ function drawGame() {
     cam.x = Math.floor(cam.x);
     cam.y = Math.floor(cam.y);
 
-
     drawTilemap(cam);
     drawWalls(cam);
     drawResources(cam);
@@ -195,8 +215,6 @@ function drawGame() {
     drawBullets(cam);
     drawSprites(cam);
     drawHearthLife(cam);
-
-    let myPlayer = getPlayerWithID(myPlayerID);
 
     drawStatus(cam);
     drawDebugRects(cam);
