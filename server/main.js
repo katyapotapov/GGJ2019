@@ -22,9 +22,15 @@ io.on("connection", function(socket) {
         socket.emit("player joined", playerSocket.playerID);
     });
 
-    if(players.length == 1) {
-        socket.emit("host", socket.playerID);
+    function setHost(sock) {
+        console.log("Host: ", socket.playerID);
+        sock.emit("host");
+        sock.broadcast.emit("unhost");
         hostPlayer = socket;
+    }
+
+    if(players.length == 1) {
+        setHost(socket);
     } else {
         newPlayers.push(socket);
     }
@@ -60,6 +66,10 @@ io.on("connection", function(socket) {
         });
 
         newPlayers.length = 0;
+    });
+
+    socket.on("request host", function() {
+        setHost(socket);
     });
 
     socket.on("create bullet", function(x, y, dir) {
@@ -139,12 +149,11 @@ io.on("connection", function(socket) {
 
         io.emit("player left", socket.playerID);
 
+        players.splice(players.indexOf(socket), 1);
+
         if(socket == hostPlayer && players.length >= 1) {
             // Reassign host
-            players[0].emit("host", players[0].playerID);
-            hostPlayer = players[0];
+            setHost(players[0]);
         }
-
-        players.splice(players.indexOf(socket), 1);
     });
 });
