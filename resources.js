@@ -50,9 +50,17 @@ function createResource(type, x, y) {
         type: type,
         x: x,
         y: y,
-        life: setHealth
+        life: setHealth,
+        rect: {
+            x: 0,
+            y: 0,
+            w: 32,
+            h: 32,
+        }
+        
     };
 
+  
     resources.push(resource);
 
     if (host) {
