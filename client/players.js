@@ -196,6 +196,7 @@ function useSelectedItem(player, direction) {
         if (player.cooldown <= 0) {
             createBullet(player.x + 26, player.y + 32, direction);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
+            setItemQuantity(player.id, item.type, item.quantity - 1);
         }
     } else if (item.type == ITEM_WALL) {
         if (player.cooldown <= 0) {
@@ -319,6 +320,8 @@ function predictUpdatePlayer() {
         moveCollide(player, true);
     }
 
+    inputBuffer.length = 0;
+
     camera.x += (player.x + player.rect.x + player.rect.w / 2 - camera.x - canvas.width / 2) * 0.1;
     camera.y += (player.y + player.rect.y + player.rect.h / 2 - camera.y - canvas.height / 2) * 0.1;
 }
@@ -380,7 +383,12 @@ function playerPickupTouchingItems() {
         let colItems = getCollidingObjects(player, player.x, player.y, items);
 
         for (let j = 0; j < colItems.length; ++j) {
-            addItemToInventory(player, colItems[j].type, 1);
+            if(colItems[j].type == ITEM_GUN) {
+                addItemToInventory(player, colItems[j].type, 30);
+            } else {
+                addItemToInventory(player, colItems[j].type, 1);
+            }
+
             removeItem(items.indexOf(colItems[j]));
         }
     }
