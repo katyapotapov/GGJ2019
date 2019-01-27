@@ -19,7 +19,7 @@ let myPlayerID = -1;
 let role;
 let players = [];
 
-function createPlayer(id, x, y) {
+function createPlayer(id, x, y, isProtector) {
     let setName = null;
 
     if (PLAYER_NAMES.length > 0) {
@@ -37,6 +37,7 @@ function createPlayer(id, x, y) {
         dx: 0,
         dy: 0,
         sprite: null,
+        isProtector: isProtector,
         rect: {
             x: 20,
             y: 38,
@@ -236,11 +237,14 @@ function useSelectedItem(player, direction) {
                     player.x = x + 12;
                 }
             }
-            x = Math.floor(x / TILE_SIZE) * TILE_SIZE;
-            y = Math.floor(y / TILE_SIZE) * TILE_SIZE;
-            createWall(x, y, direction, WALL_LIFE);
-            setItemQuantity(player.id, item.type, item.quantity - 1);
-            player.cooldown += WALL_PLACE_COOLDOWN;
+
+            let xx = Math.floor(x / TILE_SIZE) * TILE_SIZE;
+            let yy = Math.floor(y / TILE_SIZE) * TILE_SIZE;
+
+            if(createWall(xx, yy, direction, WALL_LIFE)) {
+                setItemQuantity(player.id, item.type, item.quantity - 1);
+                player.cooldown += WALL_PLACE_COOLDOWN;
+            }
         }
     } else if (item.type == ITEM_BOMB) {
         if (!bombImage) {
@@ -422,9 +426,14 @@ function drawInventory() {
 }
 
 function drawStatus(cam) {
-    if (!role) return;
+    let player = getPlayerWithID(myPlayerID);
+
+    if(!player) {
+        return;
+    }
+
     ctx.fillText(
-        role,
+        player.isProtector ? "Protector" : "Homewrecker",
         ROLE_DRAW_POS.x,
         ROLE_DRAW_POS.y);
 }

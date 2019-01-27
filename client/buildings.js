@@ -13,7 +13,7 @@ function createBuilding(x, y, l, w, doorWall, doorDist) {
             createWall(x + 32 * i, y, DIR_UP, 10);
         }
         if (doorWall !== DIR_DOWN || doorDist !== i) {
-        createWall(x + 32 * i, y + 32 * w, DIR_DOWN, 10);
+            createWall(x + 32 * i, y + 32 * w, DIR_DOWN, 10);
         }
     }
     for (let j = 0; j <= w; j++) {
@@ -27,6 +27,6 @@ function createBuilding(x, y, l, w, doorWall, doorDist) {
 }
 
 function initDefaultBuilding() {
-    createBuilding(HOUSE_X, HOUSE_Y, HOUSE_BLOCKS_LEFT, HOUSE_BLOCKS_DOWN,
+    createBuilding(Math.floor(HOUSE_X / TILE_SIZE) * TILE_SIZE, Math.floor(HOUSE_Y / TILE_SIZE) * TILE_SIZE, HOUSE_BLOCKS_LEFT, HOUSE_BLOCKS_DOWN,
         HOUSE_DOOR_BLOCK_WALL, HOUSE_DOOR_BLOCK_DIST);
 }

@@ -1,5 +1,3 @@
-let host = false;
-
 let socket = io("ws://localhost:8080");
 
 socket.on("host", function () {
@@ -21,17 +19,12 @@ socket.on("set player id", function (id) {
     }
 });
 
-socket.on("player joined", function (id) {
+socket.on("player joined", function (id, isProtector) {
     console.log("Hello " + id);
-    createPlayer(id, 300, 300);
+    createPlayer(id, 300, 300, isProtector);
     if (host && id != myPlayerID) {
         sendSnapshot();
     }
-});
-
-socket.on("is protector", function(isProtector) {
-    role = isProtector ? "Protector" : "Homewrecker";
-    console.log(`You are a ${role}!`);
 });
 
 socket.on("player input", handleInput);

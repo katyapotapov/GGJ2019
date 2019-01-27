@@ -35,7 +35,7 @@ function createWall(x, y, direction, life) {
         let otherWalls = getObjectsInRect(x, y, TILE_SIZE, TILE_SIZE, walls);
 
         if (otherWalls.length > 0) {
-            return;
+            return null;
         }
     }
 
