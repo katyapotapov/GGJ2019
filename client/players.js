@@ -215,7 +215,7 @@ function setSelectedItem(playerID, index) {
 function useSelectedItem(player, direction) {
     if (player.inventory.selected >= player.inventory.items.length) {
         if (player.cooldown <= 0) {
-            createPunch(player.x, player.y, direction);
+            createPunch(player.x, player.y, direction, player.isProtector);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
         return;
@@ -248,14 +248,14 @@ function useSelectedItem(player, direction) {
             } else if (direction == DIR_RIGHT) {
                 x = (Math.floor((player.x + player.dx) / TILE_SIZE) + 2) * TILE_SIZE;
                 y = Math.floor(player_center_y / TILE_SIZE) * TILE_SIZE;
-                if(player.x > x - TILE_SIZE - 12) {
+                if (player.x > x - TILE_SIZE - 12) {
                     player.x = x - TILE_SIZE - 12;
                 }
             } else if (direction == DIR_LEFT) {
                 x = Math.floor((player.x + player.dx) / TILE_SIZE) * TILE_SIZE;
                 y = Math.floor(player_center_y / TILE_SIZE) * TILE_SIZE;
 
-                if(player.x < x + 12) {
+                if (player.x < x + 12) {
                     player.x = x + 12;
                 }
             }
@@ -263,7 +263,7 @@ function useSelectedItem(player, direction) {
             let xx = Math.floor(x / TILE_SIZE) * TILE_SIZE;
             let yy = Math.floor(y / TILE_SIZE) * TILE_SIZE;
 
-            if(createWall(xx, yy, direction, WALL_LIFE)) {
+            if (createWall(xx, yy, direction, WALL_LIFE)) {
                 setItemQuantity(player.id, item.type, item.quantity - 1);
                 player.cooldown += WALL_PLACE_COOLDOWN;
             }
@@ -451,7 +451,7 @@ function drawInventory() {
 function drawStatus(cam) {
     let player = getPlayerWithID(myPlayerID);
 
-    if(!player) {
+    if (!player) {
         return;
     }
 
