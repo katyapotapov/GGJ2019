@@ -147,9 +147,9 @@ function setItemQuantity(playerID, type, quantity) {
     if (quantity <= 0) {
         return;
     }
-    
-    if(host) {
-        if(player.inventory.selected == player.inventory.items.length) {
+
+    if (host) {
+        if (player.inventory.selected == player.inventory.items.length) {
             setSelectedItem(player.id, player.inventory.selected + 1);
         }
     }
@@ -223,7 +223,7 @@ function useSelectedItem(player, direction) {
                 x = Math.floor(player_center_x / TILE_SIZE) * TILE_SIZE;
                 y = ((Math.floor((player.y + player.dy) + player.sprite.info.frameHeight) / TILE_SIZE) + 1) * TILE_SIZE;
             } else if (direction == DIR_RIGHT) {
-                x = (Math.floor((player.x + player.dx) / TILE_SIZE) + 2) * TILE_SIZE;
+                x = (Math.floor((player.x + player.dx) / TILE_SIZE) + 3) * TILE_SIZE;
                 y = Math.floor(player_center_y / TILE_SIZE) * TILE_SIZE;
             } else if (direction == DIR_LEFT) {
                 x = (Math.floor((player.x + player.dx) / TILE_SIZE) - 1) * TILE_SIZE;
@@ -259,10 +259,10 @@ function useSelectedItem(player, direction) {
             createBomb(x, y);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
             setItemQuantity(player.id, item.type, item.quantity - 1);
-        } 
-    } else if(item.type == ITEM_WOOD) {
-        if(player.cooldown <= 0) {
-            if(distanceSquared(player.x, player.y, HEARTH.x, HEARTH.y) < HEARTH_FEED_RADIUS * HEARTH_FEED_RADIUS) {
+        }
+    } else if (item.type == ITEM_WOOD) {
+        if (player.cooldown <= 0) {
+            if (distanceSquared(player.x, player.y, HEARTH.x, HEARTH.y) < HEARTH_FEED_RADIUS * HEARTH_FEED_RADIUS) {
                 console.log("FEEDING THE HEARTH");
                 setHearthLife(HEARTH.life + 1);
                 setItemQuantity(player.id, item.type, item.quantity - 1);
@@ -306,7 +306,7 @@ function handleInput(id, input) {
                     useSelectedItem(players[i], DIR_RIGHT);
                 }
 
-                if(input.invSelect >= 0) {
+                if (input.invSelect >= 0) {
                     setSelectedItem(players[i].id, input.invSelect);
                 }
 
@@ -434,6 +434,7 @@ function playerPickupTouchingItems() {
         for (let j = 0; j < colItems.length; ++j) {
             if (colItems[j].type == ITEM_GUN) {
                 addItemToInventory(player, colItems[j].type, 30);
+                j
             } else {
                 addItemToInventory(player, colItems[j].type, 1);
             }
