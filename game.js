@@ -32,8 +32,10 @@ function initGame() {
     initPunch();
     initResources();
 
-    socket = io("ws://localhost:8080");
-    registerSocketCallbacks();
+    setTimeout(function() {
+        socket = io("ws://localhost:8080");
+        registerSocketCallbacks();
+    }, 2000);
 }
 
 function initHost() {
@@ -73,6 +75,10 @@ function damageObjects(objects, damage) {
 }
 
 function updateGame() {
+    if(!socket) {
+        return;
+    }
+
     if (camera.shake.timer > 0) {
         camera.shake.timer -= SEC_PER_FRAME;
     }
@@ -141,7 +147,7 @@ function updateGame() {
     ++tickCount;
 }
 
-function drawGame() {
+function drawGame() { 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const cam = {
@@ -171,4 +177,12 @@ function drawGame() {
     drawHealth(cam);
     drawMinimap();
     drawInventory();
+
+    if(!socket) {
+        ctx.fillStyle = "white";
+        ctx.font = "20px Arial";
+        ctx.fillText("Loading...", canvas.width / 2 - ctx.measureText("Loading...").width / 2, canvas.height / 2);
+
+        return;
+    }
 }
