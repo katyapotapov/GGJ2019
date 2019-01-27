@@ -141,5 +141,5 @@ function getObjectsInCircle(x, y, radius) {
 }
 
 function randomNumInRange(x, y) {
-    return Math.floor(Math.random() * (y - x)) + x;
+    return Math.floor(Math.random() * (y - x) + x);
 }
