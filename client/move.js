@@ -5,7 +5,7 @@ const SWEEP_SAMPLES = 5;
 function moveCollide(e, sweep) {
     function collide(x, y) {
         return collideTileMap(x + e.rect.x, y + e.rect.y, e.rect.w, e.rect.h) ||
-               getCollidingObjects(e, x, y, walls, resources).length > 0;
+               getCollidingObjects(e, x, y, walls, resources, [HEARTH]).length > 0;
     }
 
     if(collide(e.x + e.dx, e.y)) {
