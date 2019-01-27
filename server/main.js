@@ -96,8 +96,8 @@ io.on("connection", function(socket) {
         socket.broadcast.volatile.emit("player input", socket.playerID, input);
     });
 
-    socket.on("player state", function(id, x, y, anim, sequenceNumber) {
-        socket.broadcast.volatile.emit("player state", id, x, y, anim, sequenceNumber);
+    socket.on("player state", function(id, x, y, anim, sequenceNumber, name) {
+        socket.broadcast.volatile.emit("player state", id, x, y, anim, sequenceNumber, name);
     });
 
     socket.on("create wall", function(x, y, dir, life) {
