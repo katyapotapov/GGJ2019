@@ -1,6 +1,6 @@
 let host = false;
 
-let socket = io("ws://ebc87298.ngrok.io");
+let socket = io("ws://localhost:8080");
 
 socket.on("host", function() {
     host = true;
@@ -50,6 +50,8 @@ socket.on("remove item", removeItem);
 
 socket.on("create punch", createPunch);
 
+socket.on("set hearth life", setHearthLife);
+
 socket.on("player left", function(id) {
     removePlayer(id);
     console.log("Goodbye " + id);
@@ -61,6 +63,7 @@ function sendSnapshot() {
         walls: walls,
         resources: resources,
         bombs: bombs,
-        items: items
+        items: items,
+        hearthLife: HEARTH.life
     });
 }

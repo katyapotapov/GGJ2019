@@ -54,6 +54,8 @@ io.on("connection", function(socket) {
             for(let i = 0; i < data.items.length; ++i) {
                 socket.emit("create item", data.items[i].type, data.items[i].x, data.items[i].y);
             }
+
+            socket.emit("set hearth life", data.hearthLife);
         });
 
         newPlayers.length = 0;
@@ -127,6 +129,9 @@ io.on("connection", function(socket) {
         socket.broadcast.emit("create punch", x, y, dir);
     });
 
+    socket.on("set hearth life", function(life) {
+        socket.broadcast.emit("set hearth life", life);
+    });
 
     socket.on("disconnect", function() {
         console.log("Player left!");

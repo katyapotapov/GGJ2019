@@ -105,7 +105,7 @@ function getCollidingObjects(object, x, y) {
 function getObjectsInRect(x, y, w, h) {
     let col = [];
 
-    for (let arg = 3; arg < arguments.length; ++arg) {
+    for (let arg = 4; arg < arguments.length; ++arg) {
         let objects = arguments[arg];
 
         for (let i = 0; i < objects.length; ++i) {
