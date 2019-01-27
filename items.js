@@ -3,11 +3,12 @@ const ITEM_BOMB = 1;
 const ITEM_WALL = 2;
 const ITEM_WOOD = 3;
 const ITEM_MAGIC_WOOD = 4;
-
 const ITEM_IMAGES = [null, null, null, null, null];
+const magicWoodDropCounterMin = 15;
+const magicWoodDropCounterMax = 20;
 
 let items = [];
-let magicWoodDropCounter = 20;
+let magicWoodDropCounter = 0;
 
 function initItems() {
     loadImage("assets/crossbow.png", function (image) {
@@ -28,6 +29,8 @@ function initItems() {
     loadImage("assets/magicwood.png", function (image) {
         ITEM_IMAGES[ITEM_MAGIC_WOOD] = image;
     });
+    magicWoodDropCounter = randomNumInRange(magicWoodDropCounterMin,
+        magicWoodDropCounterMin);
 }
 
 function createItem(type, x, y) {

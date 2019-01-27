@@ -111,9 +111,15 @@ function generateRandResources() {
 }
 
 function removeResource(index) {
-    if(host) {
+    if (host) {
         if (resources[index].type == TREE) {
-            createItem(ITEM_WOOD, resources[index].x, resources[index].y);
+            if (magicWoodDropCounter <= 0) {
+                createItem(ITEM_MAGIC_WOOD, resources[index].x, resources[index].y);
+                magicWoodDropCounter = randomNumInRange(magicWoodDropCounterMin,
+                    magicWoodDropCounterMax);
+            } else {
+                createItem(ITEM_WOOD, resources[index].x, resources[index].y);
+            }
         } else {
             createItem(ITEM_WALL, resources[index].x, resources[index].y);
         }
