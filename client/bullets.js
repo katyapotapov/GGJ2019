@@ -22,11 +22,41 @@ function initBullets() {
 }
 
 function createBullet(x, y, direction) {
+    let w, h;
+
     let bullet = {
         x: x,
         y: y,
+        dx: 0,
+        dy: 0,
         direction: direction,
-        life: 120
+        life: 120,
+        rect: {
+            x: 0,
+            y: 0,
+            w: 0,
+            h: 0
+        }
+    };
+
+    if (direction === DIR_UP) {
+        bullet.rect.w = 10;
+        bullet.rect.h = 13;
+        bullet.dy = -BULLET_MOVE_SPEED;
+    } else if (direction === DIR_DOWN) {
+        bullet.rect.w = 10;
+        bullet.rect.h = 13;
+        bullet.dy = BULLET_MOVE_SPEED;
+    } else if (direction === DIR_LEFT) {
+        bullet.rect.w = 13;
+        bullet.rect.h = 10;
+        bullet.dx = -BULLET_MOVE_SPEED;
+    } else if (direction === DIR_RIGHT) {
+        bullet.rect.w = 13;
+        bullet.rect.h = 10;
+        bullet.dx = BULLET_MOVE_SPEED;
+    } else {
+        throw "Bullet direction not defined correctly";
     }
 
     if(host) {
@@ -53,23 +83,34 @@ function handleBulletState(index, x, y) {
 
 function updateBullets() {
     for(let i = 0; i < bullets.length; ++i) {
-        if (bullets[i].life == 0){
+        let bullet = bullets[i];
+        if (bullet.life == 0){
             removeBullet(i);
         } else {
-            if (bullets[i].direction == DIR_LEFT) {
-                bullets[i].x -= BULLET_MOVE_SPEED;
-            }
-            else if (bullets[i].direction == DIR_RIGHT) {
-                bullets[i].x += BULLET_MOVE_SPEED;
-            }
-            else if (bullets[i].direction == DIR_UP) {
-                bullets[i].y -= BULLET_MOVE_SPEED;
-            }
-            else if (bullets[i].direction == DIR_DOWN) {
-                bullets[i].y += BULLET_MOVE_SPEED;
-            }
+            moveCollide(bullet, false, function(objects) {
+                if (objects) {
+                    for(let i = 0; i < objects.length; ++i) {
+                        let obj = objects[i];
 
-            bullets[i].life -=1;
+                        let wallIndex = walls.indexOf(obj);
+                        let resourceIndex = resources.indexOf(obj);
+                        if(wallIndex >= 0) {
+                            console.log("Damaged wall: ", wallIndex);
+                            setWallLife(wallIndex, obj.life - 1);
+                            continue;
+                        } else if (resourceIndex >= 0) {
+                            console.log("Damaged resource: ", resourceIndex);
+                            setResourceLife(resourceIndex, obj.life - 1);
+                        } else {
+                            console.log("Damaged hearth!");
+                            setHearthLife(obj.life - 1);
+                        }
+                    }
+                }
+                removeBullet(i);
+            });
+
+            bullet.life -=1;
         }
     }
 }
