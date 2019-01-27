@@ -25,16 +25,16 @@ function createPunch(x, y, direction, isProtector) {
 
     playAnim(sprite, "slash");
 
-    let xPunch = x - 50;
-    let yPunch = y - 50;
+    let xPunch = x - 48;
+    let yPunch = y - 48;
     if (direction === DIR_DOWN) {
-        yPunch += 32;
+        yPunch += 48;
     } else if (direction === DIR_UP) {
-        yPunch -= 32;
+        yPunch -= 48;
     } else if (direction === DIR_LEFT) {
-        xPunch -= 32;
+        xPunch -= 48;
     } else if (direction === DIR_RIGHT) {
-        xPunch += 32;
+        xPunch += 48;
     } else {
         throw "Direction is invalid";
     }
