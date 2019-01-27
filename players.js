@@ -119,7 +119,7 @@ function drawHealth(cam) {
         if (!players[i].sprite) {
             continue;
         }
-    
+
         if(players[i].life <= 0) {
             continue;
         }
@@ -474,10 +474,21 @@ function drawStatus(cam) {
         return;
     }
 
-    ctx.font = "20px Arial";
-    ctx.fillStyle = "blue";
+    ctx.font = "20px Monospace";
+    let text = player.isProtector ? "Protector" : "Homewrecker";
+    let textWidth = ctx.measureText(text).width;
+    let textHeight = parseInt(ctx.font);
+    let margins = 6;
+
+    ctx.strokeStyle = "white";
+    ctx.strokeRect(ROLE_DRAW_POS.x - margins / 2, ROLE_DRAW_POS.y - textHeight - margins / 2, textWidth + margins, textHeight + margins);
+
+    ctx.fillStyle = player.isProtector ? "blue" : "red";
+    ctx.fillRect(ROLE_DRAW_POS.x - margins / 2, ROLE_DRAW_POS.y - textHeight - margins / 2, textWidth + margins, textHeight + margins);
+
+    ctx.fillStyle = "white";
     ctx.fillText(
-        player.isProtector ? "Protector" : "Homewrecker",
+        text,
         ROLE_DRAW_POS.x,
         ROLE_DRAW_POS.y);
 }
