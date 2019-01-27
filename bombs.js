@@ -1,6 +1,5 @@
 let bombs = [];
 let bombImage = null;
-let explosionImage = null;
 
 function initBombs() {
     loadImage("assets/bomb3.png", function (image) {
@@ -9,9 +8,6 @@ function initBombs() {
 }
 
 function initExplosions() {
-    loadImage("assets/explosion2.png", function (image) {
-        explosionImage = image;
-    });
 }
 
 function createBomb(x, y) {
@@ -64,15 +60,17 @@ function createExplosion(x, y) {
 
             let wallIndex = walls.indexOf(obj);
             let resourceIndex = resources.indexOf(obj);
+<<<<<<< HEAD
             if (wallIndex >= 0) {
                 console.log("Damaged wall: ", wallIndex);
+=======
+            if(wallIndex >= 0) {
+>>>>>>> 2947b2df0d7055c5d0a50bb74cfb5e8c25db08fd
                 setWallLife(wallIndex, obj.life - 1);
                 continue;
             } else if (resourceIndex >= 0) {
-                console.log("Damaged resource: ", resourceIndex);
                 setResourceLife(resourceIndex, obj.life - 1);
             } else {
-                console.log("Damaged hearth!");
                 setHearthLife(obj.life - 1);
             }
         }
