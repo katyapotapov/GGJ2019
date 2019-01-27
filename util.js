@@ -95,6 +95,25 @@ function getCollidingObjects(object, x, y) {
     return col;
 }
 
+function getObjectsInRect(x, y, w, h) {
+    let col = [];
+    
+    for(let arg = 3; arg < arguments.length; ++arg) {
+        let objects = arguments[arg];
+
+        for(let i = 0; i < objects.length; ++i) {
+            let obj = objects[i];
+
+            if(collideRects(x, y, w, h,
+                            obj.x + obj.rect.x, obj.y + obj.rect.y, obj.rect.w, obj.rect.h)) {
+                col.push(obj);
+            }
+        }
+    }
+
+    return col;
+}
+
 function getObjectsInCircle(x, y, radius) {
     let col = [];
 

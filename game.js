@@ -39,8 +39,8 @@ function updateGame() {
             handleInput(myPlayerID, input);
 
             // Everybody gets a gun
-            for(let i = 0; i < players.length; ++i) {
-                if(players[i].id != myPlayerID && players[i].inventory.items.length == 0) {
+            for (let i = 0; i < players.length; ++i) {
+                if (players[i].id != myPlayerID && players[i].inventory.items.length == 0) {
                     addItem(players[i], ITEM_GUN, 1);
                 }
             }
@@ -106,4 +106,5 @@ function drawGame() {
     drawResources(cam);
     drawInventory();
     drawBombs(cam);
+    drawHearthLife(cam);
 }
