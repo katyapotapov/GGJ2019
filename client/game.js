@@ -40,6 +40,8 @@ function updateGame() {
         camera.shake.timer -= SEC_PER_FRAME;
     }
 
+    updateDebugRects();
+
     if (host) {
         if (players) {
             // Handle host player's input locally
