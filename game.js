@@ -28,7 +28,7 @@ function initGame() {
     initBombs();
     initExplosions();
     initPunch();
-    initHearth(200, 200);
+    initDefaultHearth();
 }
 
 function initHost() {
