@@ -1,5 +1,6 @@
 const PLAYER_MOVE_SPEED = 6;
 const PLAYER_SHOOT_COOLDOWN = 0.3;
+const PLAYER_NAMES = ["Rick", "Buck", "Moe", "Karl", "Will", "Jim", "Logan", "Mason"];
 
 const INV_DRAW_POS = {
     x: 100,
@@ -19,8 +20,16 @@ let myPlayerID = -1;
 let players = [];
 
 function createPlayer(id, x, y) {
+    let setName = null;
+    if (PLAYER_NAMES.length > 0) {
+        setName = PLAYER_NAME[0];
+        PLAYER_NAMES.shift();
+    } else {
+        setName = "ERROR_NO_NAME";
+    }
     let player = {
         id: id,
+        name: setName,
         x: x,
         y: y,
         dx: 0,
@@ -39,7 +48,7 @@ function createPlayer(id, x, y) {
         cooldown: 0
     };
 
-    loadImage("assets/rick.png", function(image) {
+    loadImage("assets/rick.png", function (image) {
         player.sprite = createSprite({
             image: image,
             frameWidth: 64,
@@ -75,9 +84,21 @@ function createPlayer(id, x, y) {
     players.push(player);
 }
 
+function drawPlayerNames(cam) {
+    ctx.font = "15px Arial";
+    ctx.fillStyle = "blue";
+    for (let i = 0; i < players.size(); i++) {
+        let name = players[i].name;
+        let nameWidth = ctx.measureText(name).width;
+        let center_x = (players[i].sprite.x + players[i].sprite.width) / 2;
+        let x = center_x - (nameWidth / 2);
+        ctx.fillText(name)
+    }
+}
+
 function getPlayerWithID(id) {
-    for(let i = 0; i < players.length; ++i) {
-        if(players[i].id == id) {
+    for (let i = 0; i < players.length; ++i) {
+        if (players[i].id == id) {
             return players[i];
         }
     }
@@ -99,15 +120,15 @@ function removePlayer(id) {
 }
 
 function setItemQuantity(playerID, type, quantity) {
-    if(host) {
+    if (host) {
         socket.emit("set item quantity", playerID, type, quantity);
     }
 
     let player = getPlayerWithID(playerID);
 
-    for(let i = 0; i < player.inventory.items.length; ++i) {
-        if(player.inventory.items[i].type == type) {
-            if(quantity <= 0) {
+    for (let i = 0; i < player.inventory.items.length; ++i) {
+        if (player.inventory.items[i].type == type) {
+            if (quantity <= 0) {
                 player.inventory.items.splice(i, 1);
                 return;
             }
@@ -117,7 +138,7 @@ function setItemQuantity(playerID, type, quantity) {
         }
     }
 
-    if(quantity <= 0) {
+    if (quantity <= 0) {
         return;
     }
 
@@ -128,8 +149,8 @@ function setItemQuantity(playerID, type, quantity) {
 }
 
 function addItemToInventory(player, type, quantity) {
-    for(let i = 0; i < player.inventory.items.length; ++i) {
-        if(player.inventory.items[i].type == type) {
+    for (let i = 0; i < player.inventory.items.length; ++i) {
+        if (player.inventory.items[i].type == type) {
             setItemQuantity(player.id, type, player.inventory.items[i].quantity + quantity);
             return;
         }
@@ -141,15 +162,15 @@ function addItemToInventory(player, type, quantity) {
 function setSelectedItem(playerID, index) {
     let player = getPlayerWithID(playerID);
 
-    if(index > 9) {
+    if (index > 9) {
         index = 9;
     }
 
-    if(index < 0) {
+    if (index < 0) {
         index = 0;
     }
 
-    if(host) {
+    if (host) {
         socket.emit("set selected item", player.id, index);
     }
 
@@ -157,8 +178,8 @@ function setSelectedItem(playerID, index) {
 }
 
 function useSelectedItem(player) {
-    if(player.inventory.selected >= player.inventory.items.length) {
-        if(player.cooldown <= 0) {
+    if (player.inventory.selected >= player.inventory.items.length) {
+        if (player.cooldown <= 0) {
             createPunch(player.x, player.y, stringToDirection(player.sprite.curAnimName));
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
@@ -167,23 +188,23 @@ function useSelectedItem(player) {
 
     let item = player.inventory.items[player.inventory.selected];
 
-    if(item.quantity <= 0) {
+    if (item.quantity <= 0) {
         return;
     }
 
-    if(item.type == ITEM_GUN) {
-        if(player.cooldown <= 0) {
+    if (item.type == ITEM_GUN) {
+        if (player.cooldown <= 0) {
             createBullet(player.x, player.y, DIR_UP);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
-    } else if(item.type == ITEM_WALL) {
-        if(player.cooldown <= 0) {
+    } else if (item.type == ITEM_WALL) {
+        if (player.cooldown <= 0) {
             // TODO: Place buildings
             setItemQuantity(player.id, item.type, item.quantity - 1);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
-    } else if(item.type == ITEM_BOMB) {
-        if(player.cooldown <= 0) {
+    } else if (item.type == ITEM_BOMB) {
+        if (player.cooldown <= 0) {
             createBomb(player.x, player.y);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
             setItemQuantity(player.id, item.type, item.quantity - 1);
@@ -194,28 +215,28 @@ function useSelectedItem(player) {
 function handleInput(id, input) {
     for (let i = 0; i < players.length; i++) {
         if (players[i].id == id) {
-            if(input.left) {
+            if (input.left) {
                 players[i].dx = -PLAYER_MOVE_SPEED;
                 playAnim(players[i].sprite, "left");
-            } else if(input.right) {
+            } else if (input.right) {
                 players[i].dx = PLAYER_MOVE_SPEED;
                 playAnim(players[i].sprite, "right");
             } else {
                 players[i].dx = 0;
             }
 
-            if(input.up) {
+            if (input.up) {
                 players[i].dy = -PLAYER_MOVE_SPEED;
                 playAnim(players[i].sprite, "up");
-            } else if(input.down) {
+            } else if (input.down) {
                 players[i].dy = PLAYER_MOVE_SPEED;
                 playAnim(players[i].sprite, "down");
             } else {
                 players[i].dy = 0;
             }
 
-            if(host) {
-                if(input.use) {
+            if (host) {
+                if (input.use) {
                     useSelectedItem(players[i]);
                 }
 
@@ -234,11 +255,11 @@ function handlePlayerState(id, x, y, anim, sequenceNumber) {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
 
-        if(player.id != id) {
+        if (player.id != id) {
             continue;
         }
 
-        if(id == myPlayerID) {
+        if (id == myPlayerID) {
             // Client side prediction
             player.x = x;
             player.y = y;
@@ -256,15 +277,15 @@ function handlePlayerState(id, x, y, anim, sequenceNumber) {
 function predictUpdatePlayer() {
     let player = getPlayerWithID(myPlayerID);
 
-    if(!player || !player.serverSequenceNumber) {
+    if (!player || !player.serverSequenceNumber) {
         return;
     }
 
-    inputBuffer = inputBuffer.filter(function(input) {
+    inputBuffer = inputBuffer.filter(function (input) {
         return input.sequenceNumber < player.serverSequenceNumber;
     });
 
-    for(let i = 0; i < inputBuffer.length; ++i) {
+    for (let i = 0; i < inputBuffer.length; ++i) {
         handleInput(myPlayerID, inputBuffer[i]);
         moveCollide(player, true);
     }
@@ -277,8 +298,8 @@ function updatePlayerSpritePositions(interpolate) {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
 
-        if(player.sprite) {
-            if(interpolate) {
+        if (player.sprite) {
+            if (interpolate) {
                 player.sprite.x += (player.x - player.sprite.x) * 0.2;
                 player.sprite.y += (player.y - player.sprite.y) * 0.2;
             } else {
@@ -292,14 +313,14 @@ function updatePlayerSpritePositions(interpolate) {
 function drawInventory() {
     let player = getPlayerWithID(myPlayerID);
 
-    if(!player) {
+    if (!player) {
         return;
     }
 
     ctx.fillStyle = "#f287c7";
     ctx.fillRect(INV_DRAW_POS.x, INV_DRAW_POS.y, INV_DRAW_WIDTH, INV_DRAW_HEIGHT);
 
-    for(let i = 0; i < player.inventory.items.length; ++i) {
+    for (let i = 0; i < player.inventory.items.length; ++i) {
         let item = player.inventory.items[i];
 
         ctx.fillStyle = INV_ITEM_COLOR[item.type];
@@ -311,15 +332,15 @@ function drawInventory() {
 }
 
 function playerPickupTouchingItems() {
-    if(!host) {
+    if (!host) {
         throw "DO NOT CALL THIS OUTSIDE OF HOST";
     }
 
-    for(let i = 0; i < players.length; ++i) {
+    for (let i = 0; i < players.length; ++i) {
         let player = players[i];
         let colItems = getCollidingObjects(player, player.x, player.y, items);
 
-        for(let j = 0; j < colItems.length; ++j) {
+        for (let j = 0; j < colItems.length; ++j) {
             addItemToInventory(player, colItems[j].type, 1);
             removeItem(items.indexOf(colItems[j]));
         }
@@ -330,7 +351,7 @@ function movePlayers() {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
 
-        if(player.cooldown > 0) {
+        if (player.cooldown > 0) {
             player.cooldown -= SEC_PER_FRAME;
         }
 
@@ -339,7 +360,7 @@ function movePlayers() {
 }
 
 function sendPlayers() {
-    for(let i = 0; i < players.length; ++i) {
+    for (let i = 0; i < players.length; ++i) {
         const player = players[i];
 
         socket.emit("player state", player.id, player.x, player.y,
