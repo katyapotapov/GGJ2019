@@ -22,10 +22,8 @@ function initResources() {
 
 function initDefaultResources() {
     for (let i = 0; i < 100; ++i) {
-        console.log("Gen resource");
         generateRandResources();
     }
-    console.log("Finished generating");
 }
 
 function createResource(type, x, y) {
@@ -37,8 +35,8 @@ function createResource(type, x, y) {
             setrect = {
                 x: 0,
                 y: 0,
-                w: RESOURCE_IMAGES.greenTree.width,
-                h: RESOURCE_IMAGES.greenTree.height
+                w: RESOURCE_IMAGES.tree.width,
+                h: RESOURCE_IMAGES.tree.height
             };
             break;
         case ROCK:
