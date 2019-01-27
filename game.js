@@ -126,10 +126,10 @@ function drawGame() {
     drawTilemap(cam);
     drawBullets(cam);
     drawWalls(cam);
-    drawSprites(cam);
-    drawResources(cam);
     drawBombs(cam);
+    drawResources(cam);
     drawItems(cam);
+    drawSprites(cam);
     drawHearthLife(cam);
     drawDebugRects(cam);
     drawPlayerNames(cam);

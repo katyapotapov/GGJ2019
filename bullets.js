@@ -95,14 +95,11 @@ function updateBullets() {
                         let wallIndex = walls.indexOf(obj);
                         let resourceIndex = resources.indexOf(obj);
                         if(wallIndex >= 0) {
-                            console.log("Damaged wall: ", wallIndex);
                             setWallLife(wallIndex, obj.life - 1);
                             continue;
                         } else if (resourceIndex >= 0) {
-                            console.log("Damaged resource: ", resourceIndex);
                             setResourceLife(resourceIndex, obj.life - 1);
                         } else {
-                            console.log("Damaged hearth!");
                             setHearthLife(obj.life - 1);
                         }
                     }
