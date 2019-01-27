@@ -33,7 +33,7 @@ function initGame() {
     initResources();
     initDefaultHearth();
 
-    setTimeout(function() {
+    setTimeout(function () {
         let server = window.prompt("What server do you want to connect to?", "ws://localhost:8080");
 
         socket = io(server);
@@ -44,6 +44,7 @@ function initGame() {
 function initHost() {
     initDefaultBuilding();
     initDefaultResources();
+    setInterval(generateRandResources, 20000);
 
     for (let i = 0; i < 5; ++i) {
         createItem(ITEM_GUN, 800 + i * 100, 400);
@@ -56,13 +57,13 @@ function initHost() {
 
 function damageObjects(objects, damage) {
     if (!objects) return;
-    for(let i = 0; i < objects.length; ++i) {
+    for (let i = 0; i < objects.length; ++i) {
         let obj = objects[i];
 
         let wallIndex = walls.indexOf(obj);
         let resourceIndex = wallIndex >= 0 ? -1 : resources.indexOf(obj);
         let playerIndex = (resourceIndex >= 0 || wallIndex >= 0) ? -1 : players.indexOf(obj);
-        if(wallIndex >= 0) {
+        if (wallIndex >= 0) {
             setWallLife(wallIndex, obj.life - damage);
             continue;
         } else if (resourceIndex >= 0) {
@@ -76,7 +77,7 @@ function damageObjects(objects, damage) {
 }
 
 function updateGame() {
-    if(!socket) {
+    if (!socket) {
         return;
     }
 
@@ -179,7 +180,7 @@ function drawGame() {
     drawMinimap();
     drawInventory();
 
-    if(!socket) {
+    if (!socket) {
         ctx.fillStyle = "white";
         ctx.font = "20px Arial";
         ctx.fillText("Loading...", canvas.width / 2 - ctx.measureText("Loading...").width / 2, canvas.height / 2);
