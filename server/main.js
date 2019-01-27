@@ -12,6 +12,7 @@ function computeRole() {
     if (players.length === 1) {
         return true;
     }
+    
     for (let i = 0; i < players.length; i++) {
         let socket = players[i];
         if (socket.isProtector) {
@@ -25,7 +26,7 @@ function computeRole() {
     } else if (diff < -1) {
         return true;
     } else {
-        return Math.round(Math.random());
+        return Math.round(Math.random()) > 0;
     }
 }
 
@@ -33,11 +34,10 @@ io.on("connection", function(socket) {
     console.log("Player joined!");
 
     socket.playerID = id++;
-    socket.isProtector = computeRole();
 
     players.push(socket);
 
-    socket.emit("is protector", socket.isProtector);
+    socket.isProtector = computeRole();
 
     function setHost(sock) {
         console.log("Host: ", socket.playerID);
@@ -53,7 +53,7 @@ io.on("connection", function(socket) {
     }
 
     // Even the player that joined receives this message
-    io.emit("player joined", socket.playerID);
+    io.emit("player joined", socket.playerID, socket.isProtector);
 
     // Now we send it a "player joined" for every other player connected
     players.forEach(function(playerSocket) {
@@ -61,7 +61,7 @@ io.on("connection", function(socket) {
             return;
         }
 
-        socket.emit("player joined", playerSocket.playerID);
+        socket.emit("player joined", playerSocket.playerID, playerSocket.isProtector);
     });
 
     socket.emit("set player id", socket.playerID);
