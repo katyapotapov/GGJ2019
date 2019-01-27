@@ -31,9 +31,9 @@ function createPlayer(id, x, y) {
         dy: 0,
         sprite: null,
         rect: {
-            x: 16,
+            x: 20,
             y: 32,
-            w: 32,
+            w: 24,
             h: 32
         },
         inventory: {
