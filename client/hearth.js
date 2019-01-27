@@ -1,6 +1,5 @@
 const HEARTH_FEED_RADIUS = 64;
-// Lose one life every n seconds
-const HEARTH_LOSS_DURATION = 10000;
+const HEARTH_LOSS_PER_SEC = 1 / 2;
 
 const HEARTH_X = 350;
 const HEARTH_Y = 600;
@@ -9,7 +8,7 @@ const HEARTH = {
     sprite: null,
     x: 0,
     y: 0,
-    life: 10,
+    life: 100,
     rect: {
         x: 0,
         y: 0,
@@ -55,20 +54,34 @@ function setHearthLife(life) {
         socket.emit("set hearth life", life);
     }
 
-    if (HEARTH.life === 0) {
+    if (HEARTH.life <= 0) {
         removeHearth();
     }
 }
 
 function removeHearth() {
-    console.log("Homewreckers won :(");
+}
+
+function updateAndSendHearth() {
+    let life = HEARTH.life;
+
+    if(life > 0) {
+        life -= HEARTH_LOSS_PER_SEC * SEC_PER_FRAME;
+
+        if(Math.ceil(life) != Math.ceil(HEARTH.life)) {
+            // We only send this message when the hearth changes a significant digit
+            setHearthLife(life);
+        } else {
+            HEARTH.life = life;
+        }
+    }
 }
 
 function drawHearthLife(cam) {
     if (!HEARTH || !HEARTH.sprite) {
         return;
     }
-    let lifeDrawn = Math.floor(HEARTH.life);
+    let lifeDrawn = Math.ceil(HEARTH.life);
     ctx.font = "bold 20px Arial";
     ctx.fillStyle = "blue";
 
