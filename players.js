@@ -96,11 +96,8 @@ function drawPlayerNames(cam) {
         let name = players[i].name;
         let nameWidth = ctx.measureText(name).width;
         let center_x = players[i].sprite.x + players[i].sprite.info.frameWidth / 2;
-        console.log(center_x);
         let x = center_x - (nameWidth / 2);
         let y = players[i].sprite.y + 10;
-        console.log(x);
-        console.log(y);
         ctx.fillText(name, x - cam.x, y - cam.y);
     }
 }
