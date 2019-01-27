@@ -2,18 +2,39 @@
 
 const SWEEP_SAMPLES = 5;
 
-function moveCollide(e, sweep) {
+function moveCollide(e, sweep, callback) {
     function collide(x, y) {
-        return collideTileMap(x + e.rect.x, y + e.rect.y, e.rect.w, e.rect.h) ||
-               getCollidingObjects(e, x, y, walls, resources).length > 0;
+        if(collideTileMap(x + e.rect.x, y + e.rect.y, e.rect.w, e.rect.h)) {
+            return true;
+        }
+
+        let objects = getCollidingObjects(e, x, y, walls, resources);
+
+        if(objects.length > 0) {
+            return objects;
+        }
+
+        return false;
     }
 
-    if(collide(e.x + e.dx, e.y)) {
+    let res = collide(e.x + e.dx, e.y);
+
+    if(res) {
         if(sweep) {
             let mx = e.dx / SWEEP_SAMPLES;
 
             for(let i = 0; i < SWEEP_SAMPLES; ++i) {
-                if(collide(e.x + mx, e.y)) {
+                res = collide(e.x + mx, e.y);
+
+                if(res) {
+                    if(callback) {
+                        if(res instanceof Array) {
+                            callback(res);
+                        } else {
+                            callback();
+                        }
+                    }
+                    
                     e.dx = 0;
                     break;
                 } else {
@@ -22,17 +43,36 @@ function moveCollide(e, sweep) {
             }
         } else {
             e.dx = 0;
+            if(callback) {
+                if(res instanceof Array) {
+                    callback(res);
+                } else {
+                    callback();
+                }
+            }
         }
     } else {
         e.x += e.dx;
     }
+    
+    res = collide(e.x, e.y + e.dy);
 
-    if(collide(e.x, e.y + e.dy)) {
+    if(res) {
         if(sweep) {
             let my = e.dy / SWEEP_SAMPLES;
 
             for(let i = 0; i < SWEEP_SAMPLES; ++i) {
-                if(collide(e.x, e.y + my)) {
+                res = collide(e.x, e.y + my);
+
+                if(res) {
+                    if(callback) {
+                        if(res instanceof Array) {
+                            callback(res);
+                        } else {
+                            callback();
+                        }
+                    }
+
                     e.dy = 0;
                     break;
                 } else {
@@ -41,6 +81,14 @@ function moveCollide(e, sweep) {
             }
         } else {
             e.dy = 0;
+
+            if(callback) {
+                if(res instanceof Array) {
+                    callback(res);
+                } else {
+                    callback();
+                }
+            }
         }
     } else {
         e.y += e.dy;
