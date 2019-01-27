@@ -157,6 +157,10 @@ function setSelectedItem(playerID, index) {
 
 function useSelectedItem(player) {
     if(player.inventory.selected >= player.inventory.items.length) {
+        if(player.cooldown <= 0) {
+            createPunch(player.x, player.y, stringToDirection(player.sprite.curAnimName));
+            player.cooldown += PLAYER_SHOOT_COOLDOWN;
+        }
         return;
     }
 
@@ -180,9 +184,6 @@ function useSelectedItem(player) {
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
             setItemQuantity(player.id, item.type, item.quantity - 1);
         }
-    } else {
-        createPunch(player.x, player.y, player.sprite.curAnimName);
-        player.cooldown += PLAYER_SHOOT_COOLDOWN;
     }
 }
 

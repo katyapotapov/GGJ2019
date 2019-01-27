@@ -123,6 +123,10 @@ io.on("connection", function(socket) {
         socket.broadcast.emit("remove item", index);
     });
 
+    socket.on("create punch", function(x, y, dir) {
+        socket.broadcast.emit("create punch", x, y, dir);
+    });
+
 
     socket.on("disconnect", function() {
         console.log("Player left!");

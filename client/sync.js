@@ -48,6 +48,8 @@ socket.on("create explosion", createExplosion);
 socket.on("create item", createItem);
 socket.on("remove item", removeItem);
 
+socket.on("create punch", createPunch);
+
 socket.on("player left", function(id) {
     removePlayer(id);
     console.log("Goodbye " + id);
