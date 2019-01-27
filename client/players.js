@@ -153,6 +153,12 @@ function setItemQuantity(playerID, type, quantity) {
     if (quantity <= 0) {
         return;
     }
+    
+    if(host) {
+        if(player.inventory.selected == player.inventory.items.length) {
+            setSelectedItem(player.id, player.inventory.selected + 1);
+        }
+    }
 
     player.inventory.items.push({
         type: type,
@@ -288,7 +294,10 @@ function handleInput(id, input) {
                     useSelectedItem(players[i], DIR_RIGHT);
                 }
 
-                setSelectedItem(players[i].id, input.invSelect);
+                if(input.invSelect >= 0) {
+                    setSelectedItem(players[i].id, input.invSelect);
+                }
+
                 players[i].inputSequenceNumber = input.sequenceNumber;
             }
 
