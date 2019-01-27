@@ -125,5 +125,6 @@ function drawGame() {
     drawBombs(cam);
     drawItems(cam);
     drawHearthLife(cam);
+    drawDebugRects(cam);
     drawInventory();
 }
