@@ -115,6 +115,10 @@ io.on("connection", function(socket) {
         socket.broadcast.emit("remove explosion", type, x, y);
     });
 
+    socket.on("create punch", function(x, y, dir) {
+        socket.broadcast.emit("create punch", x, y, dir);
+    });
+
 
     socket.on("disconnect", function() {
         console.log("Player left!");

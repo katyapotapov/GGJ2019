@@ -62,7 +62,7 @@ function collideRectCircle(ax, ay, aw, ah, bx, by, radius) {
     // Clamp dx and dy to half extents
     dx = clamp(dx, -aw / 2, aw / 2);
     dy = clamp(dy, -ah / 2, ah / 2);
-    
+
     const px = cx + dx;
     const py = cy + dy;
 
@@ -97,7 +97,7 @@ function getCollidingObjects(object, x, y) {
 
 function getObjectsInRect(x, y, w, h) {
     let col = [];
-    
+
     for(let arg = 3; arg < arguments.length; ++arg) {
         let objects = arguments[arg];
 
