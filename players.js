@@ -21,12 +21,14 @@ let players = [];
 
 function createPlayer(id, x, y) {
     let setName = null;
+    
     if (PLAYER_NAMES.length > 0) {
-        setName = PLAYER_NAME[0];
+        setName = PLAYER_NAMES[0];
         PLAYER_NAMES.shift();
     } else {
         setName = "ERROR_NO_NAME";
     }
+    
     let player = {
         id: id,
         name: setName,
@@ -84,6 +86,7 @@ function createPlayer(id, x, y) {
     players.push(player);
 }
 
+/*
 function drawPlayerNames(cam) {
     ctx.font = "15px Arial";
     ctx.fillStyle = "blue";
@@ -95,6 +98,7 @@ function drawPlayerNames(cam) {
         ctx.fillText(name)
     }
 }
+*/
 
 function getPlayerWithID(id) {
     for (let i = 0; i < players.length; ++i) {
