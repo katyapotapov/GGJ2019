@@ -34,7 +34,7 @@ function initGame() {
     initDefaultHearth();
 
     setTimeout(function() {
-        socket = io("http://a071ee5a.ngrok.io");
+        socket = io("http://4cab0263.ngrok.io");
         registerSocketCallbacks();
     }, 2000);
 }
