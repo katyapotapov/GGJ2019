@@ -1,3 +1,5 @@
+let host = false;
+
 let camera = {
     x: 0,
     y: 0,
@@ -163,5 +165,6 @@ function drawGame() {
     drawDebugRects(cam);
     drawPlayerNames(cam);
     drawHealth(cam);
+    drawMinimap();
     drawInventory();
 }
