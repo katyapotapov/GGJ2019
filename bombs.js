@@ -1,6 +1,8 @@
 let bombs = [];
 let bombImage = null;
 
+const EXPLOSION_SHAKE_DURATION = 0.2;
+const EXPLOSION_SHAKE_MAGNITUDE = 20;
 const BOMB_DAMAGE = 3;
 
 function initBombs() {
@@ -47,6 +49,12 @@ function createExplosion(x, y) {
         });
 
         playAnim(sprite, "explode");
+        let player = getPlayerWithID(myPlayerID);
+        let dist = 100 * 100 * 32 * 32;
+        if (player) {
+            dist = distanceSquared(x, y, player.x, player.y);
+        }
+        shakeCamera(EXPLOSION_SHAKE_DURATION, EXPLOSION_SHAKE_MAGNITUDE - (dist / (100 * 100 * 32 * 32)) * EXPLOSION_SHAKE_MAGNITUDE);
 
         sprite.x = x - 120;
         sprite.y = y - 94;
@@ -55,7 +63,7 @@ function createExplosion(x, y) {
     if (host) {
         socket.emit("create explosion", x, y);
 
-        let objects = getObjectsInCircle(x, y, 120, walls, resources, [HEARTH], players);
+        let objects = getObjectsInCircle(x, y, 96, walls, resources, [HEARTH], players);
         damageObjects(objects, 3);
     }
 }
