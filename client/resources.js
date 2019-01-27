@@ -38,10 +38,10 @@ function createResource(type, x, y) {
         case BROWN_TREE:
             setHealth = 4;
             setrect = {
-                x: 30,
-                y: 70,
-                w: 52,
-                h: 32
+                x: 0,
+                y: 0,
+                w: RESOURCE_IMAGES.brownTree.width,
+                h: RESOURCE_IMAGES.brownTree.height
             };
             break;
         case GREEN_TREE:
@@ -49,8 +49,8 @@ function createResource(type, x, y) {
             setrect = {
                 x: 0,
                 y: 0,
-                w: 32,
-                h: 32
+                w: RESOURCE_IMAGES.greenTree.width,
+                h: RESOURCE_IMAGES.greenTree.height
             };
             break;
         case ROCK:
@@ -58,19 +58,11 @@ function createResource(type, x, y) {
             setrect = {
                 x: 0,
                 y: 0,
-                w: 32,
-                h: 32
+                w: RESOURCE_IMAGES.rock.width,
+                h: RESOURCE_IMAGES.rock.height
             };
             break;
-        case DIRT:
-            setHealth = 2;
-            setrect = {
-                x: 0,
-                y: 0,
-                w: 32,
-                h: 32
-            };
-            break;
+
     }
     let resource = {
         type: type,
