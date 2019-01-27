@@ -88,24 +88,25 @@ function updateBullets() {
             removeBullet(i);
         } else {
             moveCollide(bullet, false, function(objects) {
-                for(let i = 0; i < objects.length; ++i) {
-                    let obj = objects[i];
+                if (objects) {
+                    for(let i = 0; i < objects.length; ++i) {
+                        let obj = objects[i];
 
-                    let wallIndex = walls.indexOf(obj);
-                    let resourceIndex = resources.indexOf(obj);
-                    if(wallIndex >= 0) {
-                        console.log("Damaged wall: ", wallIndex);
-                        setWallLife(wallIndex, obj.life - 1);
-                        continue;
-                    } else if (resourceIndex >= 0) {
-                        console.log("Damaged resource: ", resourceIndex);
-                        setResourceLife(resourceIndex, obj.life - 1);
-                    } else {
-                        console.log("Damaged hearth!");
-                        setHearthLife(obj.life - 1);
+                        let wallIndex = walls.indexOf(obj);
+                        let resourceIndex = resources.indexOf(obj);
+                        if(wallIndex >= 0) {
+                            console.log("Damaged wall: ", wallIndex);
+                            setWallLife(wallIndex, obj.life - 1);
+                            continue;
+                        } else if (resourceIndex >= 0) {
+                            console.log("Damaged resource: ", resourceIndex);
+                            setResourceLife(resourceIndex, obj.life - 1);
+                        } else {
+                            console.log("Damaged hearth!");
+                            setHearthLife(obj.life - 1);
+                        }
                     }
                 }
-
                 removeBullet(i);
             });
 
