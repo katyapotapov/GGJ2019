@@ -15,7 +15,7 @@ function shakeCamera(duration, magnitude) {
 }
 
 function requestHost() {
-    if(!host) {
+    if (!host) {
         socket.emit("request host");
     }
 }
@@ -37,7 +37,7 @@ function initHost() {
 
     createItem(ITEM_GUN, 800, 300);
 
-    for(let i = 0; i < 20; ++i) {
+    for (let i = 0; i < 20; ++i) {
         createItem(ITEM_BOMB, 1000 + i * 100, 300);
     }
 }
@@ -87,19 +87,19 @@ function updateGame() {
             camera.y += (myPlayer.y + myPlayer.rect.y + myPlayer.rect.h / 2 - camera.y - canvas.height / 2) * 0.1;
         }
 
-        if(camera.x < 0) {
+        if (camera.x < 0) {
             camera.x = 0;
         }
 
-        if(camera.x >= tileMap.width * TILE_SIZE - canvas.width) {
+        if (camera.x >= tileMap.width * TILE_SIZE - canvas.width) {
             camera.x = tileMap.width * TILE_SIZE - canvas.width;
         }
 
-        if(camera.y < 0) {
+        if (camera.y < 0) {
             camera.y = 0;
         }
 
-        if(camera.y >= tileMap.height * TILE_SIZE - canvas.height) {
+        if (camera.y >= tileMap.height * TILE_SIZE - canvas.height) {
             camera.y = tileMap.height * TILE_SIZE - canvas.height;
         }
     }
@@ -132,5 +132,6 @@ function drawGame() {
     drawItems(cam);
     drawHearthLife(cam);
     drawDebugRects(cam);
+    drawPlayerNames(cam);
     drawInventory();
 }

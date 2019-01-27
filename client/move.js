@@ -8,7 +8,7 @@ function moveCollide(e, sweep, callback) {
             return true;
         }
 
-        let objects = getCollidingObjects(e, x, y, walls, resources);
+        let objects = getCollidingObjects(e, x, y, walls, resources, [HEARTH]);
 
         if(objects.length > 0) {
             return objects;
