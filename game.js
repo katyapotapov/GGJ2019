@@ -124,11 +124,11 @@ function drawGame() {
     cam.y = Math.floor(cam.y);
 
     drawTilemap(cam);
-    drawBullets(cam);
     drawWalls(cam);
     drawResources(cam);
-    drawBombs(cam);
     drawItems(cam);
+    drawBombs(cam);
+    drawBullets(cam);
     drawSprites(cam);
     drawHearthLife(cam);
     drawDebugRects(cam);
