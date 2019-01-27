@@ -173,7 +173,7 @@ function useSelectedItem(player) {
 
     if(item.type == ITEM_GUN) {
         if(player.cooldown <= 0) {
-            createBullet(player.x, player.y, DIR_UP);
+            createBullet(player.x + 26, player.y + 32, stringToDirection(player.sprite.curAnimName));
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
     } else if(item.type == ITEM_WALL) {
