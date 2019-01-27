@@ -93,8 +93,16 @@ function drawTilemap(camera) {
                 continue;
             }
 
-            for(let y = 0; y < tileMap.height; ++y) {
-                for(let x = 0; x < tileMap.width; ++x) {
+            for(let y = Math.floor(camera.y / TILE_SIZE); y <= Math.ceil(camera.y / TILE_SIZE) + canvas.height / TILE_SIZE; ++y) {
+                if(y < 0 || y >= tileMap.height) {
+                    continue;
+                }
+
+                for(let x = Math.floor(camera.x / TILE_SIZE); x <= Math.ceil(camera.x / TILE_SIZE) + canvas.width / TILE_SIZE; ++x) {
+                    if(x < 0 || x >= tileMap.width) {
+                        continue;
+                    }
+
                     let tile = tileMap.layers[layer].data[x + y * tileMap.width];
 
                     if(tile == 0) {
