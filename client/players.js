@@ -298,11 +298,16 @@ function useSelectedItem(player, direction) {
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
             setItemQuantity(player.id, item.type, item.quantity - 1);
         }
-    } else if (item.type == ITEM_WOOD) {
+    } else if (item.type == ITEM_WOOD || item.type == ITEM_MAGIC_WOOD) {
         if (player.cooldown <= 0) {
             if (distanceSquared(player.x, player.y, HEARTH.x, HEARTH.y) < HEARTH_FEED_RADIUS * HEARTH_FEED_RADIUS) {
                 console.log("FEEDING THE HEARTH");
-                setHearthLife(HEARTH.life + 1);
+                if (item.type == ITEM_WOOD) {
+                    setHearthLife(HEARTH.life + 1);
+                } else {
+                    setHearthLife(HEARTH.life + 7);
+                    setHearthMagicWood(HEARTH.magicWood + 1);
+                }
                 setItemQuantity(player.id, item.type, item.quantity - 1);
                 player.cooldown += PLAYER_SHOOT_COOLDOWN;
             }
