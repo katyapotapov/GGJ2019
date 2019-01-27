@@ -34,7 +34,9 @@ function initGame() {
     initDefaultHearth();
 
     setTimeout(function() {
-        socket = io("http://4cab0263.ngrok.io");
+        let server = window.prompt("What server do you want to connect to?", "ws://localhost:8080");
+
+        socket = io(server);
         registerSocketCallbacks();
     }, 2000);
 }
