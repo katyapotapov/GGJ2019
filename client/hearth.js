@@ -1,3 +1,6 @@
+const HEARTH_X = 350;
+const HEARTH_Y = 600;
+
 const HEARTH = {
     sprite: null,
     x: 0,
@@ -33,6 +36,10 @@ function initHearth(x, y) {
         HEARTH.y = y;
         playAnim(HEARTH.sprite, "crackle");
     });
+}
+
+function initDefaultHearth() {
+    initHearth(HEARTH_X, HEARTH_Y);
 }
 
 function setHearthLife(life) {
