@@ -125,7 +125,7 @@ function removeResource(index) {
 //TODO: Add item to players inventory when resource dies
 function setResourceLife(index, life) {
     resources[index].life = life;
-    if (resources[index].life == 0) {
+    if (resources[index].life <= 0) {
         removeResource(index);
     }
 
