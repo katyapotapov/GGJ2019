@@ -15,6 +15,7 @@ function shakeCamera(duration, magnitude) {
 }
 
 function initGame() {
+    initItems();
     initBullets();
     initWalls();
     initResources();
@@ -26,6 +27,12 @@ function initGame() {
 function initHost() {
     initDefaultBuilding();
     initDefaultResources();
+
+    createItem(ITEM_GUN, 800, 300);
+
+    for(let i = 0; i < 20; ++i) {
+        createItem(ITEM_BOMB, 1000 + i * 100, 300);
+    }
 }
 
 function updateGame() {
@@ -37,16 +44,10 @@ function updateGame() {
         if (players) {
             // Handle host player's input locally
             handleInput(myPlayerID, input);
-
-            // Everybody gets a gun
-            for (let i = 0; i < players.length; ++i) {
-                if (players[i].id != myPlayerID && players[i].inventory.items.length == 0) {
-                    addItem(players[i], ITEM_GUN, 1);
-                }
-            }
         }
 
         movePlayers();
+        playerPickupTouchingItems();
         updatePlayerSpritePositions();
         updateBullets();
         updateBombs();
@@ -57,10 +58,11 @@ function updateGame() {
             tickCount = 0;
         }
     } else {
-        if (tickCount == 1) {
+        if(tickCount == 1) {
             sendInput();
             tickCount = 0;
         }
+
         updatePlayerSpritePositions();
     }
 
@@ -71,8 +73,8 @@ function updateGame() {
     if (myPlayer) {
         if (host) {
             if (myPlayer.inventory.items.length == 0) {
-                addItem(myPlayer, ITEM_GUN, 1);
-                addItem(myPlayer, ITEM_BOMB, 100);
+                addItemToInventory(myPlayer, ITEM_GUN, 1);
+                addItemToInventory(myPlayer, ITEM_BOMB, 100);
             }
         }
 
@@ -120,7 +122,8 @@ function drawGame() {
     drawWalls(cam);
     drawSprites(cam);
     drawResources(cam);
-    drawInventory();
     drawBombs(cam);
+    drawItems(cam);
     drawHearthLife(cam);
+    drawInventory();
 }

@@ -1,8 +1,15 @@
+let loadedImages = {};
+
 function loadImage(filename, callback) {
+    if (loadedImages[filename]) {
+        callback(loadedImages[filename]);
+    }
+
     let image = new Image();
 
     image.onload = function () {
         callback(image);
+        loadedImages[filename] = image;
     };
 
     image.src = filename;

@@ -32,7 +32,7 @@ function createWall(x, y, direction, life) {
         x: x,
         y: y,
         direction: direction,
-        life: 3,
+        life: life,
         rect: {
             x: 0,
             y: 0,
@@ -51,38 +51,43 @@ function createWall(x, y, direction, life) {
 }
 
 function removeWall(index) {
+    if (host) {
+        createItem(ITEM_WALL, walls[index].x, walls[index].y);
+    }
+
     walls.splice(index, 1);
 }
 
 function setWallLife(index, life) {
     walls[index].life = life;
-    if (walls[index].life === 0) {
-        removeWall(index);
+    
+    if(host) {
+        socket.emit("set wall life", index, life);
     }
 
-    if (host) {
-        socket.emit("set wall life", index, life)
+    if (walls[index].life === 0) {
+        removeWall(index);
     }
 }
 
 function drawWalls(cam) {
     for (let i = 0; i < walls.length; ++i) {
         let wall = walls[i];
-        if (wall.life == 3) {
+        if (wall.life <= 10 && wall.life >= 8) {
             if (wall.direction == DIR_UP || wall.direction == DIR_DOWN) {
                 ctx.drawImage(wallImage01, wall.x - cam.x, wall.y - cam.y);
             } else if (wall.direction == DIR_LEFT || wall.direction == DIR_RIGHT) {
                 ctx.drawImage(sideWall01, wall.x - cam.x, wall.y - cam.y);
             }
         }
-        else if (wall.life == 2) {
+        else if (wall.life <= 7 && wall.life >= 5) {
             if (wall.direction == DIR_UP || wall.direction == DIR_DOWN) {
                 ctx.drawImage(wallImage02, wall.x - cam.x, wall.y - cam.y);
             } else if (wall.direction == DIR_LEFT || wall.direction == DIR_RIGHT) {
                 ctx.drawImage(sideWall02, wall.x - cam.x, wall.y - cam.y);
             }
         }
-        else if (wall.life == 1) {
+        else if (wall.life <= 4 && wall.life >= 1) {
             if (wall.direction == DIR_UP || wall.direction == DIR_DOWN) {
                 ctx.drawImage(wallImage03, wall.x - cam.x, wall.y - cam.y);
             } else if (wall.direction == DIR_LEFT || wall.direction == DIR_RIGHT) {
