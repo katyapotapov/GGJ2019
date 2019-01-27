@@ -325,6 +325,8 @@ function predictUpdatePlayer() {
         moveCollide(player, true);
     }
 
+    inputBuffer.length = 0;
+
     camera.x += (player.x + player.rect.x + player.rect.w / 2 - camera.x - canvas.width / 2) * 0.1;
     camera.y += (player.y + player.rect.y + player.rect.h / 2 - camera.y - canvas.height / 2) * 0.1;
 }
