@@ -1,12 +1,12 @@
 let slashImage = null;
 
 function initPunch() {
-    loadImage("assets/slash3.png", function(image) {
+    loadImage("assets/slash3.png", function (image) {
         slashImage = image;
     });
 }
 
-function createPunch(x, y, direction) {
+function createPunch(x, y, direction, isProtector) {
     let sprite = createSprite({
         image: slashImage,
         frameWidth: 177,
@@ -42,10 +42,10 @@ function createPunch(x, y, direction) {
     sprite.x = xPunch;
     sprite.y = yPunch;
 
-    if(host) {
+    if (host) {
         socket.emit("create punch", x, y, direction);
 
-        let objects = getObjectsInRect(xPunch+64, yPunch+64, 32, 32, walls, resources, [HEARTH], players);
+        let objects = getObjectsInRect(xPunch + 64, yPunch + 64, 32, 32, walls, resources, [HEARTH], players);
         // createDebugRect(xPunch+64, yPunch+64, 32, 32, "black", 2);
         damageObjects(objects, 1);
     }

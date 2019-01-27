@@ -2,10 +2,12 @@ const ITEM_GUN = 0;
 const ITEM_BOMB = 1;
 const ITEM_WALL = 2;
 const ITEM_WOOD = 3;
+const ITEM_MAGIC_WOOD = 4;
 
-const ITEM_IMAGES = [null, null, null, null];
+const ITEM_IMAGES = [null, null, null, null, null];
 
 let items = [];
+let magicWoodDropCounter = 20;
 
 function initItems() {
     loadImage("assets/crossbow.png", function (image) {
@@ -22,6 +24,9 @@ function initItems() {
 
     loadImage("assets/wood.png", function (image) {
         ITEM_IMAGES[ITEM_WOOD] = image;
+    });
+    loadImage("assets/magicwood.png", function (image) {
+        ITEM_IMAGES[ITEM_MAGIC_WOOD] = image;
     });
 }
 
