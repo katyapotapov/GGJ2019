@@ -29,6 +29,11 @@ socket.on("player joined", function (id) {
     }
 });
 
+socket.on("is protector", function(isProtector) {
+    role = isProtector ? "Protector" : "Homewrecker";
+    console.log(`You are a ${role}!`);
+});
+
 socket.on("player input", handleInput);
 
 socket.on("player state", handlePlayerState);
