@@ -1,6 +1,8 @@
 let bombs = [];
 let bombImage = null;
 
+const BOMB_DAMAGE = 3;
+
 function initBombs() {
     loadImage("assets/bomb3.png", function (image) {
         bombImage = image;
@@ -61,12 +63,12 @@ function createExplosion(x, y) {
             let wallIndex = walls.indexOf(obj);
             let resourceIndex = resources.indexOf(obj);
             if (wallIndex >= 0) {
-                setWallLife(wallIndex, obj.life - 1);
+                setWallLife(wallIndex, obj.life - BOMB_DAMAGE);
                 continue;
             } else if (resourceIndex >= 0) {
-                setResourceLife(resourceIndex, obj.life - 1);
+                setResourceLife(resourceIndex, obj.life - BOMB_DAMAGE);
             } else {
-                setHearthLife(obj.life - 1);
+                setHearthLife(obj.life - BOMB_DAMAGE);
             }
         }
     }
