@@ -21,7 +21,7 @@ function initBullets() {
     });
 }
 
-function createBullet(x, y, direction) {
+function createBullet(x, y, ownerID, direction) {
     let w, h;
 
     let bullet = {
@@ -31,6 +31,7 @@ function createBullet(x, y, direction) {
         dy: 0,
         direction: direction,
         life: 120,
+        ownerID: ownerID,
         rect: {
             x: 0,
             y: 0,
@@ -60,7 +61,7 @@ function createBullet(x, y, direction) {
     }
 
     if(host) {
-        socket.emit("create bullet", x, y, direction);
+        socket.emit("create bullet", x, y, ownerID, direction);
     }
 
     bullets.push(bullet);
@@ -88,22 +89,7 @@ function updateBullets() {
             removeBullet(i);
         } else {
             moveCollide(bullet, false, function(objects) {
-                if (objects) {
-                    for(let i = 0; i < objects.length; ++i) {
-                        let obj = objects[i];
-
-                        let wallIndex = walls.indexOf(obj);
-                        let resourceIndex = resources.indexOf(obj);
-                        if(wallIndex >= 0) {
-                            setWallLife(wallIndex, obj.life - 1);
-                            continue;
-                        } else if (resourceIndex >= 0) {
-                            setResourceLife(resourceIndex, obj.life - 1);
-                        } else {
-                            setHearthLife(obj.life - 1);
-                        }
-                    }
-                }
+                damageObjects(objects, 1);
                 removeBullet(i);
             });
 

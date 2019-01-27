@@ -1,6 +1,6 @@
 const PLAYER_MOVE_SPEED = 4;
 const PLAYER_SHOOT_COOLDOWN = 0.3;
-const PLAYER_NAMES = ["Merek", "Carac", "Borin", "Ulric", "Brom", "Sadon", "Logan", "Cedric"];
+const PLAYER_NAMES = ["Brom", "Carac", "Borin", "Ulric", "Merek", "Sadon", "Logan", "Cedric"];
 
 const INV_DRAW_POS = {
     x: 100,
@@ -11,6 +11,9 @@ const ROLE_DRAW_POS = {
     x: 50,
     y: 50
 };
+
+const HEALTH_BAR_DRAW_WIDTH = 50;
+const HEALTH_BAR_DRAW_HEIGHT = 10;
 
 const INV_DRAW_WIDTH = 600;
 const INV_DRAW_HEIGHT = 60;
@@ -36,13 +39,15 @@ function createPlayer(id, x, y, isProtector) {
         y: y,
         dx: 0,
         dy: 0,
+        life: 30,
+        maxLife: 30,
         sprite: null,
         isProtector: isProtector,
         rect: {
             x: 20,
-            y: 38,
+            y: 32,
             w: 24,
-            h: 24
+            h: 32
         },
         inventory: {
             selected: 0,
@@ -98,8 +103,25 @@ function drawPlayerNames(cam) {
         let nameWidth = ctx.measureText(name).width;
         let center_x = players[i].sprite.x + players[i].sprite.info.frameWidth / 2;
         let x = center_x - (nameWidth / 2);
-        let y = players[i].sprite.y + 10;
+        let y = players[i].sprite.y - 5;
         ctx.fillText(name, x - cam.x, y - cam.y);
+    }
+}
+
+function drawHealth(cam) {
+    ctx.fillStyle = "red";
+    for (let i = 0; i < players.length; i++) {
+        if (!players[i].sprite) {
+            continue;
+        }
+        let center_x = players[i].sprite.x + players[i].sprite.info.frameWidth / 2;
+        let x = center_x - (HEALTH_BAR_DRAW_WIDTH / 2);
+        let y = players[i].sprite.y;
+
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(x - cam.x, y - cam.y, HEALTH_BAR_DRAW_WIDTH, HEALTH_BAR_DRAW_HEIGHT);
+        ctx.fillStyle = "#ff0000";
+        ctx.fillRect(x - cam.x, y - cam.y, Math.max(0, HEALTH_BAR_DRAW_WIDTH * (players[i].life / players[i].maxLife)), HEALTH_BAR_DRAW_HEIGHT);
     }
 }
 
@@ -209,7 +231,7 @@ function useSelectedItem(player, direction) {
 
     if (item.type == ITEM_GUN) {
         if (player.cooldown <= 0) {
-            createBullet(player.x + 26, player.y + 32, direction);
+            createBullet(player.x + 26, player.y + 32, player.id, direction);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
             setItemQuantity(player.id, item.type, item.quantity - 1);
         }
@@ -331,7 +353,7 @@ function handleInput(id, input) {
     throw "Couldn't find player for input";
 }
 
-function handlePlayerState(id, x, y, anim, sequenceNumber, name) {
+function handlePlayerState(id, x, y, anim, sequenceNumber, name, life) {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
 
@@ -339,6 +361,7 @@ function handlePlayerState(id, x, y, anim, sequenceNumber, name) {
             continue;
         }
 
+        player.life = life;
         player.name = name;
 
         if (id == myPlayerID) {
@@ -479,6 +502,6 @@ function sendPlayers() {
         socket.emit("player state", player.id, player.x, player.y,
             player.sprite ? player.sprite.curAnimName : "up",
             player.inputSequenceNumber ? player.inputSequenceNumber : 0,
-            player.name);
+            player.name, player.life);
     }
 }

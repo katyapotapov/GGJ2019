@@ -8,7 +8,7 @@ const ITEM_IMAGES = [null, null, null, null];
 let items = [];
 
 function initItems() {
-    loadImage("assets/gun.png", function (image) {
+    loadImage("assets/crossbow.png", function (image) {
         ITEM_IMAGES[ITEM_GUN] = image;
     });
 
