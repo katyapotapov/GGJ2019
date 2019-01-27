@@ -76,21 +76,21 @@ function setWallLife(index, life) {
 function drawWalls(cam) {
     for (let i = 0; i < walls.length; ++i) {
         let wall = walls[i];
-        if (wall.life == 3) {
+        if (wall.life <= 10 && wall.life >= 8) {
             if (wall.direction == DIR_UP || wall.direction == DIR_DOWN) {
                 ctx.drawImage(wallImage01, wall.x - cam.x, wall.y - cam.y);
             } else if (wall.direction == DIR_LEFT || wall.direction == DIR_RIGHT) {
                 ctx.drawImage(sideWall01, wall.x - cam.x, wall.y - cam.y);
             }
         }
-        else if (wall.life == 2) {
+        else if (wall.life <= 7 && wall.life >= 5) {
             if (wall.direction == DIR_UP || wall.direction == DIR_DOWN) {
                 ctx.drawImage(wallImage02, wall.x - cam.x, wall.y - cam.y);
             } else if (wall.direction == DIR_LEFT || wall.direction == DIR_RIGHT) {
                 ctx.drawImage(sideWall02, wall.x - cam.x, wall.y - cam.y);
             }
         }
-        else if (wall.life == 1) {
+        else if (wall.life <= 4 && wall.life >= 1) {
             if (wall.direction == DIR_UP || wall.direction == DIR_DOWN) {
                 ctx.drawImage(wallImage03, wall.x - cam.x, wall.y - cam.y);
             } else if (wall.direction == DIR_LEFT || wall.direction == DIR_RIGHT) {

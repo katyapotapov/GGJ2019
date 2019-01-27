@@ -28,31 +28,59 @@ function initResources() {
 
 function initDefaultResources() {
     createResource(BROWN_TREE, 50, 50);
+    createResource(BROWN_TREE, 800, 800);
 }
 
 function createResource(type, x, y) {
     let setHealth;
+    let setrect;
     switch (type) {
         case BROWN_TREE:
             setHealth = 4;
+            setrect = {
+                x: 30,
+                y: 70,
+                w: 52,
+                h: 32
+            };
             break;
         case GREEN_TREE:
             setHealth = 5;
+            setrect = {
+                x: 0,
+                y: 0,
+                w: 32,
+                h: 32
+            };
             break;
         case ROCK:
             setHealth = 6;
+            setrect = {
+                x: 0,
+                y: 0,
+                w: 32,
+                h: 32
+            };
             break;
         case DIRT:
             setHealth = 2;
+            setrect = {
+                x: 0,
+                y: 0,
+                w: 32,
+                h: 32
+            };
             break;
     }
     let resource = {
         type: type,
         x: x,
         y: y,
-        life: setHealth
+        life: setHealth,
+        rect: setrect
     };
 
+  
     resources.push(resource);
 
     if (host) {
