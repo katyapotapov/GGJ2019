@@ -4,10 +4,12 @@ let socket = io("ws://localhost:8080");
 
 socket.on("host", function() {
     host = true;
+    console.log("I AM ALMIGHTY HOST");
 });
 
 socket.on("unhost", function() {
     host = false;
+    console.log("I HAVE BEEN DETHRONED FROM HOSTITUDE");
 });
 
 socket.on("set player id", function(id) {
