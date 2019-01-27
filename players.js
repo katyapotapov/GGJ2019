@@ -219,15 +219,15 @@ function useSelectedItem(player, direction) {
             let player_center_y = player.y + (player.sprite.info.frameHeight) / 2;
             if (direction == DIR_UP) {
                 x = player_center_x - bombImage.width / 2;
-                y = player.y;
+                y = player.y - 5;
             } else if (direction == DIR_DOWN) {
                 x = player_center_x - bombImage.width / 2;
-                y = player.y + (player.sprite.info.frameHeight);
+                y = player.y + (player.sprite.info.frameHeight) - 10;
             } else if (direction == DIR_LEFT) {
                 x = player.x;
                 y = player_center_y - bombImage.height / 2;
             } else if (direction == DIR_RIGHT) {
-                x = player.x + player.sprite.info.frameWidth;
+                x = player.x + 40;
                 y = player_center_y - bombImage.height / 2;
             }
 
