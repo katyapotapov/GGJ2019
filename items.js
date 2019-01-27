@@ -2,9 +2,8 @@ const ITEM_GUN = 0;
 const ITEM_BOMB = 1;
 const ITEM_WALL = 2;
 const ITEM_WOOD = 3;
-const ITEM_STONES = 4;
 
-const ITEM_IMAGES = [null, null, null, null, null];
+const ITEM_IMAGES = [null, null, null, null];
 
 let items = [];
 
@@ -17,12 +16,8 @@ function initItems() {
         ITEM_IMAGES[ITEM_BOMB] = image;
     });
 
-    loadImage("assets/wall01.png", function (image) {
-        ITEM_IMAGES[ITEM_WALL] = image;
-    });
-
     loadImage("assets/stones.png", function (image) {
-        ITEM_IMAGES[ITEM_STONES] = image;
+        ITEM_IMAGES[ITEM_WALL] = image;
     });
 
     loadImage("assets/wood.png", function (image) {
