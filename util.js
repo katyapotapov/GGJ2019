@@ -52,8 +52,8 @@ function collideRects(ax, ay, aw, ah, bx, by, bw, bh) {
         bh *= -1;
     }
 
-    if (ax + aw < bx || bx + bw < ax) return false;
-    if (ay + ah < by || by + bh < ay) return false;
+    if (ax + aw <= bx || bx + bw <= ax) return false;
+    if (ay + ah <= by || by + bh <= ay) return false;
 
     return true;
 }
