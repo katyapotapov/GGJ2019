@@ -7,7 +7,7 @@ socket.on("host", function () {
     console.log("I AM ALMIGHTY HOST");
 });
 
-socket.on("unhost", function() {
+socket.on("unhost", function () {
     host = false;
     console.log("I HAVE BEEN DETHRONED FROM HOSTITUDE");
 });

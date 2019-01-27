@@ -1,8 +1,10 @@
 let bombs = [];
 let bombImage = null;
 
+const BOMB_DAMAGE = 3;
+
 function initBombs() {
-    loadImage("assets/bomb3.png", function(image) {
+    loadImage("assets/bomb3.png", function (image) {
         bombImage = image;
     });
 }
@@ -17,7 +19,7 @@ function createBomb(x, y) {
         timer: 120
     }
 
-    if(host) {
+    if (host) {
         socket.emit("create bomb", x, y);
     }
 
@@ -27,7 +29,7 @@ function createBomb(x, y) {
 }
 
 function createExplosion(x, y) {
-    loadImage("assets/explosion.png", function(image) {
+    loadImage("assets/explosion.png", function (image) {
         let sprite = createSprite({
             image: image,
             frameWidth: 240,
@@ -46,27 +48,27 @@ function createExplosion(x, y) {
 
         playAnim(sprite, "explode");
 
-        sprite.x = x-120;
-        sprite.y = y-94;
+        sprite.x = x - 120;
+        sprite.y = y - 94;
     });
 
-    if(host) {
+    if (host) {
         socket.emit("create explosion", x, y);
 
         let objects = getObjectsInCircle(x, y, 120, walls, resources, [HEARTH]);
 
-        for(let i = 0; i < objects.length; ++i) {
+        for (let i = 0; i < objects.length; ++i) {
             let obj = objects[i];
 
             let wallIndex = walls.indexOf(obj);
             let resourceIndex = resources.indexOf(obj);
-            if(wallIndex >= 0) {
-                setWallLife(wallIndex, obj.life - 1);
+            if (wallIndex >= 0) {
+                setWallLife(wallIndex, obj.life - BOMB_DAMAGE);
                 continue;
             } else if (resourceIndex >= 0) {
-                setResourceLife(resourceIndex, obj.life - 1);
+                setResourceLife(resourceIndex, obj.life - BOMB_DAMAGE);
             } else {
-                setHearthLife(obj.life - 1);
+                setHearthLife(obj.life - BOMB_DAMAGE);
             }
         }
     }
@@ -75,15 +77,15 @@ function createExplosion(x, y) {
 function removeBomb(index) {
     bombs.splice(index, 1);
 
-    if(host) {
+    if (host) {
         socket.emit("remove bomb", index);
     }
 }
 
 function updateBombs() {
-    for(let i = 0; i < bombs.length; ++i) {
-        if (bombs[i].timer == 0){
-            createExplosion(bombs[i].x,bombs[i].y);
+    for (let i = 0; i < bombs.length; ++i) {
+        if (bombs[i].timer == 0) {
+            createExplosion(bombs[i].x, bombs[i].y);
             removeBomb(i);
         } else {
             bombs[i].timer -= 1;
@@ -92,8 +94,8 @@ function updateBombs() {
 }
 
 function drawBombs(cam) {
-    if (!bombImage){ return; }
-    for(let i = 0; i < bombs.length; ++i) {
+    if (!bombImage) { return; }
+    for (let i = 0; i < bombs.length; ++i) {
         let bomb = bombs[i];
         ctx.drawImage(bombImage, bomb.x - cam.x, bomb.y - cam.y);
     }

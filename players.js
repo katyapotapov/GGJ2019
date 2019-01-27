@@ -1,4 +1,4 @@
-const PLAYER_MOVE_SPEED = 6;
+const PLAYER_MOVE_SPEED = 4;
 const PLAYER_SHOOT_COOLDOWN = 0.3;
 const PLAYER_NAMES = ["Rick", "Buck", "Moe", "Karl", "Will", "Jim", "Logan", "Mason"];
 
@@ -189,10 +189,10 @@ function setSelectedItem(playerID, index) {
     player.inventory.selected = index;
 }
 
-function useSelectedItem(player) {
+function useSelectedItem(player, direction) {
     if (player.inventory.selected >= player.inventory.items.length) {
         if (player.cooldown <= 0) {
-            createPunch(player.x, player.y, stringToDirection(player.sprite.curAnimName));
+            createPunch(player.x, player.y, direction);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
         return;
@@ -206,8 +206,9 @@ function useSelectedItem(player) {
 
     if (item.type == ITEM_GUN) {
         if (player.cooldown <= 0) {
-            createBullet(player.x + 26, player.y + 32, stringToDirection(player.sprite.curAnimName));
+            createBullet(player.x + 26, player.y + 32, direction);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
+            setItemQuantity(player.id, item.type, item.quantity - 1);
         }
     } else if (item.type == ITEM_WALL) {
         if (player.cooldown <= 0) {
@@ -215,10 +216,40 @@ function useSelectedItem(player) {
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
     } else if (item.type == ITEM_BOMB) {
+        if (!bombImage) {
+            return;
+        }
         if (player.cooldown <= 0) {
-            createBomb(player.x, player.y);
+            let x = 0;
+            let y = 0;
+            let player_center_x = player.x + (player.sprite.info.frameWidth) / 2;
+            let player_center_y = player.y + (player.sprite.info.frameHeight) / 2;
+            if (direction == DIR_UP) {
+                x = player_center_x - bombImage.width / 2;
+                y = player.y - 5;
+            } else if (direction == DIR_DOWN) {
+                x = player_center_x - bombImage.width / 2;
+                y = player.y + (player.sprite.info.frameHeight) - 10;
+            } else if (direction == DIR_LEFT) {
+                x = player.x;
+                y = player_center_y - bombImage.height / 2;
+            } else if (direction == DIR_RIGHT) {
+                x = player.x + 40;
+                y = player_center_y - bombImage.height / 2;
+            }
+
+            createBomb(x, y);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
             setItemQuantity(player.id, item.type, item.quantity - 1);
+        } 
+    } else if(item.type == ITEM_WOOD) {
+        if(player.cooldown <= 0) {
+            if(distanceSquared(player.x, player.y, HEARTH.x, HEARTH.y) < HEARTH_FEED_RADIUS * HEARTH_FEED_RADIUS) {
+                console.log("FEEDING THE HEARTH");
+                setHearthLife(HEARTH.life + 1);
+                setItemQuantity(player.id, item.type, item.quantity - 1);
+                player.cooldown += PLAYER_SHOOT_COOLDOWN;
+            }
         }
     }
 }
@@ -247,8 +278,14 @@ function handleInput(id, input) {
             }
 
             if (host) {
-                if (input.use) {
-                    useSelectedItem(players[i]);
+                if (input.useUp) {
+                    useSelectedItem(players[i], DIR_UP);
+                } else if (input.useDown) {
+                    useSelectedItem(players[i], DIR_DOWN);
+                } else if (input.useLeft) {
+                    useSelectedItem(players[i], DIR_LEFT);
+                } else if (input.useRight) {
+                    useSelectedItem(players[i], DIR_RIGHT);
                 }
 
                 setSelectedItem(players[i].id, input.invSelect);
@@ -262,13 +299,15 @@ function handleInput(id, input) {
     throw "Couldn't find player for input";
 }
 
-function handlePlayerState(id, x, y, anim, sequenceNumber) {
+function handlePlayerState(id, x, y, anim, sequenceNumber, name) {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
 
         if (player.id != id) {
             continue;
         }
+
+        player.name = name;
 
         if (id == myPlayerID) {
             // Client side prediction
@@ -300,6 +339,8 @@ function predictUpdatePlayer() {
         handleInput(myPlayerID, inputBuffer[i]);
         moveCollide(player, true);
     }
+
+    inputBuffer.length = 0;
 
     camera.x += (player.x + player.rect.x + player.rect.w / 2 - camera.x - canvas.width / 2) * 0.1;
     camera.y += (player.y + player.rect.y + player.rect.h / 2 - camera.y - canvas.height / 2) * 0.1;
@@ -370,7 +411,12 @@ function playerPickupTouchingItems() {
         let colItems = getCollidingObjects(player, player.x, player.y, items);
 
         for (let j = 0; j < colItems.length; ++j) {
-            addItemToInventory(player, colItems[j].type, 1);
+            if(colItems[j].type == ITEM_GUN) {
+                addItemToInventory(player, colItems[j].type, 30);
+            } else {
+                addItemToInventory(player, colItems[j].type, 1);
+            }
+
             removeItem(items.indexOf(colItems[j]));
         }
     }
@@ -394,6 +440,7 @@ function sendPlayers() {
 
         socket.emit("player state", player.id, player.x, player.y,
             player.sprite ? player.sprite.curAnimName : "up",
-            player.inputSequenceNumber ? player.inputSequenceNumber : 0);
+            player.inputSequenceNumber ? player.inputSequenceNumber : 0,
+            player.name);
     }
 }

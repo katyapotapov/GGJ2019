@@ -70,8 +70,8 @@ function generateRandResources() {
     if (resources.length >= MAX_AMT_OF_RESOURCES) {
         return;
     }
-    const mapWidth = tileMap.width * TILE_SIZE;
-    const mapHeight = tileMap.height * TILE_SIZE;
+    const mapWidth = tileMap.width * TILE_SIZE - 100;
+    const mapHeight = tileMap.height * TILE_SIZE - 100;
 
     let x = 0;
     let y = 0;
