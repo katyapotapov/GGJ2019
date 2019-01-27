@@ -126,8 +126,8 @@ function drawGame() {
     drawTilemap(cam);
     drawBullets(cam);
     drawWalls(cam);
-    drawBombs(cam);
     drawResources(cam);
+    drawBombs(cam);
     drawItems(cam);
     drawSprites(cam);
     drawHearthLife(cam);
