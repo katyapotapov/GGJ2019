@@ -183,10 +183,10 @@ function setSelectedItem(playerID, index) {
     player.inventory.selected = index;
 }
 
-function useSelectedItem(player) {
+function useSelectedItem(player, direction) {
     if (player.inventory.selected >= player.inventory.items.length) {
         if (player.cooldown <= 0) {
-            createPunch(player.x, player.y, stringToDirection(player.sprite.curAnimName));
+            createPunch(player.x, player.y, direction);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
         return;
@@ -200,7 +200,7 @@ function useSelectedItem(player) {
 
     if (item.type == ITEM_GUN) {
         if (player.cooldown <= 0) {
-            createBullet(player.x + 26, player.y + 32, stringToDirection(player.sprite.curAnimName));
+            createBullet(player.x + 26, player.y + 32, direction);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
     } else if (item.type == ITEM_WALL) {
@@ -209,7 +209,23 @@ function useSelectedItem(player) {
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
         }
     } else if (item.type == ITEM_BOMB) {
+        if (!bombImage) {
+            return;
+        }
         if (player.cooldown <= 0) {
+            let x = 0;
+            let y = 0;
+            if (direction == DIR_UP) {
+                let player_center = player.x + (player.sprite.info.frameWidth) / 2;
+                x = player_center - bombImage.width / 2;
+            } else if (direction == DIR_DOWN) {
+
+            } else if (direction == DIR_LEFT) {
+
+            } else if (direction == DIR_RIGHT) {
+
+            }
+
             createBomb(player.x, player.y);
             player.cooldown += PLAYER_SHOOT_COOLDOWN;
             setItemQuantity(player.id, item.type, item.quantity - 1);
@@ -241,8 +257,14 @@ function handleInput(id, input) {
             }
 
             if (host) {
-                if (input.use) {
-                    useSelectedItem(players[i]);
+                if (input.useUp) {
+                    useSelectedItem(players[i], DIR_UP);
+                } else if (input.useDown) {
+                    useSelectedItem(players[i], DIR_DOWN);
+                } else if (input.useLeft) {
+                    useSelectedItem(players[i], DIR_LEFT);
+                } else if (input.useRight) {
+                    useSelectedItem(players[i], DIR_RIGHT);
                 }
 
                 setSelectedItem(players[i].id, input.invSelect);
