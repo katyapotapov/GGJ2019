@@ -1,6 +1,6 @@
 let host = false;
 
-let socket = io("ws://e78437bc.ngrok.io");
+let socket = io("ws://localhost:8080");
 
 socket.on("host", function () {
     host = true;
