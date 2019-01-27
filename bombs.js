@@ -57,7 +57,7 @@ function createExplosion(x, y) {
     if(host) {
         socket.emit("create explosion", x, y);
 
-        let objects = getObjectsInCircle(x, y, 120, walls, resources);
+        let objects = getObjectsInCircle(x, y, 120, walls, resources, [HEARTH]);
 
         for(let i = 0; i < objects.length; ++i) {
             let obj = objects[i];
@@ -71,6 +71,9 @@ function createExplosion(x, y) {
             } else if (resourceIndex >= 0) {
                 console.log("Damaged resource: ", resourceIndex);
                 setResourceLife(resourceIndex, obj.life - 1);
+            } else {
+                console.log("Damaged hearth!");
+                setHearthLife(obj.life - 1);
             }
         }
     }
