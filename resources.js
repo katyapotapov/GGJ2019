@@ -111,6 +111,11 @@ function generateRandResources() {
 }
 
 function removeResource(index) {
+    if (resources[index].type == TREE) {
+        createItem(ITEM_WOOD, resources[index].x, resources[index].y);
+    } else {
+        createItem(ITEM_STONES, resources[index].x, resources[index].y);
+    }
     resources.splice(index, 1);
 }
 

@@ -1,22 +1,32 @@
 const ITEM_GUN = 0;
 const ITEM_BOMB = 1;
 const ITEM_WALL = 2;
+const ITEM_WOOD = 3;
+const ITEM_STONES = 4;
 
-const ITEM_IMAGES = [null, null, null];
+const ITEM_IMAGES = [null, null, null, null, null];
 
 let items = [];
 
 function initItems() {
-    loadImage("assets/gun.png", function(image) {
+    loadImage("assets/gun.png", function (image) {
         ITEM_IMAGES[ITEM_GUN] = image;
     });
 
-    loadImage("assets/bomb3.png", function(image) {
+    loadImage("assets/bomb3.png", function (image) {
         ITEM_IMAGES[ITEM_BOMB] = image;
     });
 
-    loadImage("assets/wall01.png", function(image) {
+    loadImage("assets/wall01.png", function (image) {
         ITEM_IMAGES[ITEM_WALL] = image;
+    });
+
+    loadImage("assets/stones.png", function (image) {
+        ITEM_IMAGES[ITEM_STONES] = image;
+    });
+
+    loadImage("assets/wood.png", function (image) {
+        ITEM_IMAGES[ITEM_WOOD] = image;
     });
 }
 
@@ -34,7 +44,7 @@ function createItem(type, x, y) {
         }
     };
 
-    if(host) {
+    if (host) {
         socket.emit("create item", type, x, y);
     }
 
@@ -44,16 +54,16 @@ function createItem(type, x, y) {
 function removeItem(index) {
     items.splice(index, 1);
 
-    if(host) {
+    if (host) {
         socket.emit("remove item", index);
     }
 }
 
 function drawItems(cam) {
-    for(let i = 0; i < items.length; ++i) {
+    for (let i = 0; i < items.length; ++i) {
         let item = items[i];
 
-        if(!ITEM_IMAGES[item.type]) {
+        if (!ITEM_IMAGES[item.type]) {
             continue;
         }
 
