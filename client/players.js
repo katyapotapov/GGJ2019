@@ -1,4 +1,4 @@
-const PLAYER_MOVE_SPEED = 6;
+const PLAYER_MOVE_SPEED = 4;
 const PLAYER_SHOOT_COOLDOWN = 0.3;
 const PLAYER_NAMES = ["Rick", "Buck", "Moe", "Karl", "Will", "Jim", "Logan", "Mason"];
 
