@@ -187,6 +187,8 @@ function useSelectedItem(player, direction) {
     }
 
     let item = player.inventory.items[player.inventory.selected];
+    let player_center_x = player.x + (player.sprite.info.frameWidth) / 2;
+    let player_center_y = player.y + (player.sprite.info.frameHeight) / 2;
 
     if (item.quantity <= 0) {
         return;
@@ -200,7 +202,24 @@ function useSelectedItem(player, direction) {
         }
     } else if (item.type == ITEM_WALL) {
         if (player.cooldown <= 0) {
-            createWall(player.x, player.y, direction, WALL_LIFE);
+            let x;
+            let y;
+            if (direction == DIR_UP) {
+                x = Math.floor(player_center_x / TILE_SIZE) * TILE_SIZE;
+                y = Math.floor((player.y + player.dy) / TILE_SIZE) * TILE_SIZE;
+            } else if (direction == DIR_DOWN) {
+                x = Math.floor(player_center_x / TILE_SIZE) * TILE_SIZE;
+                y = ((Math.floor((player.y + player.dy) + player.sprite.info.frameHeight) / TILE_SIZE) + 1) * TILE_SIZE;
+            } else if (direction == DIR_RIGHT) {
+                x = (Math.floor((player.x + player.dx) / TILE_SIZE) + 2) * TILE_SIZE;
+                y = Math.floor(player_center_y / TILE_SIZE) * TILE_SIZE;
+            } else if (direction == DIR_LEFT) {
+                x = (Math.floor((player.x + player.dx) / TILE_SIZE) - 1) * TILE_SIZE;
+                y = Math.floor(player_center_y / TILE_SIZE) * TILE_SIZE;
+            }
+            x = Math.floor(x / TILE_SIZE) * TILE_SIZE;
+            y = Math.floor(y / TILE_SIZE) * TILE_SIZE;
+            createWall(x, y, direction, WALL_LIFE);
             setItemQuantity(player.id, item.type, item.quantity - 1);
             player.cooldown += WALL_PLACE_COOLDOWN;
         }
@@ -211,8 +230,6 @@ function useSelectedItem(player, direction) {
         if (player.cooldown <= 0) {
             let x = 0;
             let y = 0;
-            let player_center_x = player.x + (player.sprite.info.frameWidth) / 2;
-            let player_center_y = player.y + (player.sprite.info.frameHeight) / 2;
             if (direction == DIR_UP) {
                 x = player_center_x - bombImage.width / 2;
                 y = player.y - 5;
@@ -383,7 +400,7 @@ function playerPickupTouchingItems() {
         let colItems = getCollidingObjects(player, player.x, player.y, items);
 
         for (let j = 0; j < colItems.length; ++j) {
-            if(colItems[j].type == ITEM_GUN) {
+            if (colItems[j].type == ITEM_GUN) {
                 addItemToInventory(player, colItems[j].type, 30);
             } else {
                 addItemToInventory(player, colItems[j].type, 1);
