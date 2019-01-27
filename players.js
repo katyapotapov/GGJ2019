@@ -21,14 +21,14 @@ let players = [];
 
 function createPlayer(id, x, y) {
     let setName = null;
-    
+
     if (PLAYER_NAMES.length > 0) {
         setName = PLAYER_NAMES[0];
         PLAYER_NAMES.shift();
     } else {
         setName = "ERROR_NO_NAME";
     }
-    
+
     let player = {
         id: id,
         name: setName,
@@ -86,20 +86,24 @@ function createPlayer(id, x, y) {
     players.push(player);
 }
 
-/*
 function drawPlayerNames(cam) {
     ctx.font = "15px Arial";
     ctx.fillStyle = "blue";
     for (let i = 0; i < players.length; i++) {
+        if (!players[i].sprite) {
+            continue;
+        }
         let name = players[i].name;
         let nameWidth = ctx.measureText(name).width;
-        let center_x = (players[i].sprite.x + players[i].sprite.width) / 2;
+        let center_x = players[i].sprite.x + players[i].sprite.info.frameWidth / 2;
+        console.log(center_x);
         let x = center_x - (nameWidth / 2);
-        let y = players[i].sprite.y;
+        let y = players[i].sprite.y + 10;
+        console.log(x);
+        console.log(y);
         ctx.fillText(name, x - cam.x, y - cam.y);
     }
 }
-*/
 
 function getPlayerWithID(id) {
     for (let i = 0; i < players.length; ++i) {
