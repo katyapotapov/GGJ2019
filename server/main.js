@@ -1,29 +1,30 @@
 const io = require("socket.io").listen(8080);
 
 let id = 0;
-let playerIDs = [];
+let players = [];
 let newPlayers = [];
 
 io.on("connection", function(socket) {
     console.log("Player joined!");
 
     socket.playerID = id++;
-    playerIDs.push(socket.playerID);
+    players.push(socket);
 
     // Even the player that joined receives this message
     io.emit("player joined", socket.playerID);
 
     // Now we send it a "player joined" for every other player connected
-    playerIDs.forEach(function(id) {
-        if(id == socket.playerID) {
+    players.forEach(function(playerSocket) {
+        if(socket == playerSocket) {
             return;
         }
 
-        socket.emit("player joined", id);
+        socket.emit("player joined", playerSocket.playerID);
     });
 
-    if(playerIDs.length == 1) {
+    if(players.length == 1) {
         socket.emit("host", socket.playerID);
+        hostPlayer = socket;
     } else {
         newPlayers.push(socket);
     }
@@ -85,8 +86,8 @@ io.on("connection", function(socket) {
         socket.broadcast.volatile.emit("player input", socket.playerID, input);
     });
 
-    socket.on("player state", function(id, x, y, anim) {
-        socket.broadcast.volatile.emit("player state", id, x, y, anim);
+    socket.on("player state", function(id, x, y, anim, sequenceNumber) {
+        socket.broadcast.volatile.emit("player state", id, x, y, anim, sequenceNumber);
     });
 
     socket.on("create wall", function(x, y, dir, life) {
@@ -135,12 +136,15 @@ io.on("connection", function(socket) {
 
     socket.on("disconnect", function() {
         console.log("Player left!");
-        io.emit("player left", socket.playerID);
-        playerIDs.splice(playerIDs.indexOf(socket.playerID), 1);
 
-        if(playerIDs.length == 1) {
+        io.emit("player left", socket.playerID);
+
+        if(socket == hostPlayer && players.length >= 1) {
             // Reassign host
-            io.emit("host", playerIDs[0]);
+            players[0].emit("host", players[0].playerID);
+            hostPlayer = players[0];
         }
+
+        players.splice(players.indexOf(socket), 1);
     });
 });
