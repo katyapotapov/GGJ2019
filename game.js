@@ -42,10 +42,6 @@ function initHost() {
     for (let i = 0; i < 20; ++i) {
         createItem(ITEM_BOMB, 1000 + i * 100, 300);
     }
-
-    setInterval(function() {
-        setHearthLife(HEARTH.life - 1);
-    }, HEARTH_LOSS_DURATION);
 }
 
 function updateGame() {
@@ -67,9 +63,12 @@ function updateGame() {
         updateBullets();
         updateBombs();
 
+        updateAndSendHearth();
+
         if (tickCount >= 1) {
             sendPlayers();
             sendBullets();
+
             tickCount = 0;
         }
     } else {
