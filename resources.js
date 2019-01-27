@@ -37,8 +37,8 @@ function createResource(type, x, y) {
             setrect = {
                 x: 0,
                 y: 0,
-                w: 32,
-                h: 32
+                w: RESOURCE_IMAGES.greenTree.width,
+                h: RESOURCE_IMAGES.greenTree.height
             };
             break;
         case ROCK:
@@ -46,10 +46,11 @@ function createResource(type, x, y) {
             setrect = {
                 x: 0,
                 y: 0,
-                w: 32,
-                h: 32
+                w: RESOURCE_IMAGES.rock.width,
+                h: RESOURCE_IMAGES.rock.height
             };
             break;
+
     }
     let resource = {
         type: type,
