@@ -6,7 +6,7 @@ function initPunch() {
     });
 }
 
-function createPunch(x, y, direction, isProtector) {
+function createPunch(x, y, direction) {
     let sprite = createSprite({
         image: slashImage,
         frameWidth: 177,
