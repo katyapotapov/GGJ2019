@@ -10,8 +10,12 @@ let input = {
     left: false,
     right: false,
     use: false,
-    invSelect: 0
+    invSelect: 0,
+    
+    sequenceNumber: 0
 };
+
+let inputBuffer = [];
 
 function setKeyState(key, down) {
     if(key == LEFT_KEY) {
@@ -59,4 +63,13 @@ window.addEventListener("keyup", function(e) {
 
 function sendInput() {
     socket.emit("player input", input);
+
+    if(!host) {
+        let cpy = {};
+
+        Object.assign(cpy, input);
+        inputBuffer.push(cpy);
+    }
+
+    input.sequenceNumber += 1;
 }
