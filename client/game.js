@@ -77,7 +77,7 @@ function resetGame() {
     setHearthLife(HEARTH_START_LIFE);
     setHearthMagicWood(0);
 
-    magicWoodDropCounter = randomNumInRange(magicWoodDropCounterMin, 
+    magicWoodDropCounter = randomNumInRange(magicWoodDropCounterMin,
                                             magicWoodDropCounterMax);
 
     for(let i = 0; i < players.length; ++i) {
@@ -148,20 +148,18 @@ function updateGame() {
 
         updateAndSendHearth();
 
-        if (tickCount >= 1) {
+        if (tickCount >= 3) {
             sendPlayers();
             sendBullets();
 
             tickCount = 0;
         }
     } else {
-        if(tickCount >= 1) {
-            // Once the player dies or the hearth dies and the player is a protector, stop sending input
+        bufferInput();
+        if (tickCount >= 1) {
             if (myPlayer && myPlayer.life > 0 && (!myPlayer.isProtector || HEARTH.life > 0)) {
                 sendInput();
             }
-
-            tickCount = 0;
         }
 
         predictUpdatePlayer();
