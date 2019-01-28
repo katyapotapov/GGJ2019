@@ -400,6 +400,7 @@ function handlePlayerState(id, x, y, anim, sequenceNumber, name, life) {
             player.y = y;
 
             player.serverSequenceNumber = sequenceNumber;
+            console.log(input.sequenceNumber, "<- client, host ->", sequenceNumber);
         } else {
             player.x = x;
             player.y = y;
@@ -417,7 +418,7 @@ function predictUpdatePlayer() {
     }
 
     inputBuffer = inputBuffer.filter(function (input) {
-        return input.sequenceNumber < player.serverSequenceNumber;
+        return input.sequenceNumber >= player.serverSequenceNumber;
     });
 
     for (let i = 0; i < inputBuffer.length; ++i) {

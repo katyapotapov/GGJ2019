@@ -77,15 +77,15 @@ window.addEventListener("keyup", function (e) {
     setKeyState(e.key, false);
 });
 
-function sendInput() {
-    socket.emit("player input", input);
+function bufferInput() {
+    let cpy = {};
 
-    if (!host) {
-        let cpy = {};
-
-        Object.assign(cpy, input);
-        inputBuffer.push(cpy);
-    }
+    Object.assign(cpy, input);
+    inputBuffer.push(cpy);
 
     input.sequenceNumber += 1;
+}
+
+function sendInput() {
+    socket.emit("player input", input);
 }
