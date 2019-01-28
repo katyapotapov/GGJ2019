@@ -59,6 +59,19 @@ socket.on("player input", handleInput);
     socket.on("set hearth life", setHearthLife);
     socket.on("set hearth magic wood", setHearthMagicWood);
 
+    socket.on("set player role", function(id, isProtector, first) {
+        for(let i = 0; i < players.length; ++i) {
+            if(players[i].id == id) {
+                players[i].isProtector = isProtector;
+
+                let newPos = getSpawnPoint(players[i].isProtector, first);
+
+                players[i].x = newPos.x;
+                players[i].y = newPos.y;
+            }
+        }
+    });
+
     socket.on("player left", function (id) {
         removePlayer(id);
         console.log("Goodbye " + id);

@@ -72,28 +72,20 @@ function damageObjects(objects, damage) {
 }
 
 function resetGame() {
+    if(!host) throw "ONLY CALL THIS ON HOST YOU DUMMY";
+
     setHearthLife(HEARTH_START_LIFE);
     setHearthMagicWood(0);
 
     magicWoodDropCounter = randomNumInRange(magicWoodDropCounterMin, 
                                             magicWoodDropCounterMax);
 
-    let oldPlayers = players;
-    players = [];
+    for(let i = 0; i < players.length; ++i) {
+        players[i].life = PLAYER_MAX_LIFE;
 
-    for(let i = 0; i < oldPlayers.length; ++i) {
-        oldPlayers[i].life = PLAYER_MAX_LIFE;
-
-        for(let j = 0; j < oldPlayers[i].inventory.items.length; ++j) {
-            setItemQuantity(oldPlayers[i].id, oldPlayers[i].inventory.items[j].type, 0);
+        for(let j = 0; j < players[i].inventory.items.length; ++j) {
+            setItemQuantity(players[i].id, players[i].inventory.items[j].type, 0);
         }
-
-        let newPos = getSpawnPoint(oldPlayers[i].isProtector);
-
-        oldPlayers[i].x = newPos.x;
-        oldPlayers[i].y = newPos.y;
-
-        players.push(oldPlayers[i]);
     }
 
     for(let i = 0; i < resources.length; ++i) {
@@ -115,6 +107,8 @@ function resetGame() {
     for(let i = 0; i < walls.length; ++i) {
         setWallLife(i, 0, true);
     }
+
+    socket.emit("reset game");
 
     clearInterval(generateRandResourcesIntervalID);
 

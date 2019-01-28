@@ -98,8 +98,8 @@ function createPlayer(id, x, y, isProtector) {
     players.push(player);
 }
 
-function getSpawnPoint(isProtector) {
-    if (isProtector && players.length === 1) {
+function getSpawnPoint(isProtector, forceInsideHome) {
+    if (isProtector && (players.length === 1 || forceInsideHome)) {
         return {
             x: HEARTH_X,
             y: HEARTH_Y - 2 * TILE_SIZE
