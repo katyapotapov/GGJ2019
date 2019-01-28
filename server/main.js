@@ -134,16 +134,16 @@ io.on("connection", function(socket) {
         socket.broadcast.emit("create wall", x, y, dir, life);
     });
 
-    socket.on("set wall life", function(index, life) {
-        socket.broadcast.emit("set wall life", index, life);
+    socket.on("set wall life", function(index, life, noDrop) {
+        socket.broadcast.emit("set wall life", index, life, noDrop);
     });
 
     socket.on("create resource", function(type, x, y) {
         socket.broadcast.emit("create resource", type, x, y);
     });
 
-    socket.on("set resource life", function(index, life) {
-        socket.broadcast.emit("set resource life", index, life);
+    socket.on("set resource life", function(index, life, noDrop) {
+        socket.broadcast.emit("set resource life", index, life, noDrop);
     });
 
     socket.on("create bomb", function(x, y) {
@@ -188,6 +188,10 @@ io.on("connection", function(socket) {
         if(socket == hostPlayer && players.length >= 1) {
             // Reassign host
             setHost(players[0]);
+        }
+
+        if(players.length == 0) {
+            console.log("There are no players in the server now.");
         }
     });
 });
