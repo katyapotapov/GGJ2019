@@ -68,6 +68,41 @@ function damageObjects(objects, damage) {
     }
 }
 
+function resetGame() {
+    setHearthLife(HEARTH_START_LIFE);
+    setHearthMagicWood(0);
+
+    for(let i = 0; i < players.length; ++i) {
+        players[i].life = PLAYER_MAX_LIFE;
+
+        for(let j = 0; j < players[i].inventory.items.length; ++j) {
+            setItemQuantity(players[i].id, players[i].inventory.items[j].type, 0);
+        }
+    }
+
+    for(let i = 0; i < resources.length; ++i) {
+        setResourceLife(i, 0, true);
+    }
+
+    for(let i = 0; i < items.length; ++i) {
+        removeItem(i);
+    }
+
+    for(let i = 0; i < bombs.length; ++i) {
+        removeBomb(i);
+    }
+
+    for(let i = 0; i < bullets.length; ++i) {
+        removeBullet(i);
+    }
+
+    for(let i = 0; i < walls.length; ++i) {
+        setWallLife(i, 0, true);
+    }
+
+    initHost();
+}
+
 function updateGame() {
     if (!socket) {
         return;
@@ -87,6 +122,12 @@ function updateGame() {
             handleInput(myPlayerID, input);
         }
 
+        if(HEARTH.magicWood >= 5 || (HEARTH.life <= 0)) {
+            if(input.up) {
+                resetGame();
+            }
+        }
+
         movePlayers();
         playerPickupTouchingItems();
         updatePlayerSpritePositions(true);
@@ -102,9 +143,13 @@ function updateGame() {
             tickCount = 0;
         }
     } else {
-        // Once the player dies or the hearth dies and the player is a protector, stop sending input
-        if (myPlayer && myPlayer.life > 0 && (!myPlayer.isProtector || HEARTH.life > 0)) {
-            sendInput();
+        if(tickCount >= 1) {
+            // Once the player dies or the hearth dies and the player is a protector, stop sending input
+            if (myPlayer && myPlayer.life > 0 && (!myPlayer.isProtector || HEARTH.life > 0)) {
+                sendInput();
+            }
+
+            tickCount = 0;
         }
 
         predictUpdatePlayer();
