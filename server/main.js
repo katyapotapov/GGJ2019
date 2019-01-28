@@ -30,6 +30,17 @@ function computeRole() {
     }
 }
 
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
+
 io.on("connection", function(socket) {
     console.log("Player joined!");
 
@@ -96,6 +107,23 @@ io.on("connection", function(socket) {
         });
 
         newPlayers.length = 0;
+    });
+
+    socket.on("reset game", function() {
+        shuffle(players);
+
+        let first = true;
+
+        players.forEach(function(socket) {
+            if(first) {
+                socket.isProtector = true;
+                first = false;
+            } else {
+                socket.isProtector = computeRole();
+            }
+
+            io.emit("set player role", socket.playerID, socket.isProtector, first);
+        });
     });
 
     socket.on("request host", function() {
