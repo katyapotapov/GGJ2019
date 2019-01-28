@@ -5,8 +5,8 @@ const ITEM_WOOD = 3;
 const ITEM_MAGIC_WOOD = 4;
 const ITEM_IMAGES = [null, null, null, null, null];
 const MAX_AMT_OF_ITEMS = 20;
-let magicWoodDropCounterMin = 15;
-let magicWoodDropCounterMax = 20;
+let magicWoodDropCounterMin = 40;
+let magicWoodDropCounterMax = 50;
 
 let items = [];
 let magicWoodDropCounter = 0;
