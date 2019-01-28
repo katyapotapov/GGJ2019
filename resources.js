@@ -113,7 +113,7 @@ function generateRandResources() {
         }
     }
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 10; i++) {
         let x = randomNumInRange(0, mapWidth);
         let y = randomNumInRange(0, mapHeight);
 

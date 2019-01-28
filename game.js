@@ -44,7 +44,7 @@ function initGame() {
 function initHost() {
     initDefaultBuilding();
     initDefaultResources();
-    setInterval(generateRandResources, 20000);
+    setInterval(generateRandResources, 10000);
 }
 
 function damageObjects(objects, damage) {
