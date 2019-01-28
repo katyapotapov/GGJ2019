@@ -139,7 +139,7 @@ io.on("connection", function(socket) {
     });
 
     socket.on("bullet state", function(index, x, y) {
-        socket.broadcast.volatile.emit("bullet state", index, x, y);
+        socket.broadcast.emit("bullet state", index, x, y);
     });
 
     socket.on("set item quantity", function(id, type, quantity) {
@@ -151,11 +151,11 @@ io.on("connection", function(socket) {
     });
 
     socket.on("player input", function(input) {
-        socket.broadcast.volatile.emit("player input", socket.playerID, input);
+        socket.broadcast.emit("player input", socket.playerID, input);
     });
 
     socket.on("player state", function(id, x, y, anim, sequenceNumber, name, life) {
-        socket.broadcast.volatile.emit("player state", id, x, y, anim, sequenceNumber, name, life);
+        socket.broadcast.emit("player state", id, x, y, anim, sequenceNumber, name, life);
     });
 
     socket.on("create wall", function(x, y, dir, life) {
