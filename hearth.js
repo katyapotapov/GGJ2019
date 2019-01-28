@@ -1,5 +1,6 @@
 const HEARTH_FEED_RADIUS = 64;
 const HEARTH_LOSS_PER_SEC = 1 / 2;
+const HEARTH_START_LIFE = 500;
 
 const HEARTH_X = Math.floor((HOUSE_X + HOUSE_BLOCKS_LEFT * TILE_SIZE / 2) / TILE_SIZE) * TILE_SIZE;
 const HEARTH_Y = Math.floor((HOUSE_Y + HOUSE_BLOCKS_DOWN * TILE_SIZE / 2) / TILE_SIZE) * TILE_SIZE;
@@ -8,7 +9,7 @@ const HEARTH = {
     sprite: null,
     x: 0,
     y: 0,
-    life: 100,
+    life: HEARTH_START_LIFE,
     magicWood: 0,
     rect: {
         x: 0,

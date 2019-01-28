@@ -1,6 +1,7 @@
 const PLAYER_MOVE_SPEED = 4;
 const PLAYER_SHOOT_COOLDOWN = 0.3;
 const PLAYER_NAMES = ["Brom", "Carac", "Borin", "Ulric", "Merek", "Sadon", "Logan", "Cedric"];
+const PLAYER_MAX_LIFE = 30;
 
 const INV_DRAW_POS = {
     x: 100,
@@ -39,8 +40,8 @@ function createPlayer(id, x, y, isProtector) {
         y: y,
         dx: 0,
         dy: 0,
-        life: 30,
-        maxLife: 30,
+        life: PLAYER_MAX_LIFE,
+        maxLife: PLAYER_MAX_LIFE,
         sprite: null,
         isProtector: isProtector,
         rect: {

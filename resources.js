@@ -136,8 +136,8 @@ function generateRandResources() {
     }
 }
 
-function removeResource(index) {
-    if (host) {
+function removeResource(index, noDrop) {
+    if (host && !noDrop) {
         if (resources[index].type == TREE) {
             if (magicWoodDropCounter <= 0) {
                 createItem(ITEM_MAGIC_WOOD, resources[index].x + resources[index].rect.w / 2,
@@ -157,15 +157,14 @@ function removeResource(index) {
     resources.splice(index, 1);
 }
 
-//TODO: Add item to players inventory when resource dies
-function setResourceLife(index, life) {
+function setResourceLife(index, life, noDrop) {
     resources[index].life = life;
     if (resources[index].life <= 0) {
-        removeResource(index);
+        removeResource(index, noDrop);
     }
 
     if (host) {
-        socket.emit("set resource life", index, life);
+        socket.emit("set resource life", index, life, noDrop);
     }
 }
 

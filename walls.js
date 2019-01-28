@@ -61,23 +61,23 @@ function createWall(x, y, direction, life) {
     return wall;
 }
 
-function removeWall(index) {
-    if (host) {
+function removeWall(index, noDrop) {
+    if (host && !noDrop) {
         createItem(ITEM_WALL, walls[index].x, walls[index].y);
     }
 
     walls.splice(index, 1);
 }
 
-function setWallLife(index, life) {
+function setWallLife(index, life, noDrop) {
     walls[index].life = life;
 
     if (host) {
-        socket.emit("set wall life", index, life);
+        socket.emit("set wall life", index, life, noDrop);
     }
 
     if (walls[index].life <= 0) {
-        removeWall(index);
+        removeWall(index, noDrop);
     }
 }
 
