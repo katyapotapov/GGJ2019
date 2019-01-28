@@ -1,4 +1,4 @@
-const io = require("socket.io").listen(8080);
+const io = require("socket.io").listen(process.env.PORT || 8080);
 
 let id = 0;
 let players = [];
