@@ -1,0 +1,3 @@
+[submodule "server"]
+	path = server
+	url = git@github.com:katyapotapov/GGJ2019-Server.git
