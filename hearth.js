@@ -48,7 +48,7 @@ function initDefaultHearth() {
 }
 
 function setHearthLife(life) {
-    if (HEARTH.life > 0) {
+    if (HEARTH.life > 0 || life > 0) {
         HEARTH.life = life;
     }
 

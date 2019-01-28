@@ -41,10 +41,13 @@ function initGame() {
     }, 2000);
 }
 
+let generateRandResourcesIntervalID;
+
 function initHost() {
     initDefaultBuilding();
     initDefaultResources();
-    setInterval(generateRandResources, 10000);
+
+    generateRandResourcesIntervalID = setInterval(generateRandResources, 10000);
 }
 
 function damageObjects(objects, damage) {
@@ -72,12 +75,25 @@ function resetGame() {
     setHearthLife(HEARTH_START_LIFE);
     setHearthMagicWood(0);
 
-    for(let i = 0; i < players.length; ++i) {
-        players[i].life = PLAYER_MAX_LIFE;
+    magicWoodDropCounter = randomNumInRange(magicWoodDropCounterMin, 
+                                            magicWoodDropCounterMax);
 
-        for(let j = 0; j < players[i].inventory.items.length; ++j) {
-            setItemQuantity(players[i].id, players[i].inventory.items[j].type, 0);
+    let oldPlayers = players;
+    players = [];
+
+    for(let i = 0; i < oldPlayers.length; ++i) {
+        oldPlayers[i].life = PLAYER_MAX_LIFE;
+
+        for(let j = 0; j < oldPlayers[i].inventory.items.length; ++j) {
+            setItemQuantity(oldPlayers[i].id, oldPlayers[i].inventory.items[j].type, 0);
         }
+
+        let newPos = getSpawnPoint(oldPlayers[i].isProtector);
+
+        oldPlayers[i].x = newPos.x;
+        oldPlayers[i].y = newPos.y;
+
+        players.push(oldPlayers[i]);
     }
 
     for(let i = 0; i < resources.length; ++i) {
@@ -99,6 +115,8 @@ function resetGame() {
     for(let i = 0; i < walls.length; ++i) {
         setWallLife(i, 0, true);
     }
+
+    clearInterval(generateRandResourcesIntervalID);
 
     initHost();
 }

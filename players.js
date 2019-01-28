@@ -98,6 +98,20 @@ function createPlayer(id, x, y, isProtector) {
     players.push(player);
 }
 
+function getSpawnPoint(isProtector) {
+    if (isProtector && players.length === 1) {
+        return {
+            x: HEARTH_X,
+            y: HEARTH_Y - 2 * TILE_SIZE
+        };
+    } else {
+        return {
+            x: HEARTH_X + HOUSE_BLOCKS_LEFT * TILE_SIZE + Math.floor(Math.random() * 10 * TILE_SIZE),
+            y: HEARTH_Y + HOUSE_BLOCKS_DOWN * TILE_SIZE + Math.floor(Math.random() * 10 * TILE_SIZE)
+        };
+    }
+}
+
 function drawPlayerNames(cam) {
     ctx.font = "15px Arial";
     ctx.fillStyle = "blue";
