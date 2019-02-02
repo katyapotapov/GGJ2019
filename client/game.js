@@ -34,7 +34,7 @@ function initGame() {
     initDefaultHearth();
 
     setTimeout(function () {
-        let server = window.prompt("What server do you want to connect to?", "ws://localhost:8080");
+        let server = window.prompt("What server do you want to connect to?", "ws://fathomless-eyrie-61762.herokuapp.com");
 
         socket = io(server);
         registerSocketCallbacks();
